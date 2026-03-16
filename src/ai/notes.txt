@@ -1,0 +1,287 @@
+# Notes from 'AI for Games Third Edition' by Ian Millington
+
+==================================================================================================
+
+# My Summary Notes
+
+Fundamental Building Block Behaviours:
+
+Kinematic Movement
+> Seek              : Non-stationary target. Velocity and orientation directly towards target.
+> Flee              : Non-stationary target. Opposite of Seek.
+> Arrive            : Stationary target. Seek for a stationary target.
+> Wander            : Entity moves forward constantly and orientation is adjusted.
+Steering Behaviours
+> Align             : Matches target's orientation.
+> Velocity Match    : Used with other steering behaviours. Matches target's velocity.
+
+Family tree of Behaviours:
+Align
+    ├── Look Where You're Going
+    └── Face
+ Seek + Flee
+    ├── Wander
+    ├── Pursue + Evade
+    ├── Path following
+    ├── Collision Avoidance
+    └── Obstacle Avoidance
+ Velocity Match
+     └── Arrive
+ Force Field
+     └── Separation
+
+
+==================================================================================================
+# 1.0 Kinematic Movement Algorithms
+Kinematic movement algorithms use static data (position and orientation, no velocities) and
+output a desired velocity. The output is often simply an on or off and a target direction, moving
+at full speed or being stationary. Kinematic algorithms do not use acceleration, although the
+abrupt changes in velocity might be smoothed over several frames. This can be simplified further
+by forcing the orientation of the character to be in the direction of travel.
+
+When we discuss an algorithm getting the 'steering behaviour' for an entity, we mean the
+algorithm calculating the following structure's values:
+
+class KinematicSteeringOutput:
+    velocity: Vector
+    rotation: float
+
+
+
+## 1.1.1 Seek
+> The steering behaviour requested for the entity is a directed on a straight line TOWARDS the given target.
+> Intended for chasing a target (see 1.1.1.2 Arrival).
+
+A kinematic seek behavior takes as input the character’s static data and its target’s static data.
+It calculates the direction from the character to the target and requests a velocity along this
+line. The orientation values are typically ignored, although we can use the newOrientation
+function found on page 51 to face in the direction we are moving.
+
+Algorithm found on page 52 (Kinematic Implementation).
+Algorithm found on page 60 (Steering Implementation).
+
+
+
+### 1.1.1.1 Flee
+> The steering behaviour requested for the entity is a directed on a straight line AWAY FROM the given target.
+
+
+
+### 1.1.1.2 Arrival
+> Seeking a STATIONARY target.
+
+Seek is intended for chasing a target - it will never reach its goal. If the entity does reach is goal,
+this can be a problem as the velocity requests will cause the entity to move at full speed, likely
+causing it to overshoot the target and constantly wiggle/orbit it. There are two options to solve this:
+
+1. We can just give the algorithm a large radius of satisfaction and have it be satisfied if it gets
+closer to its target than that.
+2. We could slow the character down as it reaches its target, making it less likely to overshoot.
+These options can be blended (the second option can still experience wiggle).
+
+Algorithm found on page 54 (Kinematic Implementation).
+Algorithm found on page 62 (Steering Implementation).
+
+
+
+## 1.1.1 Wandering
+> The steering behaviour only adjusts the entity's orientation, entity moves forward relative to their
+orientation at a constant velocity.
+
+A kinematic wander behavior always moves in the direction of the character’s current
+orientation with maximum speed. The steering behavior modifies the character’s orientation,
+which allows the character to meander as it moves forward
+
+Algorithm found on page 75.
+
+
+
+# 2.0 Steering Behaviours
+Steering behaviors extend the movement algorithms in the previous section by adding velocity
+and rotation.
+
+> Steering behaviour determine how an entity changes rotation and velocity to get to a target.
+
+
+
+# 2.1 Variable Matching
+The simplest family of steering behaviors operates by variable matching: they try to match
+one or more of the elements of the character’s kinematic to a single target kinematic.
+Variable matching behaviors take two kinematics as input: the character kinematic and
+the target kinematic.
+
+
+
+## 2.1.1 Seek and Flee
+Algorithm found on page 59.
+
+
+
+## 2.1.2 Arrive
+Algorithm found on page 62.
+
+
+
+## 2.1.3 Align
+Align tries to match the orientation of the character with that of the target. It pays no attention
+to the position or velocity of the character or target. This steering behavior does not
+produce any linear acceleration; it only responds by turning.
+Align behaves in a similar way to arrive. It tries to reach the target orientation and tries
+to have zero rotation when it gets there.
+
+Algorithm found on page 65.
+
+
+
+## 2.1.4 Velocity Matching
+Algorithm found on page 67.
+
+
+
+## 2.2.1 Pursue and Evade
+> Seek for long distance targets, predicts the target's future position and uses it as the target.
+> At short distances, seek works - it is not necessary to predict the target's future position.
+
+Instead of aiming at a target's current position, we need to predict where it will be at some time
+in the future and aim toward that point.
+If the character is moving slowly, or the target is a long way away, the prediction time
+could be very large. The target is less likely to follow the same path forever, so we’d like to
+set a limit on how far ahead we aim.
+
+Algorithm found on page 70.
+
+
+
+## 2.2.1.1 Evade
+Opposide of pursue. Rather than using seek to go towards the predicted target, we use flee.
+
+
+
+## 2.2.2 Face
+The face behavior makes a character look at its target. It delegates to the align behavior to
+perform the rotation but calculates the target orientation first.
+
+Algorithm found on page 72.
+
+
+
+## 2.3.1 Path Following
+Algorithm found on page 78.
+Predictive Algorithm found on page 79.
+
+
+
+## 2.3.2 Separation
+> Entities moving close to each other but NOT crossing paths.
+
+The separation behavior is common in crowd simulations, where a number of characters are
+all heading in roughly the same direction. It acts to keep the characters from getting too close
+and being crowded.
+It doesn’t work as well when characters are moving across each other’s paths (see 2.3.3 Collision
+Avoidance).
+Most of the time, the separation behavior has a zero output; it doesn’t recommend any
+movement at all. If the behavior detects another character closer than some threshold, it acts
+in a way similar to an evade behavior to move away from the character. Unlike the basic evade
+behavior, however, the strength of the movement is related to the distance from the target.
+
+Algorithm found on page 83.
+
+
+
+## 2.3.3 Collision Avoidance
+> Entities that are crossing paths.
+
+The collision avoidance behavior assumes that targets are spherical. It is interested in avoiding
+a trajectory too close to the center point of the target.
+
+Collision Avoidance has a number of implementations relating to the search area in front of the
+entity. These include:
+> Cone search in front of the entity (page 86).
+> Predictive collision checks (page 87). Algorithm found on page 88.
+> Ray solutions:
+    > Parallel rays coming from the entity's sides.
+    > Large central ray with small whisker rays either side.
+    > Whisker rays only.
+    > Single central ray only.
+
+
+
+## 2.3.3.1 Obstacle and Wall Avoidance
+Algorithm found on page 91.
+
+See above discussion.
+Wall avoidance has a common trap were avoidance algorithms will cause entities to get trapped in
+corners, known as 'the corner trap'. See page 93 for discussion.
+
+
+
+## 2.4 Combining Steering Behaviours
+A moving character usually needs more than one steering
+behavior. It needs to reach its goal, avoid collisions with other characters, tend toward safety
+as it moves, and avoid bumping into walls.
+
+
+
+## 2.4.1 Blend and Arbitration
+> Blending is calculating all the steering outputs and combing their results in some way.
+> Arbitration is letting one or more steering behaviours decide (have complete control).
+There are two methods of combining steering behaviors: blending and arbitration.
+Each method takes a portfolio of steering behaviors, each with its own output, and generates
+a single overall steering output.
+
+Blending does this by executing all the steering behaviors and combining their results using
+some set of weights or priorities. This is sufficient to achieve some very complex behaviors, but
+problems arise when there are a lot of constraints on how a character can move.
+
+Arbitration selects one or more steering behaviors to have complete control over the character.
+There are many arbitration schemes that control which behavior gets to have its way.
+
+Blending and arbitration are not exclusive approaches, however. They are the ends of a
+continuum.
+
+
+
+## 2.4.2 Weighted Blending
+The simplest way to combine steering behaviors is to blend their results together using weights.
+
+Algorithm found on page 98.
+
+
+
+## 2.4.2.1 Flocking and Swarming
+The original research into steering behaviors by Craig Reynolds modeled the movement patterns
+of flocks of simulated birds (known as “boids”) [Hence the name - flocking].
+The flocking algorithm relies on blending three simple steering behaviors: move away
+from boids that are too close (separation), move in the same direction and at the same velocity
+as the flock (alignment and velocity matching), and move toward the center of mass of the
+flock (cohesion).
+
+Weighted blending suffers from a number of problems:
+> Stable Equilibria (Page 100).
+> Constrained Environments (Page 101).
+> Nearsightedness (102).
+
+
+
+## 2.4.2.2 Priorities
+A variation of behavior blending replaces weights with priorities. In a priority-based system,
+behaviors are arranged in groups with regular blending weights. These groups are then placed
+in priority order.
+
+Algorithm found on page 104.
+
+
+
+## 2.4.3 Cooperative Arbitration
+There is a trend toward increasingly sophisticated algorithms for combining steering behaviors.
+A core feature of this trend is the cooperation among different behaviors.
+
+> The steering behaviour know about each other instead of being independent.
+
+
+
+## 2.4.3.1 Steering Pipeline
+This is a system intended as an intermediate step between simply blending or prioritizing steering
+behaviors and implementing a complete movement planning solution.
+
+Algorithm found on page 113.
