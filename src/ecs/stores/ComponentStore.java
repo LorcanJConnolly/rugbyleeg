@@ -5,6 +5,10 @@ import ecs.Component;
 
 import java.util.function.BiConsumer;
 
+/**
+ * TODO
+ * @param <T>
+ */
 public abstract class ComponentStore<T extends Component> {
 
     protected final int[] sparse;       // entity ID -> dense index
