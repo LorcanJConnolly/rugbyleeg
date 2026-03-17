@@ -11,7 +11,7 @@ public class QueryManager {
     private final Map<QueryKey, Query> queries = new HashMap<>();
 
     @SafeVarargs
-    public final <T extends Component> Query getOrCreateQuery(ComponentStore<T>... stores){
+    public final Query getOrCreateQuery(ComponentStore<? extends Component>... stores){
         QueryKey key = new QueryKey();
         Query query = queries.get(key);
         if (query != null){
