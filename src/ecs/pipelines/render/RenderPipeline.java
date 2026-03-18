@@ -1,4 +1,4 @@
-package ecs.pipelines;
+package ecs.pipelines.render;
 
 public class RenderPipeline {
 }
