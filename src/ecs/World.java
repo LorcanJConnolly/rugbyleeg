@@ -1,14 +1,20 @@
 package ecs;
 
 import ecs.entities.EntityManager;
-import ecs.pipelines.RenderPipeline;
-import ecs.pipelines.UpdatePipeline;
+import ecs.pipelines.commands.CommandPipeline;
+import ecs.pipelines.events.EventPipeline;
+import ecs.pipelines.render.RenderPipeline;
+import ecs.pipelines.render.RenderSystem;
+import ecs.pipelines.update.UpdatePipeline;
+import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
 import ecs.query.QueryManager;
 import ecs.stores.ComponentStore;
 import ecs.stores.ComponentStoreManager;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class World {
     private final int MAX_ENTITES;
@@ -17,8 +23,8 @@ public class World {
 
     private final UpdatePipeline updatePipeline = new UpdatePipeline();
     private final RenderPipeline renderPipeline = new RenderPipeline();
-    private final EventPipeline eventPipeline;
-    private final CommandPipeline commandPipeline;
+    private final EventPipeline eventPipeline = new EventPipeline();
+    private final CommandPipeline commandPipeline = new CommandPipeline();
 
     private final EntityManager entityManager;
     private final ComponentStoreManager storeManager = new ComponentStoreManager();
@@ -101,7 +107,11 @@ public class World {
 
 
     @SafeVarargs
-    public final Query query(ComponentStore<? extends Component>... stores){
+    public final Query query(Class<? extends Component>... componentTypes){
+        ComponentStore<? extends Component>[] stores = new ComponentStore[componentTypes.length];
+        for (int i = 0; i < componentTypes.length; i++) {
+            stores[i] = storeManager.getStore(componentTypes[i]);
+        }
         return queryManager.getOrCreateQuery(stores);
     }
 }
