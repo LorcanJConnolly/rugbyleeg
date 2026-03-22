@@ -7,17 +7,17 @@ import ecs.query.Query;
 import input.GameAction;
 
 public class InputSystem implements UpdateSystem {
-    private final World world;
     private final Query query;
 
     public InputSystem(World world){
-        this.world = world;
         this.query = world.query(Inputs.class);
     }
 
     @Override
     public void update(double dt) {
-        query.forEach((entity, input) -> process((Inputs) input));
+        query.forEach((entity, input) -> {
+            process((Inputs) input);
+        });
     }
 
     public void process(Inputs input) {
