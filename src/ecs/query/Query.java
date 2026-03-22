@@ -1,6 +1,10 @@
 package ecs.query;
 
 import ecs.Component;
+import ecs.consumers.BiEntityConsumer;
+import ecs.consumers.EntityConsumer;
+import ecs.consumers.QuadEntityConsumer;
+import ecs.consumers.TriEntityConsumer;
 import ecs.stores.ComponentStore;
 
 import java.util.HashSet;
@@ -43,6 +47,48 @@ public class Query {
             if (!store.has(entity)) return false;
         }
         return true;
+    }
+
+    // forEach methods
+    @SuppressWarnings("unchecked")
+    public <A extends Component> void forEach(EntityConsumer<A> consumer){
+        for (int entity: results){
+            consumer.accept(entity, (A) stores[0].get(entity));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <A extends Component, B extends Component> void forEach(BiEntityConsumer<A, B> consumer){
+        for (int entity: results){
+            consumer.accept(entity, (A) stores[0].get(entity), (B) stores[1].get(entity));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <A extends Component, B extends Component, C extends Component>
+    void forEach(TriEntityConsumer<A, B, C> consumer){
+        for (int entity: results){
+            consumer.accept(
+                    entity,
+                    (A) stores[0].get(entity),
+                    (B) stores[1].get(entity),
+                    (C) stores[2].get(entity)
+            );
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <A extends Component, B extends Component, C extends Component, D extends Component>
+    void forEach(QuadEntityConsumer<A, B, C, D> consumer){
+        for (int entity: results){
+            consumer.accept(
+                    entity,
+                    (A) stores[0].get(entity),
+                    (B) stores[1].get(entity),
+                    (C) stores[2].get(entity),
+                    (D) stores[3].get(entity)
+            );
+        }
     }
 
 
