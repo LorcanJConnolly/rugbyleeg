@@ -1,6 +1,5 @@
 package systems.formation.kickoff;
 
-import components.inputs.Inputs;
 import components.kinematics.Transform;
 import components.pitch.PitchDimensions;
 import components.rugby.RugbyPosition;
@@ -10,9 +9,7 @@ import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
 import state.game.GameStates;
 
-import javax.swing.text.Position;
-
-public class KickOffFormationSystem implements UpdateSystem {
+public class SetUpForKickOffSystem implements UpdateSystem {
     private final Query gameStateQuery;
     private final Query pitchQuery;
     private final Query query;
@@ -20,7 +17,7 @@ public class KickOffFormationSystem implements UpdateSystem {
     private GameState gameState;
     private PitchDimensions pitchDimensions;
 
-    public KickOffFormationSystem(World world){
+    public SetUpForKickOffSystem(World world){
         this.gameStateQuery = world.query(GameState.class);
         this.pitchQuery = world.query(PitchDimensions.class);
         this.query = world.query(Transform.class, RugbyPosition.class);
@@ -44,6 +41,6 @@ public class KickOffFormationSystem implements UpdateSystem {
     }
 
     public void process(Transform transform, RugbyPosition position) {
-
+        // switch case for setting positions?
     }
 }
