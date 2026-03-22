@@ -15,6 +15,7 @@ public class Query {
     private final ComponentStore<? extends Component>[] stores;
     private final Set<Integer> results = new HashSet<>();
 
+    @SafeVarargs
     public Query(ComponentStore<? extends Component>... stores){
         this.stores = stores;
         query(); // Collect results
