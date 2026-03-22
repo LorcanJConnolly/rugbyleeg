@@ -6,6 +6,9 @@ import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
 import input.GameAction;
 
+/**
+ * A system for determining the states of button presses.
+ */
 public class InputSystem implements UpdateSystem {
     private final Query query;
 
