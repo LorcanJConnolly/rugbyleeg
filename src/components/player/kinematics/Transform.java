@@ -1,4 +1,4 @@
-package components.kinematics;
+package components.player.kinematics;
 
 import ecs.Component;
 import util.vectors.Vector2;
