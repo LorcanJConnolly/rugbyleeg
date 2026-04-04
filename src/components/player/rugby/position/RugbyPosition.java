@@ -1,8 +1,8 @@
-package components.rugby.position;
+package components.player.rugby.position;
 
 import ecs.Component;
 import rugby.positions.Position;
 
 public class RugbyPosition implements Component {
-    Position position;
+    public Position position;
 }
