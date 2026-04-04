@@ -1,6 +1,6 @@
 package input;
 
-import components.inputs.Inputs;
+import components.player.inputs.Inputs;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
