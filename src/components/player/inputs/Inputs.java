@@ -1,4 +1,4 @@
-package components.inputs;
+package components.player.inputs;
 
 import java.util.HashMap;
 import java.util.Map;
