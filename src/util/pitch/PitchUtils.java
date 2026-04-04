@@ -25,24 +25,36 @@ public class PitchUtils {
     }
 
 
-    public static Vector2 relativeToPlayingField(PitchDimensions dimensions, double x_factor, double y_factor){
-        return new Vector2(
+    public static Vector2 relativeToPlayingField(
+            PitchDimensions dimensions,
+            Direction direction,
+            double x_factor,
+            double y_factor
+    ){
+        if (direction == Direction.DOWN) { // AABB origin is from the top left of screen.
+            return new Vector2(
                 relativeToPitchX(dimensions, x_factor),
                 relativeToPlayingFieldY(dimensions, y_factor)
-        );
+            );
+        } else {
+            return new Vector2(
+                relativeToPitchX(dimensions, 1 - x_factor),
+                relativeToPlayingFieldY(dimensions, 1 - y_factor)
+            );
+        }
     }
 
 
     public static Vector2 relativeToPitch(PitchDimensions dimensions, Direction direction, double x_factor, double y_factor) {
         if (direction == Direction.DOWN) { // AABB origin is from the top left of screen.
             return new Vector2(
-                    relativeToPitchX(dimensions, x_factor),
-                    relativeToPitchY(dimensions, y_factor)
+                relativeToPitchX(dimensions, x_factor),
+                relativeToPitchY(dimensions, y_factor)
             );
         } else {
             return new Vector2(
-                    relativeToPitchX(dimensions, 1 - x_factor),
-                    relativeToPitchX(dimensions, 1 - y_factor)
+                relativeToPitchX(dimensions, 1 - x_factor),
+                relativeToPitchY(dimensions, 1 - y_factor)
             );
         }
     }
