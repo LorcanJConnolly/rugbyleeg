@@ -17,6 +17,4 @@ public class PitchDimensions implements Component {
     public AABB bottomInGoal;
     public double topDeadBall;
     public double bottomDeadBall;
-    // pitch markings
-    public double centre;
 }
