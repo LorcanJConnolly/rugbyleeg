@@ -6,4 +6,8 @@ public class UpdatePipeline {
         // for system in pipeline, update()
         return;
     }
+
+    public <T extends UpdateSystem> void add(T system) {
+        return;
+    }
 }

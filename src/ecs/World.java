@@ -14,6 +14,7 @@ import ecs.stores.ComponentStoreManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class World {
@@ -37,6 +38,7 @@ public class World {
     }
 
 
+    // Builders
     public void createPlayer(){
         entityManager.getId();
     }
@@ -68,7 +70,6 @@ public class World {
     }
 
 
-    // add system x2
     public <T extends UpdateSystem> void addSystem(T system) {
         updatePipeline.add(system);
     }
@@ -79,30 +80,32 @@ public class World {
     }
 
 
-    public <T extends Component> void registerStore(Class<T> componentType, ComponentStore<T> store) {
-        storeManager.register(componentType, store);
-    }
-
-
-    public void update(double dt) {
-        updatePipeline.update(dt);
-    }
-
-
-    public void render(Graphics2D g2, double dt) {
-        renderPipeline.render(g2, dt);
-    }
-
-
-    // components
     public <T extends Component> void addComponent(int entity, Class<T> componentType, T component) {
         storeManager.addComponent(entity, componentType, component);
         queryManager.onComponentAdded(entity,  storeManager.getStore(componentType));
     }
 
+
     public <T extends Component> void removeComponent(int entity, Class<T> componentType) {
         storeManager.removeComponent(entity, componentType);
         queryManager.onComponentRemoved(entity, storeManager.getStore(componentType));
+    }
+
+
+    public <T extends Component> void registerStore(Class<T> componentType, ComponentStore<T> store) {
+        storeManager.register(componentType, store);
+    }
+
+
+    public <T extends Component> T getSingleton(Class<T> componentType){
+        ComponentStore<T> store = storeManager.getStore(componentType);
+        if (store.size() != 1){
+            throw new IllegalStateException(
+                    "Expected exactly one entity in singleton '" + componentType.getSimpleName()
+                            + "', found: " + store.size() + "."
+            );
+        }
+        return store.get(0);
     }
 
 
@@ -113,5 +116,13 @@ public class World {
             stores[i] = storeManager.getStore(componentTypes[i]);
         }
         return queryManager.getOrCreateQuery(stores);
+    }
+
+
+    public void update(double dt) {updatePipeline.update(dt);}
+
+
+    public void render(Graphics2D g2, double dt) {
+        renderPipeline.render(g2, dt);
     }
 }

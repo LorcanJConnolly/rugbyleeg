@@ -7,4 +7,8 @@ public class RenderPipeline {
         // for system in pipeline, render()
         return;
     };
+
+    public <T extends RenderSystem> void add(T system) {
+        return;
+    }
 }
