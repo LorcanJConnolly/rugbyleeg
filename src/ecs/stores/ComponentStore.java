@@ -35,6 +35,10 @@ public abstract class ComponentStore<T extends Component> {
         return dense[index];
     }
 
+    public final int componentAt(int index) {
+        return sparse[index];
+    }
+
     protected final int addEntity(int entity) {
         sparse[entity] = size;
         dense[size] = entity;
