@@ -1,6 +1,6 @@
 package util.fileloaders;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import world.templates.PlayerTemplate;
+import world.templates.entities.PlayerTemplate;
 
 import java.io.InputStream;
 
