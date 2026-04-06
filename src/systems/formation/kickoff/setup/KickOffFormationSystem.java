@@ -4,13 +4,12 @@ import components.player.kinematics.Transform;
 import components.pitch.PitchDimensions;
 import components.player.rugby.position.RugbyPosition;
 import components.player.team.Member;
-import components.state.game.GameState;
+import components.singletons.game.GameState;
 import components.team.direction.TeamDirections;
 import components.team.phase.Phase;
 import ecs.World;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
-import rugby.team.Team;
 import state.game.GameStates;
 import util.pitch.PitchUtils;
 
@@ -39,6 +38,8 @@ public class KickOffFormationSystem implements UpdateSystem {
         });
         if (!gameState.flags.contains(GameStates.KICK_OFF)) return;
 
+        // TODO new singleton world access methods.
+        // TODO build stores.
         pitchQuery.forEach((int pitch, PitchDimensions pitchDimensions) -> {
             this.pitchDimensions = pitchDimensions;
         });
