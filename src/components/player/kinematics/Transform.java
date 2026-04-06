@@ -24,9 +24,9 @@ public class Transform implements Component {
     // Builder pattern.
     public static class Builder{
         // Required
-        private Vector2     position = new Vector2(0, 0);
+        private final Vector2   position;
         // Default values.
-        private double      orientation = 0.0;
+        private double          orientation = 0.0;
 
         private Builder(Vector2 position){
             this.position = position;
