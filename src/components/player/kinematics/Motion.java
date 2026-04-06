@@ -20,8 +20,8 @@ public class Motion implements Component {
     // Builder pattern.
     public static class Builder{
         // Default values.
-        private Vector2     velocity = new Vector2(0, 0);
-        private double      rotation = 0.0;
+        private final Vector2   velocity = new Vector2(0, 0);
+        private double          rotation = 0.0;
 
         private Builder(){}
 
