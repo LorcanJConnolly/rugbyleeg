@@ -36,7 +36,7 @@ public class Motion implements Component {
         }
 
         public Builder rotation(double rotation){
-            this.velocity.add(velocity);
+            this.rotation = rotation;
             return this;
         }
     }
