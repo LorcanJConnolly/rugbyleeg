@@ -40,7 +40,7 @@ public class Motion implements Component {
             return this;
         }
 
-        // Construct with default values from builder.
+        // Finalise construction - hand builder to private constructor method.
         public Motion build(){
             return new Motion(this);
         }

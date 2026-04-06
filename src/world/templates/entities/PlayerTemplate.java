@@ -1,11 +1,14 @@
 package world.templates.entities;
 
-import world.templates.components.KinematicsTemplate;
+
+import components.player.kinematics.Transform;
+import world.templates.components.MotionTemplate;
+import world.templates.components.TransformTemplate;
 
 /**
  * A POJO template for configuring a player entity's components.
  */
 public class PlayerTemplate {
-    public KinematicsTemplate kinematics;
-
+    public MotionTemplate motion;
+    public TransformTemplate transform;
 }

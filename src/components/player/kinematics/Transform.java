@@ -50,5 +50,10 @@ public class Transform implements Component {
             this.orientation = orientation;
             return this;
         }
+
+        // Finalise construction - hand builder to private constructor method.
+        public Transform build(){
+            return new Transform(this);
+        }
     }
 }
