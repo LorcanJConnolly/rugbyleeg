@@ -39,5 +39,10 @@ public class Motion implements Component {
             this.rotation = rotation;
             return this;
         }
+
+        // Construct with default values from builder.
+        public Motion build(){
+            return new Motion(this);
+        }
     }
 }
