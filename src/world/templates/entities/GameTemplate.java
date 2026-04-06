@@ -1,4 +1,4 @@
-package world.templates;
+package world.templates.entities;
 
 /**
  * A template for configuring the game entity singleton's components.
