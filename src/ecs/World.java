@@ -13,9 +13,6 @@ import ecs.stores.ComponentStore;
 import ecs.stores.ComponentStoreManager;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class World {
     private final int MAX_ENTITES;
@@ -38,31 +35,10 @@ public class World {
     }
 
 
-    // Builders
-    public int createPlayer(){
+    // Entities
+    public int createEntity(){
         return entityManager.getId();
     }
-
-
-    public void createBall(){
-        entityManager.getId();
-    }
-
-
-    public void createPitch(){
-        entityManager.getId();
-    }
-
-
-    public void createFormation(){
-        entityManager.getId();
-    }
-
-
-    public void createMove(){
-        entityManager.getId();
-    }
-
 
     public void destroyEntity(int entity){
         storeManager.onEntityDestroyed(entity);
@@ -70,6 +46,7 @@ public class World {
     }
 
 
+    // Systems
     public <T extends UpdateSystem> void addSystem(T system) {
         updatePipeline.add(system);
     }
@@ -80,6 +57,7 @@ public class World {
     }
 
 
+    // Components
     public <T extends Component> void addComponent(int entity, T component) {
         storeManager.addComponent(entity, component);
         queryManager.onComponentAdded(entity,  storeManager.getStore(component.getClass()));
@@ -92,6 +70,7 @@ public class World {
     }
 
 
+    //Stores
     public <T extends Component> void registerStore(Class<T> componentType, ComponentStore<T> store) {
         storeManager.register(componentType, store);
     }
@@ -119,6 +98,7 @@ public class World {
     }
 
 
+    // Pipelines
     public void update(double dt) {updatePipeline.update(dt);}
 
 
