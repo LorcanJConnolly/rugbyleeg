@@ -2,9 +2,12 @@ package world.configurators.entities;
 
 import components.player.kinematics.Motion;
 import components.player.kinematics.Transform;
+import ecs.Component;
 import ecs.World;
 import util.vectors.Vector2;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -12,18 +15,18 @@ import java.util.function.Consumer;
  * world builder.
  */
 public class PlayerConfig {
-    public Motion motion;
-    public Transform transform;
+    private final List<? extends Component> components;
 
     // Entry points
     private PlayerConfig(Builder b){
-        this.motion = b.motion;
-        this.transform = b.transform;
+        this.components = List.copyOf(b.components); // immutable
     }
 
-    public void createPlayer(World world, int Id){
-        // Add entity to the world
-        // Add each component to the entity.
+    public void createPlayer(World world){
+        int id = world.createEntity();
+        for (Component component: components){
+            world.addComponent(id, component);
+        }
     }
 
     // Entry points.
@@ -35,8 +38,7 @@ public class PlayerConfig {
     // Builder pattern.
     public static class Builder{
         // By default, all components can be missing
-        private Transform transform         = null;
-        private Motion motion               = null;
+        private final List<Component> components = new ArrayList<>();
 
         private Builder() {}
 
@@ -46,15 +48,15 @@ public class PlayerConfig {
             // Override default values for any existing optional fields.
             // This is called in lambda construction in the WorldBuilder.
             cfg.accept(b);
-            // Build component.
-            this.transform = b.build();
+            // Build component and add to the list of components.
+            this.components.add(b.build());
             return this;
         }
 
         public Builder motion(Consumer<Motion.Builder> cfg) {
             Motion.Builder b = Motion.builder();
             cfg.accept(b);
-            this.motion = b.build();
+            this.components.add(b.build());
             return this;
         }
     }
