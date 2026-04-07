@@ -53,10 +53,7 @@ public class PitchDimensions implements Component {
 
         private Builder(){}
 
-        public Builder aabb(AABB aabb){
-            this.aabb = aabb;
-            return this;
-        }
+        public Builder aabb(AABB aabb){ this.aabb = aabb; return this; }
 
         public Builder leftTouch(double leftTouch) { this.leftTouch = leftTouch; return this; }
 
@@ -74,7 +71,6 @@ public class PitchDimensions implements Component {
 
         public Builder bottomDeadBall(double bottomDeadBall) { this.bottomDeadBall = bottomDeadBall; return this; }
 
-        // Finalise construction - hand builder to private constructor method.
         public PitchDimensions build(){
             return new PitchDimensions(this);
         }

@@ -1,11 +1,8 @@
 package world.configurators.entities;
 
 import components.pitch.PitchDimensions;
-import components.player.kinematics.Motion;
-import components.player.kinematics.Transform;
 import ecs.Component;
 import ecs.World;
-import util.vectors.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +41,10 @@ public class PitchConfig {
             cfg.accept(b);
             this.components.add(b.build());
             return this;
+        }
+
+        public PitchConfig build(){
+            return new PitchConfig(this);
         }
     }
 }
