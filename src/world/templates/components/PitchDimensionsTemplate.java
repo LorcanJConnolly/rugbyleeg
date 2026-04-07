@@ -5,12 +5,12 @@ import world.templates.utils.AABBTemplate;
 
 public class PitchDimensionsTemplate {
     public AABBTemplate aabb;
-    public double leftTouch;
-    public double rightTouch;
-    public double topTryLine;
-    public double bottomTryLine;
+    public Double leftTouch;
+    public Double rightTouch;
+    public Double topTryLine;
+    public Double bottomTryLine;
     public AABBTemplate topInGoal;
     public AABBTemplate bottomInGoal;
-    public double topDeadBall;
-    public double bottomDeadBall;
+    public Double topDeadBall;
+    public Double bottomDeadBall;
 }
