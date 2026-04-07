@@ -62,7 +62,7 @@ public class KickOffFormationSystem implements UpdateSystem {
     public void process(Transform transform, RugbyPosition position, Member member) {
         // TODO is it right to query each entity without going through the team entity.
         if (member.team == attack) {
-            switch (position.position) {
+            switch (position.getPosition()) {
                 // Increments of 8, starting at 0.04 to 0.96
                 case WING_5:
                     transform.position = PitchUtils.relativeToPlayingField(
@@ -139,7 +139,7 @@ public class KickOffFormationSystem implements UpdateSystem {
             }
         } else {
             // closest to furthest, left to right
-            switch (position.position) {
+            switch (position.getPosition()) {
                 case CENTRE_3:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
