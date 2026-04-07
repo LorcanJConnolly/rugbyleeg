@@ -1,9 +1,12 @@
 package world.configurators.entities;
 
+import components.pitch.PitchDimensions;
 import components.player.kinematics.Motion;
 import components.player.kinematics.Transform;
+import components.player.rugby.position.RugbyPosition;
 import ecs.Component;
 import ecs.World;
+import rugby.positions.Position;
 import util.vectors.Vector2;
 
 import java.util.ArrayList;
@@ -58,6 +61,16 @@ public class PlayerConfig {
             cfg.accept(b);
             this.components.add(b.build());
             return this;
+        }
+
+        public Builder position(Position position) {
+            RugbyPosition.Builder b = RugbyPosition.builder(position);
+            this.components.add(b.build());
+            return this;
+        }
+
+        public PlayerConfig build(){
+            return new PlayerConfig(this);
         }
     }
 }
