@@ -32,8 +32,8 @@ public class ComponentStoreManager {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Component> void addComponent(int entity, Class<T> componentType, T component) {
-        ComponentStore<T> store = (ComponentStore<T>) stores.get(componentType);
+    public <T extends Component> void addComponent(int entity, T component) {
+        ComponentStore<T> store = (ComponentStore<T>) stores.get(component.getClass());
         if (store == null) return;
         store.add(entity, component);
     }

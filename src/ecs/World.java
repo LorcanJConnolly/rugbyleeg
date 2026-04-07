@@ -39,8 +39,8 @@ public class World {
 
 
     // Builders
-    public void createPlayer(){
-        entityManager.getId();
+    public int createPlayer(){
+        return entityManager.getId();
     }
 
 
@@ -80,9 +80,9 @@ public class World {
     }
 
 
-    public <T extends Component> void addComponent(int entity, Class<T> componentType, T component) {
-        storeManager.addComponent(entity, componentType, component);
-        queryManager.onComponentAdded(entity,  storeManager.getStore(componentType));
+    public <T extends Component> void addComponent(int entity, T component) {
+        storeManager.addComponent(entity, component);
+        queryManager.onComponentAdded(entity,  storeManager.getStore(component.getClass()));
     }
 
 
