@@ -36,7 +36,6 @@ public class KickOffFormationSystem implements UpdateSystem {
         gameStateQuery.forEach((entity, gameState) -> {
             this.gameState = (GameState) gameState;
         });
-        if (!gameState.flags.contains(GameStates.KICK_OFF)) return;
 
         // TODO new singleton world access methods.
         // TODO build stores.
