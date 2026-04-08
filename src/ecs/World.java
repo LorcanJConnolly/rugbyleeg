@@ -87,6 +87,17 @@ public class World {
         return store.get(0);
     }
 
+    public int getSingletonEntity(Class<? extends Component> componentType){
+        ComponentStore<? extends Component> store = storeManager.getStore(componentType);
+        if (store.size() != 1){
+            throw new IllegalStateException(
+                    "Expected exactly one entity in singleton '" + componentType.getSimpleName()
+                            + "', found: " + store.size() + "."
+            );
+        }
+        return store.entityAtDenseIndex(0);
+    }
+
 
     @SafeVarargs
     public final Query query(Class<? extends Component>... componentTypes){
