@@ -3,8 +3,8 @@ package world;
 import ecs.World;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
-import world.configurators.entities.PitchConfig;
-import world.configurators.entities.PlayerConfig;
+import world.configurators.PitchConfig;
+import world.configurators.PlayerConfig;
 import world.templates.entities.*;
 
 import java.util.List;

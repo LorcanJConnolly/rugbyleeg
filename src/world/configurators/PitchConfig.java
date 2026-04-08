@@ -1,4 +1,4 @@
-package world.configurators.entities;
+package world.configurators;
 
 import components.pitch.PitchDimensions;
 import ecs.Component;

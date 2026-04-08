@@ -1,6 +1,5 @@
-package world.configurators.entities;
+package world.configurators;
 
-import components.pitch.PitchDimensions;
 import components.player.kinematics.Motion;
 import components.player.kinematics.Transform;
 import components.player.rugby.position.RugbyPosition;
@@ -20,9 +19,9 @@ import java.util.function.Consumer;
 public class PlayerConfig {
     private final List<? extends Component> components;
 
-    // Entry points
+
     private PlayerConfig(Builder b){
-        this.components = List.copyOf(b.components); // immutable
+        this.components = List.copyOf(b.components);
     }
 
     public void createPlayer(World world){
