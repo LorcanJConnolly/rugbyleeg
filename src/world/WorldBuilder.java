@@ -3,6 +3,7 @@ package world;
 import ecs.World;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
+import world.configurators.BallConfig;
 import world.configurators.PitchConfig;
 import world.configurators.PlayerConfig;
 import world.templates.entities.*;
@@ -81,7 +82,24 @@ public class WorldBuilder {
     }
 
     private void createBall(BallTemplate ball){
+        BallConfig.Builder builder = BallConfig.builder();
 
+        if (ball.transform != null){
+            // Vectors constructed using template.utils.VectorTemplate
+            double x = ball.transform.position.x != null ? ball.transform.position.x : 0.0;
+            double y = ball.transform.position.y != null ? ball.transform.position.y : 0.0;
+            // Transform position is required.
+            builder.transform(new Vector2(x, y), b -> {
+                if (ball.transform.orientation != null) b.orientation(ball.transform.orientation);
+            });
+        }
+        if (ball.motion != null){
+            builder.motion(b -> {
+                if (ball.motion.velocity != null) b.velocity(ball.motion.velocity.toVector2(0.0, 0.0));
+                if (ball.motion.rotation != null) b.rotation(ball.motion.rotation);
+            });
+        }
+        builder.build().createBall(world);
     }
 
     private void createGame(GameTemplate game){
