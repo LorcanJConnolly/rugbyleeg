@@ -5,10 +5,7 @@ import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
 import world.configurators.entities.PitchConfig;
 import world.configurators.entities.PlayerConfig;
-import world.templates.entities.PitchTemplate;
-import world.templates.entities.PlayerTemplate;
-import world.templates.entities.TeamTemplate;
-import world.templates.entities.WorldTemplate;
+import world.templates.entities.*;
 
 import java.util.List;
 
@@ -87,7 +84,7 @@ public class WorldBuilder {
 
     }
 
-    private void createGameEntity(GameTemplate game){
+    private void createGame(GameTemplate game){
 
     }
 }
