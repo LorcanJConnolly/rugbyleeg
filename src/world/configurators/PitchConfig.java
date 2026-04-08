@@ -11,10 +11,11 @@ import java.util.function.Consumer;
 public class PitchConfig {
     private final List<? extends Component> components;
 
-    // Entry points
+
     private PitchConfig(Builder b){
         this.components = List.copyOf(b.components); // immutable
     }
+
 
     public void createPitch(World world){
         int id = world.createEntity();
@@ -22,6 +23,7 @@ public class PitchConfig {
             world.addComponent(id, component);
         }
     }
+
 
     // Entry points.
     public static Builder builder(){
