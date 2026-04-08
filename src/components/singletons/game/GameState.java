@@ -1,7 +1,9 @@
 package components.singletons.game;
 
+import components.player.kinematics.Motion;
 import ecs.Component;
 import state.game.GameStates;
+import util.vectors.Vector2;
 
 import java.util.EnumSet;
 
@@ -9,5 +11,44 @@ import java.util.EnumSet;
  * A component of the "singleton" game state entity, storing enum flags which collectively form a game state.
  */
 public class GameState implements Component {
-    public EnumSet<GameStates> flags = EnumSet.noneOf(GameStates.class);
+    private EnumSet<GameStates> flags = EnumSet.noneOf(GameStates.class);
+
+    private GameState(Builder b){
+        this.flags = b.flags;
+    }
+
+    public boolean hasFlag(GameStates state_flag){
+        return this.flags.contains(state_flag);
+    }
+
+    public void removeFlag(GameStates state_flag){
+        this.flags.remove(state_flag);
+    }
+
+    public void addFlag(GameStates state_flag){
+        this.flags.add(state_flag);
+    }
+
+    // Entry point.
+    public static Builder builder(){
+        return new Builder();
+    }
+
+    // Builder pattern.
+    public static class Builder{
+        // Default values.
+        private EnumSet<GameStates> flags = EnumSet.of(GameStates.KICK_OFF);
+
+        private Builder(){}
+
+        public Builder flags(EnumSet<GameStates> flags){
+            this.flags = flags;
+            return this;
+        }
+
+        // Finalise construction - hand builder to private constructor method.
+        public GameState build(){
+            return new GameState(this);
+        }
+    }
 }
