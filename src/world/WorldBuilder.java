@@ -82,4 +82,12 @@ public class WorldBuilder {
 
         builder.build().createPitch(world);
     }
+
+    private void createBall(BallTemplate ball){
+
+    }
+
+    private void createGameEntity(GameTemplate game){
+
+    }
 }
