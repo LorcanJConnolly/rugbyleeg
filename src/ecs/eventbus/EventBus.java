@@ -12,20 +12,12 @@ import java.util.Map;
  * <p></> This is a deferred event bus, meaning that the events added to the event queue of the eventbus are not
  * dispatched until *later*, i.e., if an event is added to the event queue in a system during the execution of a frame,
  * the event will be dispatched at the very end of the frame. <p></>
- *
- * TODO: Some events may be needed to be dispatched immediately to prevent latency (e.g., inputs) and may need their own
- * TODO: eventbus. If we do this, this eventbus will become an interface, and we will have a deferred event bus and
- * TODO: critical event bus (or another name).
- *
- * TODO: Or we add a priority flag to HandlerEntry
  */
 public class EventBus {
 
     public EventBus(EventDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
-
-
 
     // Owns the subscribers.
     private final Map<Class<?>, List<HandlerEntry<?>>> handlers = new HashMap<>();
@@ -63,28 +55,19 @@ public class EventBus {
         return new EventSubscription(this, eventType, entry);
     }
 
-    /**
-     * Hands an event to the EventDispatcher to be emitted/added to all registered handlers for its type.
-     */
+    /** Hands an event to the EventDispatcher to be queued. */
     public <T extends Event> void emit(T event){
-
+        dispatcher.enqueue(event);
     }
 
-    /**
-     * Called by the EventDispatcher. Dispatches an event to its handlers.
-     *
-     * <p></> Note that th
-     * @param event
-     * @param <T>
-     */
+
+    /** Dispatches an event to its handlers. NOTE: also Used to dispatch events that cannot be deferred. */
     public <T extends Event> void dispatch(T event){
 
     }
 
 
-    /**
-     * Removes a handler from a subscription entry.
-     */
+    /** Removes a handler from a subscription entry. */
     public <T extends Event> void removeHandler(Class<T> eventType, HandlerEntry<?> entry){
         List<HandlerEntry<?>> entries = handlers.get(eventType);
         if (entries != null) {
@@ -96,15 +79,13 @@ public class EventBus {
     /**
      * Removes all subscriptions for a given event type.
      *
-     * @param eventType the event type whose subscribers should all be cleared
+     * @param eventType the event type whose subscribers should all be cleared.
      */
     public void clearSubscribers(Class<? extends Event> eventType){
         handlers.remove(eventType);
     };
 
-    /**
-     * Removes every subscription across all event types.
-     */
+    /** Removes every subscription across all event types. */
     public void clearAll(){
         handlers.clear();
     };
