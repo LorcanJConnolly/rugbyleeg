@@ -1,9 +1,7 @@
 package components.singletons.game;
 
-import components.player.kinematics.Motion;
 import ecs.Component;
 import state.game.GameStates;
-import util.vectors.Vector2;
 
 import java.util.EnumSet;
 
