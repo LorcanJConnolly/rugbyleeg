@@ -1,4 +1,5 @@
 package ecs.eventbus;
 
-public class EventHandler {
+public class EventHandler<T extends Event> {
+
 }
