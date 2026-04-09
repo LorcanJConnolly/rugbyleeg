@@ -2,7 +2,7 @@ package ecs;
 
 import ecs.entities.EntityManager;
 import ecs.pipelines.commands.CommandPipeline;
-import ecs.pipelines.events.EventPipeline;
+import ecs.eventbus.EventBus;
 import ecs.pipelines.render.RenderPipeline;
 import ecs.pipelines.render.RenderSystem;
 import ecs.pipelines.update.UpdatePipeline;
@@ -21,7 +21,7 @@ public class World {
 
     private final UpdatePipeline updatePipeline = new UpdatePipeline();
     private final RenderPipeline renderPipeline = new RenderPipeline();
-    private final EventPipeline eventPipeline = new EventPipeline();
+    private final EventBus eventBus = new EventBus();
     private final CommandPipeline commandPipeline = new CommandPipeline();
 
     private final EntityManager entityManager;
