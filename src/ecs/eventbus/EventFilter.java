@@ -1,4 +1,4 @@
 package ecs.eventbus;
 
-public class EventFilter {
+public class EventFilter<T extends Event> {
 }
