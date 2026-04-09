@@ -1,4 +1,4 @@
 package ecs.pipelines.events;
 
-public class EventPipeline {
+public class EventBus {
 }
