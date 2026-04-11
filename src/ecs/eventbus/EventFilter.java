@@ -2,6 +2,10 @@ package ecs.eventbus;
 
 /**
  * A predicate applied to an event before invoking its handler.
+ *
+ * <p></> Provides a function interface (suitable for use with lambda functions) for implementing EventFilter classes.
+ * <p></>
+ *
  * @param <T> The event type the filter is applied to.
  */
 @FunctionalInterface
