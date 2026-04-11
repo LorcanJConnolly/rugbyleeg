@@ -7,22 +7,25 @@ import java.util.Map;
 
 
 /**
- * The central eventbus.
+ * The central eventbus. Responsible for managing subscriptions. Events are managed by the EventDispatcher which is
+ * interacted with through the eventbus.
  *
  * <p></> This is a deferred event bus, meaning that the events added to the event queue of the eventbus are not
  * dispatched until *later*, i.e., if an event is added to the event queue in a system during the execution of a frame,
  * the event will be dispatched at the very end of the frame. <p></>
  */
 public class EventBus {
-
-    public EventBus(EventDispatcher dispatcher) {
-        this.dispatcher = dispatcher;
-    }
-
     // Owns the subscribers.
-    private final Map<Class<?>, List<HandlerEntry<?>>> handlers = new HashMap<>();
+    private final Map<Class<?>, List<HandlerEntry<?>>> handlers;
     // Owns the event queue.
     private final EventDispatcher dispatcher;
+
+
+    public EventBus() {
+        this.dispatcher = new EventDispatcher(this);
+        this.handlers = new HashMap<>();
+    }
+
 
 
     /**
@@ -61,8 +64,8 @@ public class EventBus {
     }
 
 
-    /** Dispatches an event to its handlers. NOTE: also Used to dispatch events that cannot be deferred. */
-    public <T extends Event> void dispatch(T event){
+    /** Dispatches an event to its handlers. NOTE: can dispatch events that cannot be deferred by skipping the queue. */
+    public <T extends Event> void dispatch(T event ){
 
     }
 

@@ -22,6 +22,7 @@ public class EventSubscription {
         this.active = true;
     }
 
+
     /**
      * Removes this subscription's handler entry from the bus' subscriptions.
      */
