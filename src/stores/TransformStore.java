@@ -1,6 +1,5 @@
 package stores;
 
-import components.player.kinematics.Motion;
 import components.player.kinematics.Transform;
 import ecs.stores.ComponentStore;
 
@@ -14,6 +13,13 @@ public class TransformStore extends ComponentStore<Transform> {
         super(maxEntities);
         data = new Transform[maxEntities];
     }
+
+
+    @Override
+    public Class<Transform> getComponentType(){
+        return Transform.class;
+    }
+
 
     @Override
     public void add(int entity, Transform component){

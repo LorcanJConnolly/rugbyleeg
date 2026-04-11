@@ -14,6 +14,10 @@ public class MotionStore extends ComponentStore<Motion> {
         data = new Motion[maxEntities];
     }
 
+    @Override
+    public Class<Motion> getComponentType(){
+        return Motion.class;
+    }
 
     @Override
     public void add(int entity, Motion component){

@@ -57,6 +57,8 @@ public abstract class ComponentStore<T extends Component> {
 
     // Component-typed operations implemented by child classes.
 
+    public abstract Class<T> getComponentType();
+
     public abstract void add(int entity, T component);
 
 
