@@ -15,7 +15,6 @@ import ecs.stores.ComponentStoreManager;
 import java.awt.*;
 
 public class World {
-    private final int MAX_ENTITES;
 //    private final int MAX_COMPONENTS;
 //    private final int MAX_SYSTEMS;
 
@@ -30,8 +29,7 @@ public class World {
 
 
     public World(int maxEntities){
-        this.MAX_ENTITES = maxEntities;
-        this.entityManager = new EntityManager(MAX_ENTITES);
+        this.entityManager = new EntityManager(maxEntities);
     }
 
 
@@ -71,8 +69,8 @@ public class World {
 
 
     //Stores
-    public <T extends Component> void registerStore(Class<T> componentType, ComponentStore<T> store) {
-        storeManager.register(componentType, store);
+    public <T extends Component> void registerStore(ComponentStore<T> store) {
+        storeManager.register(store);
     }
 
 

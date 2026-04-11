@@ -11,8 +11,8 @@ public class ComponentStoreManager {
 
     private final Map<Class<? extends Component>, ComponentStore<? extends Component>> stores = new HashMap<>();
 
-    public <T extends Component> void register(Class<T> componentType, ComponentStore<T> store) {
-        stores.put(componentType, store);
+    public <T extends Component> void register(ComponentStore<T> store) {
+        stores.put(store.getComponentType(), store);
     }
 
     public <T extends Component> boolean entityHas(int entity, Class<T> componentType) {
