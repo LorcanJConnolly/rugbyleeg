@@ -1,6 +1,9 @@
 package world;
 
 import ecs.World;
+import stores.MotionStore;
+import stores.RugbyPositionStore;
+import stores.TransformStore;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
 import world.configurators.BallConfig;
@@ -11,14 +14,19 @@ import world.templates.entities.*;
 import java.util.List;
 
 public class WorldBuilder {
+    private final int maxEntities;
     private final World world;
 
     public WorldBuilder(int maxEntities) {
-        this.world = new World(maxEntities);
+        this.maxEntities = maxEntities;
+        this.world = new World(this.maxEntities);
     }
 
     public World load(String path){
+
         WorldTemplate world_template = JsonLoader.load(path, WorldTemplate.class);
+        // Create stores
+        createStores();
         // Create entities
         createPlayers(world_template.players);
         createTeam(world_template.attackingTeam);
@@ -27,6 +35,12 @@ public class WorldBuilder {
         // TODO: add controls to a player entity.
 
         return world;
+    }
+
+    public void createStores(){
+        world.registerStore(new MotionStore(this.maxEntities));
+        world.registerStore(new TransformStore(this.maxEntities));
+        world.registerStore(new RugbyPositionStore(this.maxEntities));
     }
 
 
