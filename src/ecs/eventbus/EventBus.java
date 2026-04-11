@@ -16,6 +16,7 @@ import java.util.Map;
  */
 public class EventBus {
     // Owns the subscribers.
+    // {event type: [handlers]}
     private final Map<Class<?>, List<HandlerEntry<?>>> handlers;
     // Owns the event queue.
     private final EventDispatcher dispatcher;
