@@ -4,7 +4,7 @@ import components.player.inputs.Inputs;
 import ecs.World;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
-import input.GameAction;
+import input.Button;
 
 /**
  * A system for determining the states of button presses.
@@ -24,7 +24,7 @@ public class InputSystem implements UpdateSystem {
     }
 
     public void process(Inputs input) {
-        for (GameAction button: GameAction.values()){
+        for (Button button: Button.values()){
             boolean currentButtonState = input.current.get(button);
             boolean previousButtonState = input.previous.get(button);
 

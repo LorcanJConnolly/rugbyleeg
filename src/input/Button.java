@@ -1,6 +1,6 @@
 package input;
 
-public enum GameAction {
+public enum Button {
     MOVE_UP,
     MOVE_DOWN,
     MOVE_LEFT,
