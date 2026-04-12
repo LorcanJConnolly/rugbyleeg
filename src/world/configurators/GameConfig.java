@@ -1,8 +1,7 @@
 package world.configurators;
 
-import components.singletons.game.AttackingTeam;
-import components.singletons.game.DefendingTeam;
 import components.singletons.game.GameState;
+import components.singletons.game.SingletonEntities;
 import ecs.Component;
 import ecs.World;
 
@@ -14,8 +13,7 @@ public class GameConfig {
     private final List<? extends Component> components;
 
 
-
-    private GameConfig(Builder b, int attackingTeam, int defendingTeam) {
+    private GameConfig(Builder b) {
         this.components = List.copyOf(b.components);
     }
 
@@ -25,6 +23,11 @@ public class GameConfig {
         for (Component component: components){
             world.addComponent(id, component);
         }
+    }
+
+    // Entry points.
+    public static Builder builder(){
+        return new Builder();
     }
 
     public static class Builder{
@@ -41,18 +44,15 @@ public class GameConfig {
         }
 
         // Determined after creation in WorldBuilder.
-        public Builder attackingTeam(Consumer<AttackingTeam.Builder> cfg) {
-            AttackingTeam.Builder b = AttackingTeam.builder();
+        public Builder singletons(int ball, int attack, int defence, int pitch, Consumer<SingletonEntities.Builder> cfg) {
+            SingletonEntities.Builder b = SingletonEntities.builder(ball, attack, defence, pitch);
             cfg.accept(b);
             this.components.add(b.build());
             return this;
         }
 
-        public Builder defendingTeam(Consumer<DefendingTeam.Builder> cfg) {
-            DefendingTeam.Builder b = DefendingTeam.builder();
-            cfg.accept(b);
-            this.components.add(b.build());
-            return this;
+        public GameConfig build(){
+            return new GameConfig(this);
         }
     }
 }
