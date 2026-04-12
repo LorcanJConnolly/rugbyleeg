@@ -1,12 +1,11 @@
 package systems.kickoff.formation;
 
 import components.player.kinematics.Transform;
+import components.singletons.game.GameState;
+import components.singletons.game.SingletonEntities;
 import components.singletons.pitch.PitchDimensions;
 import components.player.rugby.position.RugbyPosition;
 import components.player.team.Member;
-import components.singletons.game.AttackingTeam;
-import components.singletons.game.DefendingTeam;
-import components.singletons.game.GameState;
 import components.team.direction.TeamDirections;
 import ecs.World;
 import ecs.pipelines.update.UpdateSystem;
@@ -16,16 +15,19 @@ import util.pitch.PitchUtils;
 public class KickOffFormationSystem implements UpdateSystem {
     private final Query query;
     private final PitchDimensions pitchDimensions;
-    private final AttackingTeam attack;
-    private final DefendingTeam defence;
+    private final int attack;
+    private final int defence;
     private final TeamDirections attackDirections, defenceDirections;
 
     public KickOffFormationSystem(World world){
         this.pitchDimensions = world.getSingleton(PitchDimensions.class);
-        this.attack = world.getSingleton(AttackingTeam.class);
-        this.defence = world.getSingleton(DefendingTeam.class);
-        this.attackDirections = world.getEntityComponent(this.attack.entity, TeamDirections.class);
-        this.defenceDirections = world.getEntityComponent(this.defence.entity, TeamDirections.class);
+        SingletonEntities singletonEntities = world.getEntityComponent(
+                world.getSingletonEntity(GameState.class), SingletonEntities.class
+        );
+        this.attack = singletonEntities.getAttack();
+        this.defence = singletonEntities.getDefence();
+        this.attackDirections = world.getEntityComponent(this.attack, TeamDirections.class);
+        this.defenceDirections = world.getEntityComponent(this.defence, TeamDirections.class);
         this.query = world.query(Transform.class, RugbyPosition.class, Member.class);
     }
 
@@ -39,7 +41,7 @@ public class KickOffFormationSystem implements UpdateSystem {
     }
 
     public void process(Transform transform, RugbyPosition position, Member member) {
-        if (member.team == attack.entity) {
+        if (member.team == attack) {
             switch (position.getPosition()) {
                 // Increments of 8, starting at 0.04 to 0.96
                 case WING_5:
@@ -115,7 +117,7 @@ public class KickOffFormationSystem implements UpdateSystem {
                     );
                     break;
             }
-        } else if (member.team == defence.entity) {
+        } else if (member.team == defence) {
             // closest to furthest, left to right
             switch (position.getPosition()) {
                 case CENTRE_3:
