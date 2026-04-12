@@ -17,10 +17,10 @@ public class KickOffSetupSystem implements UpdateSystem {
     }
 
     /** Called during world creation. Subscribers the system to its events. */
-    public void registerSubscription(EventBus eventBus){
-        eventBus.subscribe(
+    public void registerSubscriptions(EventBus bus){
+        bus.subscribe(
                 GameReset.class,
-                event -> update(event.getDt())
+                event -> update(event.getDeltaTime())
         );
     }
 
