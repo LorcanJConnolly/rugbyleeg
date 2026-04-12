@@ -6,11 +6,12 @@ package ecs.commandbus;
  * <p></> Subclasses are immutable objects containing the data the command's handler requires to execute the command.
  */
 public abstract class Command {
+    private  final double dt;                  // Record dt for system update method inputs.
     private final long timestamp;       // In nanoseconds to match dt.
     private final int targetEntity;     // Optional
 
 
-    protected Command(long timestamp, int targetEntity) {
+    protected Command(double dt, long timestamp, int targetEntity) {
         this.timestamp = timestamp;
         this.targetEntity = targetEntity;
     }
