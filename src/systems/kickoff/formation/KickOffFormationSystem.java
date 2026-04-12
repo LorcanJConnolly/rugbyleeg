@@ -31,7 +31,7 @@ public class KickOffFormationSystem implements UpdateSystem {
 
     @Override
     public void update(double dt) {
-        // Listen for NewKickOff event.
+        // register command listening
 
         query.forEach((int entity, Transform transform, RugbyPosition position, Member member) -> {
             process(transform, position, member);
