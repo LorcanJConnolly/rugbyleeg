@@ -10,4 +10,5 @@ public class WorldTemplate {
     public TeamTemplate attackingTeam, defendingTeam;
     public GameTemplate game;
     public PitchTemplate pitch;
+    public BallTemplate ball;
 }
