@@ -17,11 +17,12 @@ public class PitchConfig {
     }
 
 
-    public void createPitch(World world){
+    public int createPitch(World world){
         int id = world.createEntity();
         for (Component component: components){
             world.addComponent(id, component);
         }
+        return id;
     }
 
 
