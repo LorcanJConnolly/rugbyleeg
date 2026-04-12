@@ -17,7 +17,7 @@ public abstract class Command {
         this.targetEntity = targetEntity;
     }
 
-    public double getDt() {
+    public double getDeltaTime() {
         return dt;
     }
 }

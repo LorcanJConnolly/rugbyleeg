@@ -7,7 +7,7 @@ public abstract class Event {
         this.dt = dt;
     }
 
-    public double getDt(){
+    public double getDeltaTime(){
         return dt;
     }
 }
