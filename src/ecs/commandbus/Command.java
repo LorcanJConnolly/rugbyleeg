@@ -16,4 +16,8 @@ public abstract class Command {
         this.timestamp = timestamp;
         this.targetEntity = targetEntity;
     }
+
+    public double getDt() {
+        return dt;
+    }
 }
