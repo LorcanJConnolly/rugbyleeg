@@ -1,4 +1,14 @@
 package ecs.commandbus;
 
-public class CommandHandler {
+/**
+ * A callback invoked when an event of type {@code T} is dispatched.
+ *
+ * <p></> Typically implementations will be lightweight lambdas or methods references registered using
+ * {@link CommandBus#register}}, heavyweight lifting is done by systems.<p></>
+ * @param <T> The command type the handler processes.
+ */
+@FunctionalInterface
+public interface CommandHandler<T extends Command> {
+
+    void handle(T command);
 }
