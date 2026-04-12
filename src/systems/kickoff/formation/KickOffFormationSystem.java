@@ -6,7 +6,7 @@ import components.singletons.game.SingletonEntities;
 import components.singletons.pitch.PitchDimensions;
 import components.player.rugby.position.RugbyPosition;
 import components.player.team.Member;
-import components.team.direction.TeamDirections;
+import components.team.direction.Directions;
 import ecs.World;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
@@ -17,7 +17,7 @@ public class KickOffFormationSystem implements UpdateSystem {
     private final PitchDimensions pitchDimensions;
     private final int attack;
     private final int defence;
-    private final TeamDirections attackDirections, defenceDirections;
+    private final Directions attackDirections, defenceDirections;
 
     public KickOffFormationSystem(World world){
         this.pitchDimensions = world.getSingleton(PitchDimensions.class);
@@ -26,8 +26,8 @@ public class KickOffFormationSystem implements UpdateSystem {
         );
         this.attack = singletonEntities.getAttack();
         this.defence = singletonEntities.getDefence();
-        this.attackDirections = world.getEntityComponent(this.attack, TeamDirections.class);
-        this.defenceDirections = world.getEntityComponent(this.defence, TeamDirections.class);
+        this.attackDirections = world.getEntityComponent(this.attack, Directions.class);
+        this.defenceDirections = world.getEntityComponent(this.defence, Directions.class);
         this.query = world.query(Transform.class, RugbyPosition.class, Member.class);
     }
 
@@ -39,6 +39,7 @@ public class KickOffFormationSystem implements UpdateSystem {
             process(transform, position, member);
         });
     }
+
 
     public void process(Transform transform, RugbyPosition position, Member member) {
         if (member.team == attack) {
