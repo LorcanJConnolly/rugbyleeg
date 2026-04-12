@@ -1,6 +1,5 @@
 package world.configurators;
 
-import components.pitch.PitchDimensions;
 import components.singletons.game.AttackingTeam;
 import components.singletons.game.DefendingTeam;
 import components.singletons.game.GameState;

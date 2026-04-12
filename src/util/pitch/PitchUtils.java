@@ -1,6 +1,6 @@
 package util.pitch;
 
-import components.pitch.PitchDimensions;
+import components.singletons.pitch.PitchDimensions;
 import util.directions.Direction;
 import util.vectors.Vector2;
 

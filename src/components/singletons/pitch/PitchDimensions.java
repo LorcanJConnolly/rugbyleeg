@@ -1,6 +1,5 @@
-package components.pitch;
+package components.singletons.pitch;
 
-import components.player.kinematics.Transform;
 import ecs.Component;
 import util.shapes.AABB;
 import util.vectors.Vector2;
