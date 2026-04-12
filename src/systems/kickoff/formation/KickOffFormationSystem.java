@@ -9,7 +9,6 @@ import components.player.team.Member;
 import components.team.direction.Directions;
 import ecs.World;
 import ecs.commandbus.CommandBus;
-import ecs.commandbus.CommandHandler;
 import ecs.commandbus.CommandResult;
 import ecs.commandbus.commands.LineUpForKickOff;
 import ecs.pipelines.update.UpdateSystem;
