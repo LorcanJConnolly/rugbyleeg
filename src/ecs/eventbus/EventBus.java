@@ -23,7 +23,7 @@ public class EventBus {
 
 
     public EventBus() {
-        this.dispatcher = new EventDispatcher(this);
+        this.dispatcher = new EventDispatcher();
         this.handlers = new HashMap<>();
     }
 
