@@ -1,4 +1,4 @@
-package systems.formation.kickoff.setup;
+package systems.kickoff.formation;
 
 import components.player.kinematics.Transform;
 import components.pitch.PitchDimensions;
@@ -10,7 +10,6 @@ import components.team.phase.Phase;
 import ecs.World;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
-import state.game.GameStates;
 import util.pitch.PitchUtils;
 
 public class KickOffFormationSystem implements UpdateSystem {
