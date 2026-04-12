@@ -1,56 +1,37 @@
 package systems.kickoff.formation;
 
 import components.player.kinematics.Transform;
-import components.pitch.PitchDimensions;
+import components.singletons.pitch.PitchDimensions;
 import components.player.rugby.position.RugbyPosition;
 import components.player.team.Member;
+import components.singletons.game.AttackingTeam;
+import components.singletons.game.DefendingTeam;
 import components.singletons.game.GameState;
 import components.team.direction.TeamDirections;
-import components.team.phase.Phase;
 import ecs.World;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
 import util.pitch.PitchUtils;
 
 public class KickOffFormationSystem implements UpdateSystem {
-    private final Query gameStateQuery;
-    private final Query pitchQuery;
-    private final Query teamsQuery;
     private final Query query;
-
-    private GameState gameState;
-    private PitchDimensions pitchDimensions;
-    private int attack, defence;
-    private TeamDirections attackDirections, defenceDirections;
+    private final PitchDimensions pitchDimensions;
+    private final AttackingTeam attack;
+    private final DefendingTeam defence;
+    private final TeamDirections attackDirections, defenceDirections;
 
     public KickOffFormationSystem(World world){
-        this.gameStateQuery = world.query(GameState.class);
-        this.pitchQuery = world.query(PitchDimensions.class);
-        this.teamsQuery = world.query(Phase.class, TeamDirections.class);
+        this.pitchDimensions = world.getSingleton(PitchDimensions.class);
+        this.attack = world.getSingleton(AttackingTeam.class);
+        this.defence = world.getSingleton(DefendingTeam.class);
+        this.attackDirections = world.getEntityComponent(this.attack.entity, TeamDirections.class);
+        this.defenceDirections = world.getEntityComponent(this.defence.entity, TeamDirections.class);
         this.query = world.query(Transform.class, RugbyPosition.class, Member.class);
     }
 
     @Override
     public void update(double dt) {
-        gameStateQuery.forEach((entity, gameState) -> {
-            this.gameState = (GameState) gameState;
-        });
-
-        // TODO new singleton world access methods.
-        // TODO build stores.
-        pitchQuery.forEach((int pitch, PitchDimensions pitchDimensions) -> {
-            this.pitchDimensions = pitchDimensions;
-        });
-        teamsQuery.forEach((int team, Phase phase, TeamDirections teamDirections) -> {
-            if (phase.isAttacking()){
-                this.attack = team;
-                this.attackDirections = teamDirections;
-
-            } else {
-                this.defence = team;
-                this.defenceDirections = teamDirections;
-            }
-        });
+        // Listen for NewKickOff event.
 
         query.forEach((int entity, Transform transform, RugbyPosition position, Member member) -> {
             process(transform, position, member);
@@ -58,8 +39,7 @@ public class KickOffFormationSystem implements UpdateSystem {
     }
 
     public void process(Transform transform, RugbyPosition position, Member member) {
-        // TODO is it right to query each entity without going through the team entity.
-        if (member.team == attack) {
+        if (member.team == attack.entity) {
             switch (position.getPosition()) {
                 // Increments of 8, starting at 0.04 to 0.96
                 case WING_5:
@@ -135,7 +115,7 @@ public class KickOffFormationSystem implements UpdateSystem {
                     );
                     break;
             }
-        } else {
+        } else if (member.team == defence.entity) {
             // closest to furthest, left to right
             switch (position.getPosition()) {
                 case CENTRE_3:
