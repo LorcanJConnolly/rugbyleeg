@@ -8,6 +8,10 @@ import components.player.rugby.position.RugbyPosition;
 import components.player.team.Member;
 import components.team.direction.Directions;
 import ecs.World;
+import ecs.commandbus.CommandBus;
+import ecs.commandbus.CommandHandler;
+import ecs.commandbus.CommandResult;
+import ecs.commandbus.commands.LineUpForKickOff;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
 import util.pitch.PitchUtils;
@@ -30,6 +34,18 @@ public class KickOffFormationSystem implements UpdateSystem {
         this.defenceDirections = world.getEntityComponent(this.defence, Directions.class);
         this.query = world.query(Transform.class, RugbyPosition.class, Member.class);
     }
+
+
+    public void listenToCommands(CommandBus bus){
+        bus.register(
+                LineUpForKickOff.class,
+                command -> {
+                    update(command.getDeltaTime());
+                    return CommandResult.success();
+                }
+        );
+    }
+
 
     @Override
     public void update(double dt) {
