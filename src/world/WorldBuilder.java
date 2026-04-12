@@ -9,9 +9,7 @@ import stores.TransformStore;
 import systems.kickoff.setup.KickOffSetupSystem;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
-import world.configurators.BallConfig;
-import world.configurators.PitchConfig;
-import world.configurators.PlayerConfig;
+import world.configurators.*;
 import world.templates.entities.*;
 
 import java.util.List;
@@ -42,9 +40,12 @@ public class WorldBuilder {
 
         // Create entities
         createPlayers(world_template.players);
-        createTeam(world_template.attackingTeam);
-        createTeam(world_template.defendingTeam);
-        createPitch(world_template.pitch);
+        int attack = createTeam(world_template.attackingTeam);
+        int defence = createTeam(world_template.defendingTeam);
+        int pitch = createPitch(world_template.pitch);
+        int ball = createBall(world_template.ball);
+
+        createGame(world_template.game, attack, defence, ball, pitch);
         // TODO: add controls to a player entity.
 
         return world;
@@ -83,14 +84,25 @@ public class WorldBuilder {
 
             builder.build().createPlayer(world);
         }
-
     }
 
 
-    private void createTeam(TeamTemplate team){
+    private int createTeam(TeamTemplate team){
+        TeamConfig.Builder builder = TeamConfig.builder();
+
+        if (team.direction != null){
+            builder.direction(b -> {
+                if (team.direction.forward != null) b.forward(team.direction.forward);
+                if (team.direction.backwards != null) b.backwards(team.direction.backwards);
+                if (team.direction.inside != null) b.inside(team.direction.inside);
+                if (team.direction.outside != null) b.outside(team.direction.outside);
+            });
+        }
+
+        return builder.build().createTeam(world);
     }
 
-    private void createPitch(PitchTemplate pitch){
+    private int createPitch(PitchTemplate pitch){
         PitchConfig.Builder builder = PitchConfig.builder();
 
         if (pitch.dimensions != null){
@@ -105,10 +117,10 @@ public class WorldBuilder {
             });
         }
 
-        builder.build().createPitch(world);
+        return builder.build().createPitch(world);
     }
 
-    private void createBall(BallTemplate ball){
+    private int createBall(BallTemplate ball){
         BallConfig.Builder builder = BallConfig.builder();
 
         if (ball.transform != null){
@@ -126,12 +138,22 @@ public class WorldBuilder {
                 if (ball.motion.rotation != null) b.rotation(ball.motion.rotation);
             });
         }
-        builder.build().createBall(world);
+        return builder.build().createBall(world);
     }
 
 
-    private void createGame(GameTemplate game){
+    private void createGame(GameTemplate game, int attack, int defence, int ball, int pitch){
+        GameConfig.Builder builder = GameConfig.builder();
 
+        if (game.state != null){
+            builder.state(b ->{
+                if (game.state.flags != null) b.flags(game.state.flags);
+            });
+        }
+        // SingletonEntities
+        builder.singletons(ball, attack, defence, pitch, b -> {});
+
+        builder.build().createGame(world);
     }
 
 

@@ -9,7 +9,7 @@ import java.util.EnumSet;
  * A component of the "singleton" game state entity, storing enum flags which collectively form a game state.
  */
 public class GameState implements Component {
-    private EnumSet<GameStates> flags = EnumSet.noneOf(GameStates.class);
+    private final EnumSet<GameStates> flags;
 
     private GameState(Builder b){
         this.flags = b.flags;
@@ -37,7 +37,7 @@ public class GameState implements Component {
         // Default values.
         private EnumSet<GameStates> flags = EnumSet.of(GameStates.KICK_OFF);
 
-        private Builder(){}
+        private Builder() {}
 
         public Builder flags(EnumSet<GameStates> flags){
             this.flags = flags;
