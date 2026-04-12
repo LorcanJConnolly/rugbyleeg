@@ -17,6 +17,14 @@ public abstract class Command {
         this.targetEntity = targetEntity;
     }
 
+
+    protected Command(double dt, long timestamp) {
+        this.dt = dt;
+        this.timestamp = timestamp;
+        this.targetEntity = -1;
+    }
+
+
     public double getDeltaTime() {
         return dt;
     }
