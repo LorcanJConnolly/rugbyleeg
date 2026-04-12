@@ -1,6 +1,6 @@
 package world.configurators;
 
-import components.pitch.PitchDimensions;
+import components.singletons.pitch.PitchDimensions;
 import ecs.Component;
 import ecs.World;
 
