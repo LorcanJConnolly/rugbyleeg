@@ -9,7 +9,7 @@ package ecs.commandbus;
 public class CommandResult {
 
     private final boolean success;
-    private final String rejectionReason; // Human readable description of failure for debugging.
+    private final String rejectionReason; // Human-readable description of failure for debugging.
 
 
     public CommandResult(boolean success) {
