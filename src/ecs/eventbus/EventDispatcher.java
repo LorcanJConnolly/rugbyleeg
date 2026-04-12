@@ -9,12 +9,11 @@ import java.util.Queue;
  * eventbus and its subscribers when consumed.
  */
 public class EventDispatcher {
-    private final Queue<Event> queue = new ArrayDeque<>();
-    private final EventBus eventBus;
+    private final Queue<Event> queue;
 
 
-    public EventDispatcher(EventBus eventBus){
-        this.eventBus = eventBus;
+    public EventDispatcher(){
+        queue = new ArrayDeque<>();
     }
 
 
@@ -25,9 +24,9 @@ public class EventDispatcher {
 
 
     /** Consume and hand all events in the queue to the eventbus to be dispatched. */
-    public void flush(){
+    public void flush(EventBus bus){
         while (!queue.isEmpty()){
-            eventBus.dispatch(queue.poll());
+            bus.dispatch(queue.poll());
         }
     }
 
