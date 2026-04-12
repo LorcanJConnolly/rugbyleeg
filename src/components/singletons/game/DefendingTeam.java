@@ -1,4 +1,7 @@
 package components.singletons.game;
 
-public class DefendingTeam {
+import ecs.Component;
+
+public class DefendingTeam implements Component {
+    public int entity;
 }
