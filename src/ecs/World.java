@@ -73,7 +73,7 @@ public class World {
         storeManager.register(store);
     }
 
-
+    /** Gets a singleton component. */
     public <T extends Component> T getSingleton(Class<T> componentType){
         ComponentStore<T> store = storeManager.getStore(componentType);
         if (store.size() != 1){
@@ -85,6 +85,7 @@ public class World {
         return store.get(0);
     }
 
+    /** Gets a singleton entity. */
     public int getSingletonEntity(Class<? extends Component> componentType){
         ComponentStore<? extends Component> store = storeManager.getStore(componentType);
         if (store.size() != 1){
@@ -94,6 +95,12 @@ public class World {
             );
         }
         return store.entityAtDenseIndex(0);
+    }
+
+
+    /** Given an entity, get its component of a given type. Returns null if the component does not exist. */
+    public <T extends Component> T getEntityComponent(int entity, Class<T> componentType){
+        return storeManager.getComponent(entity, componentType);
     }
 
 
