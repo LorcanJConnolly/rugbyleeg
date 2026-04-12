@@ -162,7 +162,7 @@ public class WorldBuilder {
         CommandBus commandBus = world.getCommandBus();
 
         KickOffSetupSystem kickOffSetUp = new KickOffSetupSystem();
-        kickOffSetUp.registerSubscription(eventBus);
+        kickOffSetUp.registerSubscriptions(eventBus);
 
         world.addSystem(kickOffSetUp);
 
