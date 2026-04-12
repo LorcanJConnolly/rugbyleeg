@@ -1,9 +1,12 @@
 package world;
 
 import ecs.World;
+import ecs.commandbus.CommandBus;
+import ecs.eventbus.EventBus;
 import stores.MotionStore;
 import stores.RugbyPositionStore;
 import stores.TransformStore;
+import systems.kickoff.setup.KickOffSetupSystem;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
 import world.configurators.BallConfig;
@@ -25,8 +28,18 @@ public class WorldBuilder {
     public World load(String path){
 
         WorldTemplate world_template = JsonLoader.load(path, WorldTemplate.class);
+
         // Create stores
         createStores();
+
+        // register systems to world and their associated command handlers and event subscriptions.
+        addSystems();
+
+        // Event subscribers
+        EventBus eventBus = new EventBus();
+
+        // Command handlers
+
         // Create entities
         createPlayers(world_template.players);
         createTeam(world_template.attackingTeam);
@@ -116,7 +129,22 @@ public class WorldBuilder {
         builder.build().createBall(world);
     }
 
+
     private void createGame(GameTemplate game){
 
     }
+
+
+    private void addSystems(){
+        EventBus eventBus = world.getEventBus();
+        CommandBus commandBus = world.getCommandBus();
+
+        KickOffSetupSystem kickOffSetUp = new KickOffSetupSystem();
+        kickOffSetUp.registerSubscription(eventBus);
+
+        world.addSystem(kickOffSetUp);
+
+    }
+
+
 }
