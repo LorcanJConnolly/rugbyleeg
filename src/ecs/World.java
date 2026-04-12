@@ -1,7 +1,7 @@
 package ecs;
 
+import ecs.commandbus.CommandBus;
 import ecs.entities.EntityManager;
-import ecs.pipelines.commands.CommandPipeline;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.render.RenderPipeline;
 import ecs.pipelines.render.RenderSystem;
@@ -21,7 +21,7 @@ public class World {
     private final UpdatePipeline updatePipeline = new UpdatePipeline();
     private final RenderPipeline renderPipeline = new RenderPipeline();
     private final EventBus eventBus = new EventBus();
-    private final CommandPipeline commandPipeline = new CommandPipeline();
+    private final CommandBus commandBus = new CommandBus();
 
     private final EntityManager entityManager;
     private final ComponentStoreManager storeManager = new ComponentStoreManager();
@@ -30,6 +30,14 @@ public class World {
 
     public World(int maxEntities){
         this.entityManager = new EntityManager(maxEntities);
+    }
+
+    public EventBus getEventBus(){
+        return eventBus;
+    }
+
+    public CommandBus getCommandBus(){
+        return commandBus;
     }
 
 
