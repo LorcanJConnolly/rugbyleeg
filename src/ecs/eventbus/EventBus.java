@@ -59,6 +59,7 @@ public class EventBus {
         return new EventSubscription(this, eventType, entry);
     }
 
+
     /** Hands an event to the EventDispatcher to be queued. */
     public <T extends Event> void emit(T event){
         dispatcher.enqueue(event);
