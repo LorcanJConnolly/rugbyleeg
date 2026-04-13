@@ -1,8 +1,11 @@
 package world;
 
 import ecs.World;
+import ecs.commandbus.Command;
 import ecs.commandbus.CommandBus;
 import ecs.eventbus.EventBus;
+import ecs.pipelines.update.UpdatePipeline;
+import ecs.pipelines.update.UpdateSystem;
 import stores.MotionStore;
 import stores.RugbyPositionStore;
 import stores.TransformStore;
@@ -32,11 +35,8 @@ public class WorldBuilder {
 
         // register systems to world and their associated command handlers and event subscriptions.
         addSystems();
-
-        // Event subscribers
-        EventBus eventBus = new EventBus();
-
-        // Command handlers
+        // Event subscribers and Command handlers
+        populateBusses();
 
         // Create entities
         createPlayers(world_template.players);
@@ -158,14 +158,22 @@ public class WorldBuilder {
 
 
     private void addSystems(){
-        EventBus eventBus = world.getEventBus();
         CommandBus commandBus = world.getCommandBus();
 
-        KickOffSetupSystem kickOffSetUp = new KickOffSetupSystem(world, commandBus);
-        kickOffSetUp.registerSubscriptions(eventBus);
+        world.addSystem(new KickOffSetupSystem(world, commandBus));
 
-        world.addSystem(kickOffSetUp);
+    }
 
+
+    private void populateBusses(){
+        UpdatePipeline pipeline = world.getUpdatePipeline();
+        CommandBus commandBus = world.getCommandBus();
+        EventBus eventBus = world.getEventBus();
+
+        for (UpdateSystem system: pipeline.systems){
+            system.registerListeners(commandBus);
+            system.registerSubscriptions(eventBus);
+        }
     }
 
 
