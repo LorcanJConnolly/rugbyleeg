@@ -40,6 +40,10 @@ public class World {
         return commandBus;
     }
 
+    public UpdatePipeline getUpdatePipeline(){
+        return updatePipeline;
+    }
+
 
     // Entities
     public int createEntity(){
