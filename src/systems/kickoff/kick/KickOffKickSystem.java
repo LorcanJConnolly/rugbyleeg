@@ -38,11 +38,11 @@ public class KickOffKickSystem implements UpdateSystem {
     @Override
     public void registerListeners(CommandBus bus){
         bus.register(
-                KickKickOff.class,
-                command -> {
-                    preformKick(command);
-                    return CommandResult.success();
-                }
+            KickKickOff.class,
+            command -> {
+                preformKick(command);
+                return CommandResult.success();
+            }
         );
     }
 
