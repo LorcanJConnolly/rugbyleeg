@@ -1,5 +1,7 @@
 package state.game;
 
 public enum GameStates {
-    KICK_OFF
+    NEW_GAME,
+    SETTING_KICK_OFF,
+    TAKING_KICK_OFF
 }
