@@ -9,6 +9,7 @@ import ecs.pipelines.update.UpdateSystem;
 import stores.MotionStore;
 import stores.RugbyPositionStore;
 import stores.TransformStore;
+import systems.kickoff.formation.KickOffFormationSystem;
 import systems.kickoff.setup.KickOffSetupSystem;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
@@ -20,10 +21,14 @@ import java.util.List;
 public class WorldBuilder {
     private final int maxEntities;
     private final World world;
+    private final EventBus eventBus;
+    private final CommandBus commandBus;
 
     public WorldBuilder(int maxEntities) {
         this.maxEntities = maxEntities;
         this.world = new World(this.maxEntities);
+        this.eventBus = world.getEventBus();
+        this.commandBus = world.getCommandBus();
     }
 
     public World load(String path){
@@ -158,17 +163,14 @@ public class WorldBuilder {
 
 
     private void addSystems(){
-        CommandBus commandBus = world.getCommandBus();
-
         world.addSystem(new KickOffSetupSystem(world, commandBus));
+        world.addSystem(new KickOffFormationSystem(world));
 
     }
 
 
     private void populateBusses(){
         UpdatePipeline pipeline = world.getUpdatePipeline();
-        CommandBus commandBus = world.getCommandBus();
-        EventBus eventBus = world.getEventBus();
 
         for (UpdateSystem system: pipeline.systems){
             system.registerListeners(commandBus);
