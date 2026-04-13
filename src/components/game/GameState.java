@@ -35,7 +35,7 @@ public class GameState implements Component {
     // Builder pattern.
     public static class Builder{
         // Default values.
-        private EnumSet<GameStates> flags = EnumSet.of(GameStates.KICK_OFF);
+        private EnumSet<GameStates> flags = EnumSet.of(GameStates.NEW_GAME);
 
         private Builder() {}
 
