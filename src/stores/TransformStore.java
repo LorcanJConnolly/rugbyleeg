@@ -1,6 +1,6 @@
 package stores;
 
-import components.player.kinematics.Transform;
+import components.kinematics.Transform;
 import ecs.stores.ComponentStore;
 
 import java.util.function.BiConsumer;

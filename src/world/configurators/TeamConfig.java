@@ -1,6 +1,6 @@
 package world.configurators;
 
-import components.team.direction.Directions;
+import components.direction.Directions;
 import ecs.Component;
 import ecs.World;
 

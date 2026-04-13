@@ -1,12 +1,12 @@
 package systems.kickoff.formation;
 
-import components.player.kinematics.Transform;
-import components.singletons.game.GameState;
-import components.singletons.game.SingletonEntities;
-import components.singletons.pitch.PitchDimensions;
-import components.player.rugby.position.RugbyPosition;
-import components.player.team.Member;
-import components.team.direction.Directions;
+import components.kinematics.Transform;
+import components.game.GameState;
+import components.game.SingletonEntities;
+import components.pitch.PitchDimensions;
+import components.rugby.position.RugbyPosition;
+import components.team.Member;
+import components.direction.Directions;
 import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.CommandResult;

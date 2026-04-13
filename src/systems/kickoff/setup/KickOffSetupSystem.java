@@ -1,5 +1,8 @@
 package systems.kickoff.setup;
 
+import ecs.commandbus.CommandBus;
+import ecs.commandbus.CommandResult;
+import ecs.commandbus.commands.KickKickOff;
 import ecs.eventbus.EventBus;
 import ecs.eventbus.events.GameReset;
 import ecs.pipelines.update.UpdateSystem;
@@ -13,10 +16,17 @@ public class KickOffSetupSystem implements UpdateSystem {
 
     @Override
     public void update(double dt) {
-        return;
+        // System accepts events.
     }
 
-    /** Called during world creation. Subscribers the system to its events. */
+
+    @Override
+    public void registerListeners(CommandBus bus){
+        // System accepts events.
+    }
+
+
+    @Override
     public void registerSubscriptions(EventBus bus){
         bus.subscribe(
                 GameReset.class,

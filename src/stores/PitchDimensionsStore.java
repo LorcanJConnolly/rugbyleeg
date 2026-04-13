@@ -1,6 +1,6 @@
 package stores;
 
-import components.singletons.pitch.PitchDimensions;
+import components.pitch.PitchDimensions;
 import ecs.stores.ComponentStore;
 
 import java.util.function.BiConsumer;

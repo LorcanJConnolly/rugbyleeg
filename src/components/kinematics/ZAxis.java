@@ -1,4 +1,4 @@
-package components.player.kinematics;
+package components.kinematics;
 
 import ecs.Component;
 

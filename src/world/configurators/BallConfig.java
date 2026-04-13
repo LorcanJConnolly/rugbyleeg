@@ -1,8 +1,8 @@
 package world.configurators;
 
-import components.player.kinematics.Motion;
-import components.player.kinematics.Transform;
-import components.player.rugby.position.RugbyPosition;
+import components.kinematics.Motion;
+import components.kinematics.Transform;
+import components.rugby.position.RugbyPosition;
 import ecs.Component;
 import ecs.World;
 import rugby.positions.Position;

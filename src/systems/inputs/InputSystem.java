@@ -1,6 +1,6 @@
 package systems.inputs;
 
-import components.player.inputs.Inputs;
+import components.inputs.Inputs;
 import ecs.World;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;

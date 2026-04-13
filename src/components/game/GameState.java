@@ -1,4 +1,4 @@
-package components.singletons.game;
+package components.game;
 
 import ecs.Component;
 import state.game.GameStates;

@@ -1,6 +1,6 @@
 package stores;
 
-import components.player.rugby.position.RugbyPosition;
+import components.rugby.position.RugbyPosition;
 import ecs.stores.ComponentStore;
 
 import java.util.function.BiConsumer;

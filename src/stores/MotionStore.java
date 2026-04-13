@@ -1,6 +1,6 @@
 package stores;
 
-import components.player.kinematics.Motion;
+import components.kinematics.Motion;
 import ecs.stores.ComponentStore;
 
 import java.util.function.BiConsumer;

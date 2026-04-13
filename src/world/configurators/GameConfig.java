@@ -1,7 +1,7 @@
 package world.configurators;
 
-import components.singletons.game.GameState;
-import components.singletons.game.SingletonEntities;
+import components.game.GameState;
+import components.game.SingletonEntities;
 import ecs.Component;
 import ecs.World;
 

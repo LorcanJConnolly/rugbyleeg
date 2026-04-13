@@ -1,4 +1,4 @@
-package components.team.direction;
+package components.direction;
 
 import ecs.Component;
 import util.directions.Direction;

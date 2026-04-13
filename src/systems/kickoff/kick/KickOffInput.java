@@ -1,22 +1,20 @@
 package systems.kickoff.kick;
 
 
-import components.player.inputs.Inputs;
-import components.player.team.Member;
-import components.singletons.game.GameState;
-import components.singletons.game.SingletonEntities;
-import components.singletons.pitch.PitchDimensions;
-import components.team.direction.Directions;
+import components.inputs.Inputs;
+import components.team.Member;
+import components.game.GameState;
+import components.game.SingletonEntities;
+import components.pitch.PitchDimensions;
+import components.direction.Directions;
 import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.commands.KickKickOff;
 import ecs.eventbus.EventBus;
-import ecs.eventbus.events.GameReset;
 import ecs.pipelines.update.UpdateSystem;
 import input.Button;
 import state.game.GameStates;
 import util.directions.Direction;
-import util.vectors.Vector2;
 
 /**
  * A system for translating the user's button inputs to a command to preform a kick for the kick-off.

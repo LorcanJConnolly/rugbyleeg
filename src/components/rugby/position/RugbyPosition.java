@@ -1,4 +1,4 @@
-package components.player.rugby.position;
+package components.rugby.position;
 
 import ecs.Component;
 import rugby.positions.Position;

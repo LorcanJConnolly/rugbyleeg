@@ -1,34 +1,71 @@
 package systems.kickoff.kick;
 
-import components.player.kinematics.Motion;
-import components.player.kinematics.Transform;
+import components.kinematics.Motion;
+import components.kinematics.ZAxis;
+import components.game.SingletonEntities;
 import ecs.World;
+import ecs.commandbus.CommandBus;
+import ecs.commandbus.CommandResult;
+import ecs.commandbus.commands.KickKickOff;
+import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
-import ecs.query.Query;
+import util.vectors.Vector2;
 
 /**
- * Responsible for converting user inputs to kicking the ball at the kick-off.
+ * Responsible for converting a "kick the kick off" command to a kick on the ball.
  */
 public class KickOffKickSystem implements UpdateSystem {
-    private final Query query;
+    private double velocity;
+    private double theta_x;
+    private double theta_z;
+
+    private final ZAxis ball_z;
+    private final Motion ball_motion;
 
     public KickOffKickSystem(World world) {
-        this.query = world.query(Transform.class, Motion.class);
+        int ball = world.getSingleton(SingletonEntities.class).getBall();
+        this.ball_z = world.getEntityComponent(ball, ZAxis.class);
+        this.ball_motion = world.getEntityComponent(ball, Motion.class);
     }
 
 
-    /**
-     * Receives a KickKickOff command.
-     */
     @Override
     public void update(double dt) {
-        query.forEach((int ball, Transform transform, Motion motion) -> {
-            preformKick(transform, motion);
-        });
+        // System accepts commands.
     }
 
 
-    public void preformKick(Transform transform, Motion motion){
-        return;
+    @Override
+    public void registerListeners(CommandBus bus){
+        bus.register(
+                KickKickOff.class,
+                command -> {
+                    preformKick(command);
+                    return CommandResult.success();
+                }
+        );
+    }
+
+
+    @Override
+    public void registerSubscriptions(EventBus bus){
+        // System accepts commands.
+    }
+
+
+    public void preformKick(KickKickOff command){
+        this.velocity = command.velocity;
+        this.theta_x = command.theta_x;
+        this.theta_z = command.theta_z;
+
+        // Calculate v_z and v_xy from v
+        double v_z = velocity*Math.cos(Math.toRadians(theta_z));
+        double v_xy = velocity*Math.sin(Math.toRadians(theta_z));
+
+        ball_motion.velocity = new Vector2(
+                v_xy*Math.cos(Math.toRadians(theta_x)),
+                v_xy*Math.sin(Math.toRadians(theta_x))
+        );
+        ball_z.velocity = v_z; 
     }
 }

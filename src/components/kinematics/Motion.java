@@ -1,11 +1,11 @@
-package components.player.kinematics;
+package components.kinematics;
 
 import ecs.Component;
 import util.vectors.Vector2;
 
 public class Motion implements Component {
-    Vector2 velocity;
-    double rotation;
+    public Vector2 velocity;
+    public double rotation;
 
     private Motion(Builder b){
         this.velocity = b.velocity;

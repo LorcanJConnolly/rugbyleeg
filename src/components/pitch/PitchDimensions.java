@@ -1,4 +1,4 @@
-package components.singletons.pitch;
+package components.pitch;
 
 import ecs.Component;
 import util.shapes.AABB;
