@@ -4,14 +4,14 @@ import ecs.Component;
 import util.directions.Direction;
 
 public class Directions implements Component {
-    public Direction forward, backwards, inside, outside;
+    public Direction forward, backwards, left, right;
 
 
     private Directions(Builder b){
         this.forward = b.forward;
         this.backwards = b.backwards;
-        this.inside = b.inside;
-        this.outside = b.outside;
+        this.left = b.left;
+        this.right = b.right;
     }
 
 
@@ -24,8 +24,8 @@ public class Directions implements Component {
     public static class Builder{
         private Direction forward = Direction.UP;
         private Direction backwards = Direction.UP;
-        private Direction inside = Direction.LEFT;
-        private Direction outside = Direction.RIGHT;
+        private Direction left = Direction.LEFT;
+        private Direction right = Direction.RIGHT;
 
 
         private Builder() {}
@@ -43,14 +43,14 @@ public class Directions implements Component {
         }
 
 
-        public Builder inside(Direction direction){
-            this.inside = direction;
+        public Builder left(Direction direction){
+            this.left = direction;
             return this;
         }
 
 
-        public Builder outside(Direction direction){
-            this.outside = direction;
+        public Builder right(Direction direction){
+            this.right = direction;
             return this;
         }
 

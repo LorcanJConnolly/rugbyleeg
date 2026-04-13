@@ -94,8 +94,8 @@ public class WorldBuilder {
             builder.direction(b -> {
                 if (team.direction.forward != null) b.forward(team.direction.forward);
                 if (team.direction.backwards != null) b.backwards(team.direction.backwards);
-                if (team.direction.inside != null) b.inside(team.direction.inside);
-                if (team.direction.outside != null) b.outside(team.direction.outside);
+                if (team.direction.inside != null) b.left(team.direction.inside);
+                if (team.direction.outside != null) b.right(team.direction.outside);
             });
         }
 
@@ -161,7 +161,7 @@ public class WorldBuilder {
         EventBus eventBus = world.getEventBus();
         CommandBus commandBus = world.getCommandBus();
 
-        KickOffSetupSystem kickOffSetUp = new KickOffSetupSystem();
+        KickOffSetupSystem kickOffSetUp = new KickOffSetupSystem(world);
         kickOffSetUp.registerSubscriptions(eventBus);
 
         world.addSystem(kickOffSetUp);
