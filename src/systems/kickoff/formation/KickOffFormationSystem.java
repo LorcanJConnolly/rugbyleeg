@@ -5,12 +5,13 @@ import components.game.GameState;
 import components.game.SingletonEntities;
 import components.pitch.PitchDimensions;
 import components.rugby.position.RugbyPosition;
-import components.team.Member;
+import components.rugby.team.Member;
 import components.direction.Directions;
 import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.CommandResult;
 import ecs.commandbus.commands.LineUpForKickOff;
+import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
 import util.pitch.PitchUtils;
@@ -35,7 +36,8 @@ public class KickOffFormationSystem implements UpdateSystem {
     }
 
 
-    public void listenToCommands(CommandBus bus){
+    @Override
+    public void registerListeners(CommandBus bus){
         bus.register(
                 LineUpForKickOff.class,
                 command -> {
@@ -44,6 +46,10 @@ public class KickOffFormationSystem implements UpdateSystem {
                 }
         );
     }
+
+
+    @Override
+    public void registerSubscriptions(EventBus bus){}
 
 
     @Override
@@ -217,6 +223,5 @@ public class KickOffFormationSystem implements UpdateSystem {
                     break;
             }
         }
-
     }
 }
