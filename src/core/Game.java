@@ -44,4 +44,22 @@ public class Game extends JPanel implements Runnable{
     public void run() {
         return;
     }
+
+
+    public void update(double dt) {
+        world.update(dt);
+    }
+
+
+    /** Java built in method - must call super.
+    * @param g the <code>Graphics</code> object to protect, acts as your paintbrush.
+    */
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;  // Cast our paintbrush to 2D Graphics.
+        world.render(g2, 1.0/FPS);
+        g2.dispose();   // Good practice - Dispose of graphics context and release any system resources using it.
+
+    }
+
 }
