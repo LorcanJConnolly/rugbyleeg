@@ -13,7 +13,7 @@ import util.vectors.Vector2;
 /**
  * A system for setting the ball's velocity data after it has been kicked.
  */
-public class KickBall implements UpdateSystem {
+public class KickBallSystem implements UpdateSystem {
     private double velocity;
     private double theta_x;
     private double theta_z;
@@ -21,7 +21,7 @@ public class KickBall implements UpdateSystem {
     private final ZAxis ball_z;
     private final Motion ball_motion;
 
-    public KickBall(World world) {
+    public KickBallSystem(World world) {
         int ball = world.getSingleton(SingletonEntities.class).getBall();
         this.ball_z = world.getEntityComponent(ball, ZAxis.class);
         this.ball_motion = world.getEntityComponent(ball, Motion.class);

@@ -8,7 +8,7 @@ import ecs.pipelines.update.UpdateSystem;
 import stores.MotionStore;
 import stores.RugbyPositionStore;
 import stores.TransformStore;
-import systems.update.kicking.KickBall;
+import systems.update.kicking.KickBallSystem;
 import systems.update.kickoff.formation.KickOffFormationSystem;
 import systems.update.kickoff.setup.KickOffSetupSystem;
 import systems.update.physics.gravity.GravitySystem;
@@ -168,7 +168,7 @@ public class WorldBuilder {
         world.addSystem(new KickOffSetupSystem(world, commandBus));
         world.addSystem(new KickOffFormationSystem(world));
 
-        world.addSystem(new KickBall(world));
+        world.addSystem(new KickBallSystem(world));
 
         world.addSystem(new GravitySystem(world));
 
