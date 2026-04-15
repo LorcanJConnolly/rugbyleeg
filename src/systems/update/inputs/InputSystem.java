@@ -2,6 +2,8 @@ package systems.update.inputs;
 
 import components.inputs.Inputs;
 import ecs.World;
+import ecs.commandbus.CommandBus;
+import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
 import input.Button;
@@ -22,6 +24,15 @@ public class InputSystem implements UpdateSystem {
             process((Inputs) input);
         });
     }
+
+
+    @Override
+    public void registerListeners(CommandBus bus){}
+
+
+    @Override
+    public void registerSubscriptions(EventBus bus){}
+
 
     public void process(Inputs input) {
         for (Button button: Button.values()){

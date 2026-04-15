@@ -29,9 +29,7 @@ public class KickBallSystem implements UpdateSystem {
 
 
     @Override
-    public void update(double dt) {
-        // System accepts commands.
-    }
+    public void update(double dt) {}
 
 
     @Override
@@ -47,9 +45,7 @@ public class KickBallSystem implements UpdateSystem {
 
 
     @Override
-    public void registerSubscriptions(EventBus bus){
-        // System accepts commands.
-    }
+    public void registerSubscriptions(EventBus bus){}
 
     /**
      * Sets ball's x, y, and z velocity components based off a kick command.
