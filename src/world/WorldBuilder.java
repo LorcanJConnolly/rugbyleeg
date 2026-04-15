@@ -8,6 +8,7 @@ import ecs.pipelines.update.UpdateSystem;
 import stores.MotionStore;
 import stores.RugbyPositionStore;
 import stores.TransformStore;
+import systems.render.kinematic.TransformRender;
 import systems.update.kicking.KickBallSystem;
 import systems.update.kickoff.formation.KickOffFormationSystem;
 import systems.update.kickoff.setup.KickOffSetupSystem;
@@ -178,6 +179,8 @@ public class WorldBuilder {
         if (debug){
 
         }
+
+        world.addSystem(new TransformRender(world));
 
     }
 
