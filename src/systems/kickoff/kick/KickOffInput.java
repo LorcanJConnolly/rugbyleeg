@@ -2,7 +2,7 @@ package systems.kickoff.kick;
 
 
 import components.inputs.Inputs;
-import components.team.Member;
+import components.rugby.team.Member;
 import components.game.GameState;
 import components.game.SingletonEntities;
 import components.pitch.PitchDimensions;
@@ -64,7 +64,7 @@ public class KickOffInput implements UpdateSystem {
 
     @Override
     public void update(double dt) {
-        if (!gameState.hasFlag(GameStates.KICK_OFF)) return;
+        if (!gameState.hasFlag(GameStates.SETTING_KICK_OFF)) return;
 
         if (inputs.pressed.get(Button.OPTION_1) || inputs.held.get(Button.OPTION_1)
         ) {
