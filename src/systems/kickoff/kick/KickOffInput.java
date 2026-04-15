@@ -9,7 +9,7 @@ import components.pitch.PitchDimensions;
 import components.direction.Directions;
 import ecs.World;
 import ecs.commandbus.CommandBus;
-import ecs.commandbus.commands.KickKickOff;
+import ecs.commandbus.commands.KickBall;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
 import input.Button;
@@ -95,7 +95,7 @@ public class KickOffInput implements UpdateSystem {
 
         if (inputs.pressed.get(Button.ACCEPT) || inputs.held.get(Button.ACCEPT)) {
             double theta_x = attackDirections.forward == Direction.UP ? this.theta_x : 180 + this.theta_x;
-            commandBus.issue(new KickKickOff(dt, System.nanoTime(), v, theta_x, theta_x));
+            commandBus.issue(new KickBall(dt, System.nanoTime(), v, theta_x, theta_x));
         }
     }
 

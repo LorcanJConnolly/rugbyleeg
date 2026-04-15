@@ -6,7 +6,7 @@ import components.game.SingletonEntities;
 import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.CommandResult;
-import ecs.commandbus.commands.KickKickOff;
+import ecs.commandbus.commands.KickBall;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
 import util.vectors.Vector2;
@@ -38,7 +38,7 @@ public class KickOffKickSystem implements UpdateSystem {
     @Override
     public void registerListeners(CommandBus bus){
         bus.register(
-            KickKickOff.class,
+            KickBall.class,
             command -> {
                 preformKick(command);
                 return CommandResult.success();
@@ -53,7 +53,7 @@ public class KickOffKickSystem implements UpdateSystem {
     }
 
 
-    public void preformKick(KickKickOff command){
+    public void preformKick(KickBall command){
         this.velocity = command.velocity;
         this.theta_x = command.theta_x;
         this.theta_z = command.theta_z;
