@@ -30,12 +30,12 @@ public class TransformRender implements RenderSystem {
         double width = 2;
 
         g2.draw(
-                new Ellipse2D.Double(
-                    (transform.position.x + width/2),
-                    (transform.position.y + height/2),
-                    width,
-                    height
-                )
+            new Ellipse2D.Double(
+                (transform.position.x + width/2),
+                (transform.position.y + height/2),
+                width,
+                height
+            )
         );
     }
 }
