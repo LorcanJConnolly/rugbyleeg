@@ -1,11 +1,8 @@
 package systems.kickoff.kick;
 
-
 import components.inputs.Inputs;
-import components.rugby.team.Member;
 import components.game.GameState;
 import components.game.SingletonEntities;
-import components.pitch.PitchDimensions;
 import components.direction.Directions;
 import ecs.World;
 import ecs.commandbus.CommandBus;
@@ -21,11 +18,9 @@ import util.directions.Direction;
  */
 public class KickOffInput implements UpdateSystem {
     private final Inputs inputs;
-    private final Member team;
 
     private final GameState gameState;
     private final CommandBus commandBus;
-    private final PitchDimensions pitchDimensions;
     private final Directions attackDirections;
 
     double v, theta_x, theta_z;
@@ -34,7 +29,6 @@ public class KickOffInput implements UpdateSystem {
     double increment_v, increment_theta_x, increment_theta_z;
 
     public KickOffInput(World world, CommandBus commandBus){
-        this.pitchDimensions = world.getSingleton(PitchDimensions.class);
         SingletonEntities singletonEntities = world.getEntityComponent(
                 world.getSingletonEntity(GameState.class), SingletonEntities.class
         );
@@ -42,7 +36,6 @@ public class KickOffInput implements UpdateSystem {
         this.gameState = world.getSingleton(GameState.class);
         int player = world.getSingletonEntity(Inputs.class);
         this.inputs = world.getEntityComponent(player, Inputs.class);
-        this.team = world.getEntityComponent(player, Member.class);
         this.commandBus = commandBus;
 
         this.v = 10d;
