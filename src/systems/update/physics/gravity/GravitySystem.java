@@ -1,4 +1,4 @@
-package systems.physics.gravity;
+package systems.update.physics.gravity;
 
 import components.kinematics.Motion;
 import components.kinematics.ZAxis;

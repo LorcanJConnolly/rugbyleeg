@@ -1,4 +1,4 @@
-package systems.kickoff.formation;
+package systems.update.kickoff.formation;
 
 import components.kinematics.Transform;
 import components.game.GameState;

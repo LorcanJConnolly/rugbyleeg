@@ -1,4 +1,4 @@
-package systems.kickoff.setup;
+package systems.update.kickoff.setup;
 
 import components.direction.Directions;
 import components.game.GameState;

@@ -1,4 +1,4 @@
-package systems.kicking;
+package systems.update.kicking;
 
 import components.game.SingletonEntities;
 import components.kinematics.Motion;

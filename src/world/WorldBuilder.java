@@ -1,7 +1,6 @@
 package world;
 
 import ecs.World;
-import ecs.commandbus.Command;
 import ecs.commandbus.CommandBus;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdatePipeline;
@@ -9,10 +8,10 @@ import ecs.pipelines.update.UpdateSystem;
 import stores.MotionStore;
 import stores.RugbyPositionStore;
 import stores.TransformStore;
-import systems.kicking.KickBall;
-import systems.kickoff.formation.KickOffFormationSystem;
-import systems.kickoff.setup.KickOffSetupSystem;
-import systems.physics.gravity.GravitySystem;
+import systems.update.kicking.KickBall;
+import systems.update.kickoff.formation.KickOffFormationSystem;
+import systems.update.kickoff.setup.KickOffSetupSystem;
+import systems.update.physics.gravity.GravitySystem;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
 import world.configurators.*;

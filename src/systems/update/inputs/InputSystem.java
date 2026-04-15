@@ -1,4 +1,4 @@
-package systems.inputs;
+package systems.update.inputs;
 
 import components.inputs.Inputs;
 import ecs.World;

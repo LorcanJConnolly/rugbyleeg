@@ -1,4 +1,4 @@
-package systems.state.game;
+package systems.update.game;
 
 public class GameStateSystem {
 }

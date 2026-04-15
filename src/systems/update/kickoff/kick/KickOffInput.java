@@ -1,4 +1,4 @@
-package systems.kickoff.kick;
+package systems.update.kickoff.kick;
 
 import components.inputs.Inputs;
 import components.game.GameState;
