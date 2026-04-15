@@ -9,8 +9,10 @@ import ecs.pipelines.update.UpdateSystem;
 import stores.MotionStore;
 import stores.RugbyPositionStore;
 import stores.TransformStore;
+import systems.kicking.KickBall;
 import systems.kickoff.formation.KickOffFormationSystem;
 import systems.kickoff.setup.KickOffSetupSystem;
+import systems.physics.gravity.GravitySystem;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
 import world.configurators.*;
@@ -165,6 +167,10 @@ public class WorldBuilder {
     private void addSystems(){
         world.addSystem(new KickOffSetupSystem(world, commandBus));
         world.addSystem(new KickOffFormationSystem(world));
+
+        world.addSystem(new KickBall(world));
+
+        world.addSystem(new GravitySystem(world));
 
     }
 
