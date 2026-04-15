@@ -41,7 +41,8 @@ public class WorldBuilder {
         createStores();
 
         // register systems to world and their associated command handlers and event subscriptions.
-        addSystems();
+        addUpdateSystems();
+        addRenderSystems(true);
         // Event subscribers and Command handlers
         populateBusses();
 
@@ -164,13 +165,20 @@ public class WorldBuilder {
     }
 
 
-    private void addSystems(){
+    private void addUpdateSystems(){
         world.addSystem(new KickOffSetupSystem(world, commandBus));
         world.addSystem(new KickOffFormationSystem(world));
 
         world.addSystem(new KickBall(world));
 
         world.addSystem(new GravitySystem(world));
+
+    }
+
+    private void addRenderSystems(Boolean debug){
+        if (debug){
+
+        }
 
     }
 
