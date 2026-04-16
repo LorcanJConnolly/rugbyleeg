@@ -31,18 +31,13 @@ public class WorldBuilder {
         this.commandBus = world.getCommandBus();
     }
 
+
     public World load(String path){
 
         WorldTemplate world_template = JsonLoader.load(path, WorldTemplate.class);
 
         // Create stores
         createStores();
-
-        // register systems to world and their associated command handlers and event subscriptions.
-        addUpdateSystems();
-        addRenderSystems(true);
-        // Event subscribers and Command handlers
-        populateBusses();
 
         // Create entities
         createPlayers(world_template.players);
@@ -54,8 +49,15 @@ public class WorldBuilder {
         createGame(world_template.game, attack, defence, ball, pitch);
         // TODO: add controls to a player entity.
 
+        // register systems to world and their associated command handlers and event subscriptions.
+        addUpdateSystems();
+        addRenderSystems(true);
+        // Event subscribers and Command handlers
+        populateBusses();
+
         return world;
     }
+
 
     public void createStores(){
         world.registerStore(new MotionStore(this.maxEntities));
@@ -64,10 +66,10 @@ public class WorldBuilder {
         world.registerStore(new DirectionsStore(this.maxEntities));
         world.registerStore(new GameStateStore(this.maxEntities));
         world.registerStore(new SingletonEntitiesStore(this.maxEntities));
+        world.registerStore(new PitchDimensionsStore(this.maxEntities));
         world.registerStore(new InputsStore(this.maxEntities));
         world.registerStore(new MemberStore(this.maxEntities));
         world.registerStore(new ZAxisStore(this.maxEntities));
-
     }
 
 
@@ -95,6 +97,7 @@ public class WorldBuilder {
                 builder.position(player.position);
             }
 
+            System.out.println("Creating a player entity");
             builder.build().createPlayer(world);
         }
     }
@@ -112,8 +115,10 @@ public class WorldBuilder {
             });
         }
 
+        System.out.println("Creating a team entity");
         return builder.build().createTeam(world);
     }
+
 
     private int createPitch(PitchTemplate pitch){
         PitchConfig.Builder builder = PitchConfig.builder();
@@ -129,9 +134,10 @@ public class WorldBuilder {
                 if (pitch.dimensions.bottomInGoal != null) b.bottomInGoal(pitch.dimensions.bottomInGoal.toAABB());
             });
         }
-
+        System.out.println("Creating the pitch entity");
         return builder.build().createPitch(world);
     }
+
 
     private int createBall(BallTemplate ball){
         BallConfig.Builder builder = BallConfig.builder();
@@ -151,6 +157,7 @@ public class WorldBuilder {
                 if (ball.motion.rotation != null) b.rotation(ball.motion.rotation);
             });
         }
+        System.out.println("Creating ball entity");
         return builder.build().createBall(world);
     }
 
@@ -163,9 +170,11 @@ public class WorldBuilder {
                 if (game.state.flags != null) b.flags(game.state.flags);
             });
         }
-        // SingletonEntities
-        builder.singletons(ball, attack, defence, pitch, b -> {});
 
+        // SingletonEntities
+        builder.singletons(ball, attack, defence, pitch);
+
+        System.out.println("Creating game entity");
         builder.build().createGame(world);
     }
 
@@ -179,6 +188,7 @@ public class WorldBuilder {
         world.addSystem(new GravitySystem(world));
 
     }
+
 
     private void addRenderSystems(Boolean debug){
         if (debug){
@@ -197,6 +207,4 @@ public class WorldBuilder {
             system.registerSubscriptions(eventBus);
         }
     }
-
-
 }

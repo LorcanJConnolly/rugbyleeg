@@ -44,10 +44,8 @@ public class GameConfig {
         }
 
         // Determined after creation in WorldBuilder.
-        public Builder singletons(int ball, int attack, int defence, int pitch, Consumer<SingletonEntities.Builder> cfg) {
-            SingletonEntities.Builder b = SingletonEntities.builder(ball, attack, defence, pitch);
-            cfg.accept(b);
-            this.components.add(b.build());
+        public Builder singletons(int ball, int attack, int defence, int pitch) {
+            this.components.add(SingletonEntities.builder(ball, attack, defence, pitch).build());
             return this;
         }
 

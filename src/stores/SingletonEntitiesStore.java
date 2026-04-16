@@ -14,10 +14,12 @@ public class SingletonEntitiesStore extends ComponentStore<SingletonEntities> {
         data = new SingletonEntities[maxEntities];
     }
 
+
     @Override
     public Class<SingletonEntities> getComponentType(){
         return SingletonEntities.class;
     }
+
 
     @Override
     public void add(int entity, SingletonEntities component){

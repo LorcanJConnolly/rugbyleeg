@@ -3,6 +3,7 @@ package ecs.stores;
 
 import ecs.Component;
 
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 /**
@@ -15,14 +16,17 @@ public abstract class ComponentStore<T extends Component> {
     protected final int[] dense;        // dense index -> entity ID
     protected int size = 0;
 
+
     protected ComponentStore(int maxEntities){
         sparse = new int[maxEntities];
         dense = new int[maxEntities];
+        Arrays.fill(sparse, -1);    // Initialise with sentinel value.
     }
+
 
     public final boolean has(int entity){
         int index = sparse[entity];
-        return index < size && dense[index] == entity;
+        return index != -1 && index < size && dense[index] == entity;
     }
 
 
@@ -35,15 +39,18 @@ public abstract class ComponentStore<T extends Component> {
         return dense[index];
     }
 
+
     public final int componentAt(int index) {
         return sparse[index];
     }
+
 
     protected final int addEntity(int entity) {
         sparse[entity] = size;
         dense[size] = entity;
         return size++;
     }
+
 
     protected final int removeEntity(int entity) {
         int index = sparse[entity];
@@ -55,9 +62,10 @@ public abstract class ComponentStore<T extends Component> {
         return index; // index of removed data (gap to be filled in sparse).
     }
 
-    // Component-typed operations implemented by child classes.
 
+    // Component-typed operations implemented by child classes.
     public abstract Class<T> getComponentType();
+
 
     public abstract void add(int entity, T component);
 

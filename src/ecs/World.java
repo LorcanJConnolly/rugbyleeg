@@ -94,7 +94,8 @@ public class World {
                             + "', found: " + store.size() + "."
             );
         }
-        return store.get(0);
+
+        return store.get(store.entityAtDenseIndex(0));
     }
 
     /** Gets a singleton entity. */

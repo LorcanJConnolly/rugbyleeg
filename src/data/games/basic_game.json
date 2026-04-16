@@ -28,10 +28,10 @@
     }
   },
   "game": {
-    "state" : {
-      "flags": ["NEW_GAME"]
-    }
+    "state" : {}
   },
-  "pitch": {},
+  "pitch": {
+    "dimensions": {}
+  },
   "ball": {}
 }

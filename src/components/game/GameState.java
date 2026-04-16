@@ -40,7 +40,7 @@ public class GameState implements Component {
         private Builder() {}
 
         public Builder flags(EnumSet<GameStates> flags){
-            this.flags = flags;
+            this.flags.addAll(flags);
             return this;
         }
 
