@@ -27,7 +27,9 @@ public class EventBus {
         this.handlers = new HashMap<>();
     }
 
-
+    public EventDispatcher getDispatcher(){
+        return dispatcher;
+    }
 
     /**
      * Subscribes a handler to listen to and receive all events of the given type.
@@ -67,8 +69,17 @@ public class EventBus {
 
 
     /** Dispatches an event to its handlers. NOTE: can dispatch events that cannot be deferred by skipping the queue. */
-    public <T extends Event> void dispatch(T event ){
+    @SuppressWarnings("unchecked")
+    public <T extends Event> void dispatch(T event){
+        List<HandlerEntry<?>> entries = handlers.get(event.getClass());
+        if (entries == null) return;
 
+        for (HandlerEntry<?> raw: entries){
+            HandlerEntry<T> entry = (HandlerEntry<T>) raw;
+            if (entry.filter() == null || entry.filter().test(event)){
+                entry.handler().handle(event);
+            }
+        }
     }
 
 
@@ -89,6 +100,7 @@ public class EventBus {
     public void clearSubscribers(Class<? extends Event> eventType){
         handlers.remove(eventType);
     };
+
 
     /** Removes every subscription across all event types. */
     public void clearAll(){
