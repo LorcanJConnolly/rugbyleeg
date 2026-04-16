@@ -8,8 +8,11 @@ import ecs.pipelines.update.UpdatePipeline;
 import ecs.pipelines.update.UpdateSystem;
 import stores.*;
 import systems.render.kinematic.TransformRender;
+import systems.update.events.FlushEventBusSystem;
+import systems.update.game.GameStateSystem;
 import systems.update.kicking.KickBallSystem;
 import systems.update.kickoff.formation.KickOffFormationSystem;
+import systems.update.kickoff.kick.KickOffInput;
 import systems.update.kickoff.setup.KickOffSetupSystem;
 import systems.update.physics.gravity.GravitySystem;
 import util.fileloaders.JsonLoader;
@@ -41,11 +44,13 @@ public class WorldBuilder {
         createStores();
 
         // Create entities
-        createPlayers(world_template.players);
+
         int attack = createTeam(world_template.attackingTeam);
         int defence = createTeam(world_template.defendingTeam);
         int pitch = createPitch(world_template.pitch);
         int ball = createBall(world_template.ball);
+        createPlayers(world_template.attackPlayers, attack);
+        createPlayers(world_template.defencePlayers, defence);
 
         createGame(world_template.game, attack, defence, ball, pitch);
         // TODO: add controls to a player entity.
@@ -74,7 +79,8 @@ public class WorldBuilder {
     }
 
 
-    private void createPlayers(List<PlayerTemplate> players){
+    private void createPlayers(List<PlayerTemplate> players, int team){
+        if (players == null) return;
         for (PlayerTemplate player: players){
             // PlayerConfig.Builder hands values from the PlayerTemplate to Component.Builder in lambda expressions.
             PlayerConfig.Builder builder = PlayerConfig.builder();
@@ -98,6 +104,7 @@ public class WorldBuilder {
                 builder.position(player.position);
             }
 
+            builder.member(team);
             System.out.println("Creating a player entity");
             builder.build().createPlayer(world);
         }
@@ -158,6 +165,12 @@ public class WorldBuilder {
                 if (ball.motion.rotation != null) b.rotation(ball.motion.rotation);
             });
         }
+        if (ball.zAxis != null){
+            builder.zAxis(b -> {
+                if (ball.zAxis.velocity != null)  b.velocity(ball.zAxis.velocity);
+                if (ball.zAxis.position != null) b.position(ball.zAxis.position);
+            });
+        }
         System.out.println("Creating ball entity");
         return builder.build().createBall(world);
     }
@@ -181,12 +194,18 @@ public class WorldBuilder {
 
 
     private void addUpdateSystems(){
+        world.addSystem(new GameStateSystem(world, eventBus, commandBus));
         world.addSystem(new KickOffSetupSystem(world, commandBus));
         world.addSystem(new KickOffFormationSystem(world, eventBus));
+//        world.addSystem(new KickOffInput(world, commandBus));     // FIXME: add inputs to one entity
 
         world.addSystem(new KickBallSystem(world));
 
         world.addSystem(new GravitySystem(world));
+
+
+
+        world.addSystem(new FlushEventBusSystem(world, eventBus));
 
     }
 

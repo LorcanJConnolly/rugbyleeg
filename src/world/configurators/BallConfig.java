@@ -2,6 +2,7 @@ package world.configurators;
 
 import components.kinematics.Motion;
 import components.kinematics.Transform;
+import components.kinematics.ZAxis;
 import components.rugby.position.RugbyPosition;
 import ecs.Component;
 import ecs.World;
@@ -57,6 +58,15 @@ public class BallConfig {
             this.components.add(b.build());
             return this;
         }
+
+
+        public Builder zAxis(Consumer<ZAxis.Builder> cfg) {
+            ZAxis.Builder b = ZAxis.builder();
+            cfg.accept(b);
+            this.components.add(b.build());
+            return this;
+        }
+
 
         public BallConfig build(){
             return new BallConfig(this);
