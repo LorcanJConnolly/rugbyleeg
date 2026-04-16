@@ -8,6 +8,7 @@ import ecs.pipelines.update.UpdatePipeline;
 import ecs.pipelines.update.UpdateSystem;
 import stores.*;
 import systems.render.kinematic.TransformRender;
+import systems.render.pitch.PitchRender;
 import systems.update.events.FlushEventBusSystem;
 import systems.update.game.GameStateSystem;
 import systems.update.kicking.KickBallSystem;
@@ -215,6 +216,7 @@ public class WorldBuilder {
         }
 
         world.addSystem(new TransformRender(world));
+        world.addSystem(new PitchRender(world));
 
     }
 
@@ -228,6 +230,6 @@ public class WorldBuilder {
         }
 
         // Command chain middleware
-        commandBus.addMiddleware(new DebugMiddleware());
+//        commandBus.addMiddleware(new DebugMiddleware());
     }
 }

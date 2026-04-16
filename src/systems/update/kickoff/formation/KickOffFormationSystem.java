@@ -24,6 +24,7 @@ public class KickOffFormationSystem implements UpdateSystem {
     private final int attack;
     private final int defence;
     private final Directions attackDirections, defenceDirections;
+    private final Transform ballTransform;
 
     public KickOffFormationSystem(World world, EventBus eventBus){
         this.eventBus = eventBus;
@@ -31,10 +32,12 @@ public class KickOffFormationSystem implements UpdateSystem {
         SingletonEntities singletonEntities = world.getEntityComponent(
                 world.getSingletonEntity(GameState.class), SingletonEntities.class
         );
+
         this.attack = singletonEntities.getAttack();
         this.defence = singletonEntities.getDefence();
         this.attackDirections = world.getEntityComponent(this.attack, Directions.class);
         this.defenceDirections = world.getEntityComponent(this.defence, Directions.class);
+        this.ballTransform = world.getEntityComponent(singletonEntities.getBall(), Transform.class);
         this.query = world.query(Transform.class, RugbyPosition.class, Member.class);
     }
 
@@ -61,6 +64,11 @@ public class KickOffFormationSystem implements UpdateSystem {
         query.forEach((int entity, Transform transform, RugbyPosition position, Member member) -> {
             process(transform, position, member);
         });
+        ballTransform.position = PitchUtils.relativeToPlayingField(
+                pitchDimensions, attackDirections.forward,
+                0.5, 0.5
+        );
+
         eventBus.emit(new KickOffLinedUp(dt));
     }
 
@@ -141,74 +149,80 @@ public class KickOffFormationSystem implements UpdateSystem {
                             0.92, 0.45
                     );
                     break;
+                case FULLBACK:
+                    transform.position = PitchUtils.relativeToPlayingField(
+                            pitchDimensions, attackDirections.forward,
+                            0.5, 0.3
+                    );
+                    break;
             }
         } else if (member.getTeam() == defence) {
             // closest to furthest, left to right
             switch (position.getPosition()) {
                 case CENTRE_3:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.03, 0.38
                     );
                     break;
                 case LOCK:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.5, 0.35
                     );
                     break;
                 case CENTRE_4:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.97, 0.38
                     );
                     break;
                 case SECOND_ROW_11:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.03, 0.29
                     );
                     break;
                 case HOOKER:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.26, 0.5
                     );
 
                 case SECOND_ROW_12:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.97, 0.29
                     );
                     break;
                 case FIVE_EIGHTH:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.18, 0.07
                     );
                     break;
                 case HALFBACK:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.72, 0.07
                     );
                     break;
                 case WING_2:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, defenceDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.02, 0
                     );
                     break;
                 case WING_5:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, defenceDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.98, 0
                     );
                     break;
 
                 case FULLBACK:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.forward,
+                            pitchDimensions, attackDirections.backwards,
                             0.5, 0
                     );
                     break;

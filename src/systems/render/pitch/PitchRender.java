@@ -17,7 +17,7 @@ public class PitchRender implements RenderSystem {
 
     @Override
     public void render(Graphics2D g2, double dt){
-        g2.setColor(new Color(26f, 77f, 15f));
+        g2.setColor(Color.GREEN);
 
         g2.draw(
             new Rectangle2D.Double(
@@ -28,7 +28,7 @@ public class PitchRender implements RenderSystem {
             )
         );
 
-        g2.setColor(new Color(49f, 143f, 29f));
+        g2.setColor(Color.YELLOW);
         g2.draw(
                 new Rectangle2D.Double(
                         pitchDimensions.topInGoal.origin.x,
