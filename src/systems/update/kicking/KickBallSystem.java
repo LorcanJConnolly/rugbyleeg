@@ -64,6 +64,7 @@ public class KickBallSystem implements UpdateSystem {
                 v_xy*Math.cos(Math.toRadians(theta_x)),
                 v_xy*Math.sin(Math.toRadians(theta_x))
         );
-        ball_z.velocity = v_z;
+
+        ball_z.setVelocity(v_z);
     }
 }

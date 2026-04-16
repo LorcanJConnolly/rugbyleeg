@@ -57,7 +57,7 @@ public class Game extends JPanel implements Runnable{
         // THE GAME LOOP
         // Delta Game Loop method.
         while(gameThread != null) {
-
+//            System.out.println("start of frame.");
             currentTime = System.nanoTime();   // (1e-9 seconds).
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
@@ -67,6 +67,7 @@ public class Game extends JPanel implements Runnable{
                 repaint(); // Confusing, but calls paintComponent()
                 delta--;
             }
+
         }
     }
 

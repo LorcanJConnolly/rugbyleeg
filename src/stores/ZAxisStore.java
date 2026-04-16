@@ -10,7 +10,7 @@ public class ZAxisStore extends ComponentStore<ZAxis> {
 
 
     public ZAxisStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, ZAxis.class);
         data = new ZAxis[maxEntities];
     }
 

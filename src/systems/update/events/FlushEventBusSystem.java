@@ -6,11 +6,9 @@ import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
 
 public class FlushEventBusSystem implements UpdateSystem {
-    private final World world;
     private final EventBus bus;
 
     public FlushEventBusSystem(World world, EventBus bus) {
-        this.world = world;
         this.bus = bus;
     }
 

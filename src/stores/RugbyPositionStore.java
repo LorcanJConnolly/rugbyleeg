@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
 public class RugbyPositionStore extends ComponentStore<RugbyPosition> {private final RugbyPosition[] data;
 
     public RugbyPositionStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, RugbyPosition.class);
         data = new RugbyPosition[maxEntities];
     }
 

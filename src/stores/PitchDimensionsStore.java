@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
 public class PitchDimensionsStore extends ComponentStore<PitchDimensions> {private final PitchDimensions[] data;
 
     public PitchDimensionsStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, PitchDimensions.class);
         data = new PitchDimensions[maxEntities];
     }
 

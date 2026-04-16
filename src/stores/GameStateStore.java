@@ -10,7 +10,7 @@ public class GameStateStore extends ComponentStore<GameState> {
 
 
     public GameStateStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, GameState.class);
         data = new GameState[maxEntities];
     }
 

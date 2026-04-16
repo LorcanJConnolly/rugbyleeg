@@ -10,7 +10,7 @@ public class TransformStore extends ComponentStore<Transform> {
 
 
     public TransformStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, Transform.class);
         data = new Transform[maxEntities];
     }
 

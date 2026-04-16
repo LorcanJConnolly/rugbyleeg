@@ -7,7 +7,9 @@ import ecs.consumers.QuadEntityConsumer;
 import ecs.consumers.TriEntityConsumer;
 import ecs.stores.ComponentStore;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Query {
@@ -19,6 +21,15 @@ public class Query {
     public Query(ComponentStore<? extends Component>... stores){
         this.stores = stores;
         query(); // Collect results
+    }
+
+    @Override
+    public String toString() {
+        List<ComponentStore> stores_container = new ArrayList<>();
+        for (ComponentStore<? extends Component> store: stores){
+            stores_container.add(store);
+        }
+        return "Query" + stores_container;
     }
 
 

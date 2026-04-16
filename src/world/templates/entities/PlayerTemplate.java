@@ -1,5 +1,6 @@
 package world.templates.entities;
 
+import components.rugby.team.Member;
 import rugby.positions.Position;
 import world.templates.components.MotionTemplate;
 import world.templates.components.TransformTemplate;

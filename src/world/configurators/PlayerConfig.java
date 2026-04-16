@@ -3,6 +3,7 @@ package world.configurators;
 import components.kinematics.Motion;
 import components.kinematics.Transform;
 import components.rugby.position.RugbyPosition;
+import components.rugby.team.Member;
 import ecs.Component;
 import ecs.World;
 import rugby.positions.Position;
@@ -65,6 +66,11 @@ public class PlayerConfig {
         public Builder position(Position position) {
             RugbyPosition.Builder b = RugbyPosition.builder(position);
             this.components.add(b.build());
+            return this;
+        }
+
+        public Builder member(int member) {
+            this.components.add(new Member(member));
             return this;
         }
 

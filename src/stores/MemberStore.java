@@ -10,7 +10,7 @@ public class MemberStore extends ComponentStore<Member> {
 
 
     public MemberStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, Member.class);
         data = new Member[maxEntities];
     }
 

@@ -10,7 +10,7 @@ public class DirectionsStore extends ComponentStore<Directions> {
 
 
     public DirectionsStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, Directions.class);
         data = new Directions[maxEntities];
     }
 

@@ -10,7 +10,7 @@ public class MotionStore extends ComponentStore<Motion> {
 
 
     public MotionStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, Motion.class);
         data = new Motion[maxEntities];
     }
 

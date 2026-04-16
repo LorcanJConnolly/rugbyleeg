@@ -10,7 +10,7 @@ public class InputsStore extends ComponentStore<Inputs> {
 
 
     public InputsStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, Inputs.class);
         data = new Inputs[maxEntities];
     }
 

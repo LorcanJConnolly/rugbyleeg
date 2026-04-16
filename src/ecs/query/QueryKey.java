@@ -33,4 +33,10 @@ public class QueryKey {
     public int hashCode(){
         return hash;
     }
+
+
+    @Override
+    public String toString() {
+        return "QueryKey" + stores;
+    }
 }

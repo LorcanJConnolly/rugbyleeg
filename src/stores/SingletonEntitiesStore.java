@@ -10,7 +10,7 @@ public class SingletonEntitiesStore extends ComponentStore<SingletonEntities> {
 
 
     public SingletonEntitiesStore(int maxEntities){
-        super(maxEntities);
+        super(maxEntities, SingletonEntities.class);
         data = new SingletonEntities[maxEntities];
     }
 

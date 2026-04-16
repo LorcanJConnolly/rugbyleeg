@@ -12,18 +12,21 @@ import ecs.commandbus.CommandBus;
 import ecs.commandbus.CommandResult;
 import ecs.commandbus.commands.LineUpForKickOff;
 import ecs.eventbus.EventBus;
+import ecs.eventbus.events.KickOffLinedUp;
 import ecs.pipelines.update.UpdateSystem;
 import ecs.query.Query;
 import util.pitch.PitchUtils;
 
 public class KickOffFormationSystem implements UpdateSystem {
+    private final EventBus eventBus;
     private final Query query;
     private final PitchDimensions pitchDimensions;
     private final int attack;
     private final int defence;
     private final Directions attackDirections, defenceDirections;
 
-    public KickOffFormationSystem(World world){
+    public KickOffFormationSystem(World world, EventBus eventBus){
+        this.eventBus = eventBus;
         this.pitchDimensions = world.getSingleton(PitchDimensions.class);
         SingletonEntities singletonEntities = world.getEntityComponent(
                 world.getSingletonEntity(GameState.class), SingletonEntities.class
@@ -39,11 +42,11 @@ public class KickOffFormationSystem implements UpdateSystem {
     @Override
     public void registerListeners(CommandBus bus){
         bus.register(
-                LineUpForKickOff.class,
-                command -> {
-                    update(command.getDeltaTime());
-                    return CommandResult.success();
-                }
+            LineUpForKickOff.class,
+            command -> {
+                update(command.getDeltaTime());
+                return CommandResult.success();
+            }
         );
     }
 
@@ -55,15 +58,15 @@ public class KickOffFormationSystem implements UpdateSystem {
     @Override
     public void update(double dt) {
         // register command listening
-
         query.forEach((int entity, Transform transform, RugbyPosition position, Member member) -> {
             process(transform, position, member);
         });
+        eventBus.emit(new KickOffLinedUp(dt));
     }
 
 
     public void process(Transform transform, RugbyPosition position, Member member) {
-        if (member.team == attack) {
+        if (member.getTeam() == attack) {
             switch (position.getPosition()) {
                 // Increments of 8, starting at 0.04 to 0.96
                 case WING_5:
@@ -139,7 +142,7 @@ public class KickOffFormationSystem implements UpdateSystem {
                     );
                     break;
             }
-        } else if (member.team == defence) {
+        } else if (member.getTeam() == defence) {
             // closest to furthest, left to right
             switch (position.getPosition()) {
                 case CENTRE_3:

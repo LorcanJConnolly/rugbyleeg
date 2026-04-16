@@ -18,6 +18,7 @@ public class TransformRender implements RenderSystem {
 
     @Override
     public void render(Graphics2D g2, double dt){
+        System.out.println("rendering");
         query.forEach((int entity,  Transform transform) -> {
             g2.setColor(Color.WHITE);
             drawTransform(g2, transform);
@@ -26,6 +27,7 @@ public class TransformRender implements RenderSystem {
 
 
     public void drawTransform(Graphics2D g2, Transform transform){
+
         double height = 2;
         double width = 2;
 

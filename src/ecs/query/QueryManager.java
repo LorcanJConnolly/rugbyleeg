@@ -12,7 +12,7 @@ public class QueryManager {
 
     @SafeVarargs
     public final Query getOrCreateQuery(ComponentStore<? extends Component>... stores){
-        QueryKey key = new QueryKey();
+        QueryKey key = new QueryKey(stores);
         Query query = queries.get(key);
         if (query != null){
             return query;
