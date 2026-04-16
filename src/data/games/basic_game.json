@@ -1,0 +1,37 @@
+{
+  "players": [
+    {
+      "transform": {
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      },
+      "motion": {},
+      "position": "PROP_8"
+    }
+  ],
+  "attackingTeam": {
+    "directions": {
+      "forward": "UP",
+      "backwards": "DOWN",
+      "left": "LEFT",
+      "right": "RIGHT"
+    }
+  },
+  "defendingTeam": {
+    "directions": {
+      "forward": "DOWN",
+      "backwards": "UP",
+      "left": "RIGHT",
+      "right": "LEFT"
+    }
+  },
+  "game": {
+    "state" : {
+      "flags": ["NEW_GAME"]
+    }
+  },
+  "pitch": {},
+  "ball": {}
+}
