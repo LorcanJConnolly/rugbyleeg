@@ -5,6 +5,6 @@ import state.game.GameStates;
 import java.util.EnumSet;
 
 public class GameStateTemplate {
-    // TODO: Does Jackson read this as expected?
+    // In list in json file.
     public EnumSet<GameStates> flags;
 }
