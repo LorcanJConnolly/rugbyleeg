@@ -86,8 +86,8 @@ public class WorldBuilder {
                     if (player.motion.rotation != null) b.rotation(player.motion.rotation);
                 });
             }
-            if (player.position != null && player.position.position != null){
-                builder.position(player.position.position);
+            if (player.position != null){
+                builder.position(player.position);
             }
 
             builder.build().createPlayer(world);
@@ -98,12 +98,12 @@ public class WorldBuilder {
     private int createTeam(TeamTemplate team){
         TeamConfig.Builder builder = TeamConfig.builder();
 
-        if (team.direction != null){
+        if (team.directions != null){
             builder.direction(b -> {
-                if (team.direction.forward != null) b.forward(team.direction.forward);
-                if (team.direction.backwards != null) b.backwards(team.direction.backwards);
-                if (team.direction.inside != null) b.left(team.direction.inside);
-                if (team.direction.outside != null) b.right(team.direction.outside);
+                if (team.directions.forward != null) b.forward(team.directions.forward);
+                if (team.directions.backwards != null) b.backwards(team.directions.backwards);
+                if (team.directions.left != null) b.left(team.directions.left);
+                if (team.directions.right != null) b.right(team.directions.right);
             });
         }
 
