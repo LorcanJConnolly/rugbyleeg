@@ -32,28 +32,27 @@ public class KickOffSetupSystem implements UpdateSystem {
         this.defenceDirections = world.getEntityComponent(singletonEntities.getDefence(), Directions.class);
     }
 
-    @Override
-    public void update(double dt) {
-        if (!gameState.hasFlag(GameStates.NEW_GAME)){
-            configureTeamDirections();
-        }
-        commandBus.issue(new LineUpForKickOff(dt, System.nanoTime()));
-    }
 
     /**
      * Swaps the team entity's direction component to the opposite values.
      */
-    private void configureTeamDirections(){
+    @Override
+    public void update(double dt) {}
+
+
+    private void configureTeamDirections(double dt){
         // Swap directions to opposites.
         attackDirections.forward = attackDirections.forward == Direction.UP ? Direction.DOWN : Direction.UP;
         attackDirections.backwards = attackDirections.backwards == Direction.DOWN ? Direction.UP : Direction.DOWN;
         attackDirections.left = attackDirections.left == Direction.LEFT ? Direction.RIGHT : Direction.LEFT;
-        attackDirections.forward = attackDirections.right == Direction.RIGHT ? Direction.LEFT : Direction.RIGHT;
+        attackDirections.right = attackDirections.right == Direction.RIGHT ? Direction.LEFT : Direction.RIGHT;
 
         defenceDirections.forward = defenceDirections.forward == Direction.UP ? Direction.DOWN : Direction.UP;
         defenceDirections.backwards = defenceDirections.backwards == Direction.DOWN ? Direction.UP : Direction.DOWN;
         defenceDirections.left = defenceDirections.left == Direction.LEFT ? Direction.RIGHT : Direction.LEFT;
-        defenceDirections.forward = defenceDirections.right == Direction.RIGHT ? Direction.LEFT : Direction.RIGHT;
+        defenceDirections.right = defenceDirections.right == Direction.RIGHT ? Direction.LEFT : Direction.RIGHT;
+        System.out.println("attack: " + attackDirections.forward + ", defence: " + defenceDirections.forward);
+        commandBus.issue(new LineUpForKickOff(dt, System.nanoTime()));
     }
 
 
@@ -62,7 +61,7 @@ public class KickOffSetupSystem implements UpdateSystem {
         bus.register(
             SetUpKickOff.class,
             command -> {
-                update(command.getDeltaTime());
+                configureTeamDirections(command.getDeltaTime());
                 return CommandResult.success();
             }
         );

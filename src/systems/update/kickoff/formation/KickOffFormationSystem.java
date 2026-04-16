@@ -80,79 +80,79 @@ public class KickOffFormationSystem implements UpdateSystem {
                 case WING_5:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.06, 0.45
+                            0.06, 0.55
                     );
                     break;
                 case CENTRE_4:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.14, 0.45)
+                            0.14, 0.55)
                     ;
                     break;
                 case HALFBACK:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.22, 0.45
+                            0.22, 0.55
                     );
                     break;
                 case SECOND_ROW_12:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.3, 0.45
+                            0.3, 0.55
                     );
                     break;
                 case PROP_8:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.38, 0.45
+                            0.38, 0.55
                     );
                     break;
                 case HOOKER:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.46, 0.45
+                            0.46, 0.55
                     );
                     break;
                 case PROP_10:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.52, 0.45
+                            0.52, 0.55
                     );
                     break;
                 case LOCK:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.6, 0.45
+                            0.6, 0.55
                     );
                     break;
                 case SECOND_ROW_11:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.68, 0.45
+                            0.68, 0.55
                     );
                     break;
                 case FIVE_EIGHTH:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.76, 0.45
+                            0.76, 0.55
                     );
                     break;
                 case CENTRE_3:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.84, 0.45
+                            0.84, 0.55
                     );
                     break;
                 case WING_2:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.92, 0.45
+                            0.92, 0.55
                     );
                     break;
                 case FULLBACK:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.5, 0.3
+                            0.5, 0.7
                     );
                     break;
             }
@@ -161,68 +161,68 @@ public class KickOffFormationSystem implements UpdateSystem {
             switch (position.getPosition()) {
                 case CENTRE_3:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.03, 0.38
                     );
                     break;
                 case LOCK:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.5, 0.35
                     );
                     break;
                 case CENTRE_4:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.97, 0.38
                     );
                     break;
                 case SECOND_ROW_11:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
-                            0.03, 0.29
+                            pitchDimensions, attackDirections.forward,
+                            0.03, 0.24
                     );
                     break;
                 case HOOKER:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.26, 0.5
                     );
 
                 case SECOND_ROW_12:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
-                            0.97, 0.29
+                            pitchDimensions, attackDirections.forward,
+                            0.97, 0.24
                     );
                     break;
                 case FIVE_EIGHTH:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.18, 0.07
                     );
                     break;
                 case HALFBACK:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.72, 0.07
                     );
                     break;
                 case WING_2:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.02, 0
                     );
                     break;
                 case WING_5:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.98, 0
                     );
                     break;
 
                 case FULLBACK:
                     transform.position = PitchUtils.relativeToPlayingField(
-                            pitchDimensions, attackDirections.backwards,
+                            pitchDimensions, attackDirections.forward,
                             0.5, 0
                     );
                     break;

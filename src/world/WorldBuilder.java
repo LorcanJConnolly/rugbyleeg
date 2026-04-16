@@ -230,6 +230,6 @@ public class WorldBuilder {
         }
 
         // Command chain middleware
-//        commandBus.addMiddleware(new DebugMiddleware());
+        commandBus.addMiddleware(new DebugMiddleware());
     }
 }
