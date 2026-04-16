@@ -37,12 +37,37 @@ public class Game extends JPanel implements Runnable{
 
         int MAX_ENTITIES = 64;
         WorldBuilder worldBuilder = new WorldBuilder(MAX_ENTITIES);
-//        world = worldBuilder.load("data/");
+        world = worldBuilder.load("data/games/basic_game.json");
+    }
+
+
+    public void startGameThread(){
+        gameThread = new Thread(this);
+        gameThread.start();
     }
 
     @Override
     public void run() {
-        return;
+        // Thread objects have their run() method called during Thread.start() calls.
+        double drawInterval = 1000000000.0/FPS; // 1 second / FPS in units of nanoseconds.
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+
+        // THE GAME LOOP
+        // Delta Game Loop method.
+        while(gameThread != null) {
+
+            currentTime = System.nanoTime();   // (1e-9 seconds).
+            delta += (currentTime - lastTime) / drawInterval;
+            lastTime = currentTime;
+
+            if (delta > 1) {
+                update(1.0 / FPS);
+                repaint(); // Confusing, but calls paintComponent()
+                delta--;
+            }
+        }
     }
 
 
