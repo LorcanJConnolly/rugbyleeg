@@ -2,6 +2,7 @@ package world;
 
 import ecs.World;
 import ecs.commandbus.CommandBus;
+import ecs.commandbus.middleware.DebugMiddleware;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdatePipeline;
 import ecs.pipelines.update.UpdateSystem;
@@ -181,7 +182,7 @@ public class WorldBuilder {
 
     private void addUpdateSystems(){
         world.addSystem(new KickOffSetupSystem(world, commandBus));
-        world.addSystem(new KickOffFormationSystem(world));
+        world.addSystem(new KickOffFormationSystem(world, eventBus));
 
         world.addSystem(new KickBallSystem(world));
 
@@ -206,5 +207,8 @@ public class WorldBuilder {
             system.registerListeners(commandBus);
             system.registerSubscriptions(eventBus);
         }
+
+        // Command chain middleware
+        commandBus.addMiddleware(new DebugMiddleware());
     }
 }
