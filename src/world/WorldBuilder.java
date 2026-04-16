@@ -5,9 +5,7 @@ import ecs.commandbus.CommandBus;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdatePipeline;
 import ecs.pipelines.update.UpdateSystem;
-import stores.MotionStore;
-import stores.RugbyPositionStore;
-import stores.TransformStore;
+import stores.*;
 import systems.render.kinematic.TransformRender;
 import systems.update.kicking.KickBallSystem;
 import systems.update.kickoff.formation.KickOffFormationSystem;
@@ -63,6 +61,13 @@ public class WorldBuilder {
         world.registerStore(new MotionStore(this.maxEntities));
         world.registerStore(new TransformStore(this.maxEntities));
         world.registerStore(new RugbyPositionStore(this.maxEntities));
+        world.registerStore(new DirectionsStore(this.maxEntities));
+        world.registerStore(new GameStateStore(this.maxEntities));
+        world.registerStore(new SingletonEntitiesStore(this.maxEntities));
+        world.registerStore(new InputsStore(this.maxEntities));
+        world.registerStore(new MemberStore(this.maxEntities));
+        world.registerStore(new ZAxisStore(this.maxEntities));
+
     }
 
 
@@ -177,7 +182,6 @@ public class WorldBuilder {
 
     private void addRenderSystems(Boolean debug){
         if (debug){
-
         }
 
         world.addSystem(new TransformRender(world));
