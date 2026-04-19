@@ -6,6 +6,7 @@ import ecs.commandbus.CommandBus;
 import ecs.commandbus.commands.SetUpKickOff;
 import ecs.eventbus.EventBus;
 import ecs.eventbus.events.KickOffLinedUp;
+import ecs.eventbus.events.KickOffTaken;
 import ecs.eventbus.handlers.KickOffLinedUpHandler;
 import ecs.pipelines.update.UpdateSystem;
 import state.game.GameStates;
@@ -37,12 +38,19 @@ public class GameStateSystem implements UpdateSystem {
     @Override
     public void registerSubscriptions(EventBus bus){
         bus.subscribe(KickOffLinedUp.class, new KickOffLinedUpHandler(this));
+        bus.subscribe(KickOffTaken.class, new KickOffTakenHandler(this));
     }
 
 
     public void onKickOffLineUp(KickOffLinedUp event){
         state.removeFlag(GameStates.SETTING_KICK_OFF);
-        state.addFlag(GameStates.TAKING_KICK_OFF);
+        state.addFlag(GameStates.AIMING_KICKOFF);
+    }
+
+
+    public void onKickOffTaken(KickOffTaken event){
+        state.removeFlag(GameStates.AIMING_KICKOFF);
+        state.addFlag(GameStates.CHASING_KICK);
     }
 
 }
