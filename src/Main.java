@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      // Closes the window when 'X' is pressed.
-        window.setResizable(false);
+        window.setResizable(true);
         window.setTitle("Rugby leeg");
 
         Game game = new Game();
