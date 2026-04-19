@@ -15,12 +15,10 @@ public class TeamConfig {
         this.components = List.copyOf(b.components);
     }
 
-    public int createTeam(World world){
-        int id = world.createEntity();
+    public void createTeam(int entity, World world){
         for (Component component: components){
-            world.addComponent(id, component);
+            world.addComponent(entity, component);
         }
-        return id;
     }
 
 

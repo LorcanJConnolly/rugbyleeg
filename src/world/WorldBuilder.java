@@ -52,21 +52,24 @@ public class WorldBuilder {
         createStores();
 
         // Create entities
+        int attack = world.createEntity();
+        int defence = world.createEntity();
+        int pitch = world.createEntity();
+        int ball = world.createEntity();
 
-        int attack = createTeam(world_template.attackingTeam);
-        int defence = createTeam(world_template.defendingTeam);
-        int pitch = createPitch(world_template.pitch);
-        int ball = createBall(world_template.ball);
+        // Create entity components
+        createTeam(attack, world_template.attackingTeam);
+        createTeam(defence, world_template.defendingTeam);
+        createPitch(pitch, world_template.pitch);
+        createBall(ball, world_template.ball);
         List<Integer> attackers = createPlayers(world_template.attackPlayers, attack);
         List<Integer> defenders = createPlayers(world_template.defencePlayers, defence);
-
-
-        if (attackers.isEmpty()) throw new RuntimeException("No attackers created. Cannot continue");
+        if (attackers.isEmpty()) throw new RuntimeException("No attackers created. Cannot create world.");
         // Lazy key binding
         int player = attackers.get(0);
+        createGame(world_template.game, attack, defence, ball, pitch, player);
         keyH.bind(world.getEntityComponent(player, Inputs.class));
 
-        createGame(world_template.game, attack, defence, ball, pitch, player);
         // register systems to world and their associated command handlers and event subscriptions.
         addUpdateSystems();
         addRenderSystems(true);
@@ -132,7 +135,7 @@ public class WorldBuilder {
     }
 
 
-    private int createTeam(TeamTemplate team){
+    private void createTeam(int entity, TeamTemplate team){
         TeamConfig.Builder builder = TeamConfig.builder();
 
         if (team.directions != null){
@@ -144,12 +147,12 @@ public class WorldBuilder {
             });
         }
 
-        System.out.println("Creating a team entity");
-        return builder.build().createTeam(world);
+        System.out.println("Adding team entity to the world");
+        builder.build().createTeam(entity, world);
     }
 
 
-    private int createPitch(PitchTemplate pitch){
+    private void createPitch(int entity, PitchTemplate pitch){
         PitchConfig.Builder builder = PitchConfig.builder();
 
         if (pitch.dimensions != null){
@@ -164,11 +167,11 @@ public class WorldBuilder {
             });
         }
         System.out.println("Creating the pitch entity");
-        return builder.build().createPitch(world);
+        builder.build().createPitch(entity, world);
     }
 
 
-    private int createBall(BallTemplate ball){
+    private void createBall(int entity, BallTemplate ball){
         BallConfig.Builder builder = BallConfig.builder();
 
         if (ball.transform != null){
@@ -193,7 +196,7 @@ public class WorldBuilder {
             });
         }
         System.out.println("Creating ball entity");
-        return builder.build().createBall(world);
+        builder.build().createBall(entity, world);
     }
 
 

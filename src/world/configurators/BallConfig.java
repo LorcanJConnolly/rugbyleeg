@@ -21,12 +21,10 @@ public class BallConfig {
         this.components = List.copyOf(b.components);
     }
 
-    public int createBall(World world){
-        int id = world.createEntity();
+    public void createBall(int entity, World world){
         for (Component component: components){
-            world.addComponent(id, component);
+            world.addComponent(entity, component);
         }
-        return id;
     }
 
     // Entry points.
