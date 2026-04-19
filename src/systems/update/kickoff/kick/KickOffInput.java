@@ -39,7 +39,7 @@ public class KickOffInput implements UpdateSystem {
         );
         this.attackDirections = world.getEntityComponent(singletonEntities.getAttack(), Directions.class);
         this.gameState = world.getSingleton(GameState.class);
-        int player = world.getSingletonEntity(Inputs.class);
+        int player = singletonEntities.getPlayer();
         this.inputs = world.getEntityComponent(player, Inputs.class);
 
         this.v = 10d;

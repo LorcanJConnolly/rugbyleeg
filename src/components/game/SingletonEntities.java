@@ -29,6 +29,10 @@ public class SingletonEntities implements Component {
         return ball;
     }
 
+    public int getPlayer() {
+        return player;
+    }
+
     // Entry point.
     public static Builder builder(
             int ball,
