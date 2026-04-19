@@ -243,6 +243,6 @@ public class KickOffFormationSystem implements UpdateSystem {
                     break;
             }
         }
-//        System.out.println("Set player's kick off position. Team : " + member.getTeam() + ", position: " + position.getPosition() + ", transform: " + transform.position);
+        System.out.println("Set player's kick off position. Team : " + member.getTeam() + ", position: " + position.getPosition() + ", transform: " + transform.position);
     }
 }
