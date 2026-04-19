@@ -26,12 +26,10 @@ public class PlayerConfig {
         this.components = List.copyOf(b.components);
     }
 
-    public int createPlayer(World world){
-        int id = world.createEntity();
+    public void createPlayer(World world, int entity){
         for (Component component: components){
-            world.addComponent(id, component);
+            world.addComponent(entity, component);
         }
-        return id;
     }
 
     // Entry points.

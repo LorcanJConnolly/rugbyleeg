@@ -1,0 +1,21 @@
+{
+  "directions": {
+    "forward":    "UP",
+    "backwards":  "DOWN",
+    "left":       "LEFT",
+    "right":      "RIGHT"
+  },
+  "prop_10":        "data/players/default/prop.json",
+  "prop_8":         "data/players/default/prop.json",
+  "hooker":         "data/players/default/hooker.json",
+  "second_row_11":  "data/players/default/second_row.json",
+  "second_row_12":  "data/players/default/second_row.json",
+  "lock":           "data/players/default/lock.json",
+  "halfback":       "data/players/default/halfback.json",
+  "five_eighth":    "data/players/default/five_eighth.json",
+  "centre_4":       "data/players/default/centre.json",
+  "centre_3":       "data/players/default/centre.json",
+  "wing_5":         "data/players/default/wing.json",
+  "wing_2":         "data/players/default/wing.json",
+  "fullback":       "data/players/default/fullback.json"
+}

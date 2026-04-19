@@ -18,10 +18,9 @@ public class GameConfig {
     }
 
 
-    public void createGame(World world){
-        int id = world.createEntity();
+    public void createGame(World world, int entity){
         for (Component component: components){
-            world.addComponent(id, component);
+            world.addComponent(entity, component);
         }
     }
 

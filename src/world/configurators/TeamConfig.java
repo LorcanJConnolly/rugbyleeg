@@ -1,8 +1,10 @@
 package world.configurators;
 
 import components.direction.Directions;
+import components.rugby.position.PositionRegistry;
 import ecs.Component;
 import ecs.World;
+import rugby.positions.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,11 @@ public class TeamConfig {
             return this;
         }
 
+
+        public Builder positionRegistry(){
+            this.components.add(new PositionRegistry());
+            return this;
+        }
 
         public TeamConfig build(){
             return new TeamConfig(this);

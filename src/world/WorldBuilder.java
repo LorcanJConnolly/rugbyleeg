@@ -1,6 +1,8 @@
 package world;
 
 import components.inputs.Inputs;
+import components.rugby.position.PositionRegistry;
+import components.rugby.position.RugbyPosition;
 import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.middleware.DebugMiddleware;
@@ -8,6 +10,7 @@ import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdatePipeline;
 import ecs.pipelines.update.UpdateSystem;
 import input.KeyHandler;
+import rugby.positions.Position;
 import stores.*;
 import systems.render.kinematic.TransformRender;
 import systems.render.pitch.PitchRender;
@@ -25,8 +28,8 @@ import world.configurators.*;
 import world.templates.WorldTemplate;
 import world.templates.entities.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WorldBuilder {
     private final int maxEntities;
@@ -59,15 +62,13 @@ public class WorldBuilder {
         int ball = world.createEntity();
 
         // Create entity components
-        createTeam(attack, world_template.attackingTeam);
-        createTeam(defence, world_template.defendingTeam);
+        createTeam(attack, world_template.homeTeam);
+        createTeam(defence, world_template.awayTeam);
         createPitch(pitch, world_template.pitch);
         createBall(ball, world_template.ball);
-        List<Integer> attackers = createPlayers(world_template.attackPlayers, attack);
-        List<Integer> defenders = createPlayers(world_template.defencePlayers, defence);
-        if (attackers.isEmpty()) throw new RuntimeException("No attackers created. Cannot create world.");
-        // Lazy key binding
-        int player = attackers.get(0);
+
+        // Lazily assign player controls
+        int player = world.getEntityComponent(attack, PositionRegistry.class).getEntity(Position.HALFBACK);
         createGame(world_template.game, attack, defence, ball, pitch, player);
         keyH.bind(world.getEntityComponent(player, Inputs.class));
 
@@ -98,46 +99,45 @@ public class WorldBuilder {
     }
 
 
-    private List<Integer> createPlayers(List<PlayerTemplate> players, int team){
-        List<Integer> created_players = new ArrayList<>();
-        if (players == null) return created_players;
+    private Integer createPlayer(String path, Position position, int team){
+        if (path == null) return null;
+        PlayerTemplate player = JsonLoader.load(path, PlayerTemplate.class);
+        int entity = world.createEntity();
+        PlayerConfig.Builder builder = PlayerConfig.builder();
 
-        for (PlayerTemplate player: players){
-            // PlayerConfig.Builder hands values from the PlayerTemplate to Component.Builder in lambda expressions.
-            PlayerConfig.Builder builder = PlayerConfig.builder();
-
-            if (player.transform != null){
-                // Vectors constructed using template.utils.VectorTemplate
-                double x = player.transform.position.x != null ? player.transform.position.x : 0.0;
-                double y = player.transform.position.y != null ? player.transform.position.y : 0.0;
-                // Transform position is required.
-                builder.transform(new Vector2(x, y), b -> {
-                    if (player.transform.orientation != null) b.orientation(player.transform.orientation);
-                });
-            }
-            if (player.motion != null){
-                builder.motion(b -> {
-                    if (player.motion.velocity != null) b.velocity(player.motion.velocity.toVector2(0.0, 0.0));
-                    if (player.motion.rotation != null) b.rotation(player.motion.rotation);
-                });
-            }
-            if (player.position != null){
-                builder.position(player.position);
-            }
-
-            builder.member(team);
-            builder.inputs();
-
-            System.out.println("Creating a player entity: " + ", team: " + team + ", " + player.position);
-            int entity = builder.build().createPlayer(world);
-            created_players.add(entity);
+        if (player.transform != null){
+            // Vectors constructed using template.utils.VectorTemplate
+            double x = player.transform.position.x != null ? player.transform.position.x : 0.0;
+            double y = player.transform.position.y != null ? player.transform.position.y : 0.0;
+            // Transform position is required.
+            builder.transform(new Vector2(x, y), b -> {
+                if (player.transform.orientation != null) b.orientation(player.transform.orientation);
+            });
         }
-        return created_players;
+        if (player.motion != null){
+            builder.motion(b -> {
+                if (player.motion.velocity != null) b.velocity(player.motion.velocity.toVector2(0.0, 0.0));
+                if (player.motion.rotation != null) b.rotation(player.motion.rotation);
+            });
+        }
+        if (position != null){
+            builder.position(player.position);
+        }
+
+        builder.member(team);
+        builder.inputs();
+
+        System.out.println("Creating a player entity '" + player.position + "' for the team '" + team + "'.");
+        builder.build().createPlayer(world, entity);
+        return entity;
     }
 
 
-    private void createTeam(int entity, TeamTemplate team){
+    private void createTeam(int entity, String path){
+        TeamTemplate team = JsonLoader.load(path, TeamTemplate.class);
         TeamConfig.Builder builder = TeamConfig.builder();
+
+        Map<Position, Integer> position_to_entity = new HashMap<>();
 
         if (team.directions != null){
             builder.direction(b -> {
@@ -147,13 +147,34 @@ public class WorldBuilder {
                 if (team.directions.right != null) b.right(team.directions.right);
             });
         }
+        builder.positionRegistry();
 
         System.out.println("Adding team entity to the world");
         builder.build().createTeam(entity, world);
+
+        // Register entities to position registry
+        PositionRegistry positionRegistry = world.getEntityComponent(entity, PositionRegistry.class);
+        position_to_entity.put(Position.PROP_8, createPlayer(team.prop_8, Position.PROP_8, entity));
+        position_to_entity.put(Position.PROP_10, createPlayer(team.prop_10, Position.PROP_10, entity));
+        position_to_entity.put(Position.HOOKER, createPlayer(team.hooker, Position.HOOKER, entity));
+        position_to_entity.put(Position.SECOND_ROW_11, createPlayer(team.second_row_11, Position.SECOND_ROW_11, entity));
+        position_to_entity.put(Position.SECOND_ROW_12, createPlayer(team.second_row_12, Position.SECOND_ROW_12, entity));
+        position_to_entity.put(Position.LOCK, createPlayer(team.lock, Position.LOCK, entity));
+        position_to_entity.put(Position.HALFBACK, createPlayer(team.halfback, Position.HALFBACK, entity));
+        position_to_entity.put(Position.FIVE_EIGHTH, createPlayer(team.five_eighth, Position.FIVE_EIGHTH, entity));
+        position_to_entity.put(Position.CENTRE_4,  createPlayer(team.centre_4, Position.CENTRE_4, entity));
+        position_to_entity.put(Position.CENTRE_3, createPlayer(team.centre_3, Position.CENTRE_3, entity));
+        position_to_entity.put(Position.WING_5, createPlayer(team.wing_5, Position.WING_5, entity));
+        position_to_entity.put(Position.WING_2, createPlayer(team.wing_2, Position.WING_2, entity));
+        position_to_entity.put(Position.FULLBACK, createPlayer(team.fullback, Position.FULLBACK, entity));
+        for (Map.Entry<Position, Integer> entry : position_to_entity.entrySet()) {
+            positionRegistry.register(entry.getKey(), entry.getValue());
+        }
     }
 
 
-    private void createPitch(int entity, PitchTemplate pitch){
+    private void createPitch(int entity, String path){
+        PitchTemplate pitch = JsonLoader.load(path, PitchTemplate.class);
         PitchConfig.Builder builder = PitchConfig.builder();
 
         if (pitch.dimensions != null){
@@ -172,7 +193,8 @@ public class WorldBuilder {
     }
 
 
-    private void createBall(int entity, BallTemplate ball){
+    private void createBall(int entity, String path){
+        BallTemplate ball = JsonLoader.load(path, BallTemplate.class);
         BallConfig.Builder builder = BallConfig.builder();
 
         if (ball.transform != null){
@@ -201,7 +223,9 @@ public class WorldBuilder {
     }
 
 
-    private void createGame(GameTemplate game, int attack, int defence, int ball, int pitch, int player){
+    private void createGame(String path, int attack, int defence, int ball, int pitch, int player){
+        GameTemplate game = JsonLoader.load(path, GameTemplate.class);
+        int entity = world.createEntity();
         GameConfig.Builder builder = GameConfig.builder();
 
         if (game.state != null){
@@ -214,7 +238,7 @@ public class WorldBuilder {
         builder.singletons(ball, attack, defence, pitch, player);
 
         System.out.println("Creating game entity");
-        builder.build().createGame(world);
+        builder.build().createGame(world, entity);
     }
 
 

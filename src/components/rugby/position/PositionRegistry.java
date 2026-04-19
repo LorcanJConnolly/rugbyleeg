@@ -14,7 +14,7 @@ public class PositionRegistry implements Component {
         return data.get(position);
     }
 
-    public void register(Position position, int entity){
+    public void register(Position position, Integer entity){
         if (getEntity(position) != null) {
             throw new RuntimeException("The position '" + position + "' is already in the registry.");
         }
