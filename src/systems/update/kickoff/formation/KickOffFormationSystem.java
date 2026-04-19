@@ -70,11 +70,16 @@ public class KickOffFormationSystem implements UpdateSystem {
                 pitchDimensions, attackDirections.forward,
                 0.5, 0.5
         );
-
+        System.out.println("EMITTING!");
         eventBus.emit(new KickOffLinedUp(dt));
     }
 
-
+    /**
+     * Responsible for positioning each player entity in the correct (X, Y) (Note: not Z) position for the formation.
+     * @param transform: The player entity's transform component.
+     * @param position: The player entity's rugby position component.
+     * @param member: The player entity's member component.
+     */
     public void createFormations(Transform transform, RugbyPosition position, Member member) {
         if (member.getTeam() == attack) {
             switch (position.getPosition()) {
