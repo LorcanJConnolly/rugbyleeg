@@ -106,7 +106,7 @@ public class WorldBuilder {
             }
 
             builder.member(team);
-            System.out.println("Creating a player entity");
+            System.out.println("Creating a player entity: " + ", team: " + team + ", " + player.position);
             builder.build().createPlayer(world);
         }
     }
