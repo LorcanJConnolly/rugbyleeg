@@ -62,7 +62,6 @@ public class KickOffInput implements UpdateSystem {
     @Override
     public void update(double dt) {
         if (!(gameState.hasFlag(GameStates.KICK_OFF) && gameState.hasSubflag(GameSubstates.AIMING_KICKOFF))) return;
-        System.out.println("HERE!");
 
         if (inputs.pressed.get(Button.OPTION_1) || inputs.held.get(Button.OPTION_1)
         ) {
@@ -92,9 +91,11 @@ public class KickOffInput implements UpdateSystem {
         }
 
         if (inputs.pressed.get(Button.ACCEPT) || inputs.held.get(Button.ACCEPT)) {
+
             double theta_x = attackDirections.forward == Direction.UP ? this.theta_x : 180 + this.theta_x;
             eventBus.emit(new KickOffTaken(dt));
-            commandBus.issue(new KickBall(dt, System.nanoTime(), v, theta_x, theta_x));
+            System.out.println("EMITTING COMMAND: " + v + ", " + theta_x + ", " + theta_z);
+            commandBus.issue(new KickBall(dt, System.nanoTime(), v, theta_x, theta_z));
         }
     }
 

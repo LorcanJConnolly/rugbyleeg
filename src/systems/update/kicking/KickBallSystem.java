@@ -6,6 +6,7 @@ import components.kinematics.ZAxis;
 import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.CommandResult;
+import ecs.commandbus.commands.KickBall;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
 import util.vectors.Vector2;
@@ -51,10 +52,12 @@ public class KickBallSystem implements UpdateSystem {
      * Sets ball's x, y, and z velocity components based off a kick command.
      * @param command
      */
-    public void preformKick(ecs.commandbus.commands.KickBall command){
+    public void preformKick(KickBall command){
+
         this.velocity = command.velocity;
         this.theta_x = command.theta_x;
         this.theta_z = command.theta_z;
+        System.out.println("KICKING! " + velocity + ", " + theta_x + ", " + theta_z);
 
         // Calculate v_z and v_xy from v
         double v_z = velocity*Math.cos(Math.toRadians(theta_z));

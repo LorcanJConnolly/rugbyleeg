@@ -1,5 +1,6 @@
 package world.templates.entities;
 
+import stores.MotionStore;
 import world.templates.components.MotionTemplate;
 import world.templates.components.TransformTemplate;
 import world.templates.components.ZAxisTemplate;
