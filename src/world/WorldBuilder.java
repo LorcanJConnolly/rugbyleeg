@@ -1,16 +1,19 @@
 package world;
 
+import components.inputs.Inputs;
 import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.middleware.DebugMiddleware;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdatePipeline;
 import ecs.pipelines.update.UpdateSystem;
+import input.KeyHandler;
 import stores.*;
 import systems.render.kinematic.TransformRender;
 import systems.render.pitch.PitchRender;
 import systems.update.events.FlushEventBusSystem;
 import systems.update.game.GameStateSystem;
+import systems.update.inputs.InputSystem;
 import systems.update.kicking.KickBallSystem;
 import systems.update.kickoff.formation.KickOffFormationSystem;
 import systems.update.kickoff.kick.KickOffInput;
@@ -21,6 +24,7 @@ import util.vectors.Vector2;
 import world.configurators.*;
 import world.templates.entities.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorldBuilder {
@@ -28,8 +32,11 @@ public class WorldBuilder {
     private final World world;
     private final EventBus eventBus;
     private final CommandBus commandBus;
+    private final KeyHandler keyH;
 
-    public WorldBuilder(int maxEntities) {
+
+    public WorldBuilder(KeyHandler keyHandler, int maxEntities) {
+        this.keyH = keyHandler;
         this.maxEntities = maxEntities;
         this.world = new World(this.maxEntities);
         this.eventBus = world.getEventBus();
@@ -50,17 +57,24 @@ public class WorldBuilder {
         int defence = createTeam(world_template.defendingTeam);
         int pitch = createPitch(world_template.pitch);
         int ball = createBall(world_template.ball);
-        createPlayers(world_template.attackPlayers, attack);
-        createPlayers(world_template.defencePlayers, defence);
+        List<Integer> attackers = createPlayers(world_template.attackPlayers, attack);
+        List<Integer> defenders = createPlayers(world_template.defencePlayers, defence);
 
-        createGame(world_template.game, attack, defence, ball, pitch);
-        // TODO: add controls to a player entity.
 
+        if (attackers.isEmpty()) throw new RuntimeException("No attackers created. Cannot continue");
+        // Lazy key binding
+        int player = attackers.get(0);
+        keyH.bind(world.getEntityComponent(player, Inputs.class));
+
+        createGame(world_template.game, attack, defence, ball, pitch, player);
         // register systems to world and their associated command handlers and event subscriptions.
         addUpdateSystems();
         addRenderSystems(true);
         // Event subscribers and Command handlers
         populateBusses();
+
+        // Emit event that initial state of the world can be configured off using systems.
+//        eventBus.emit(new NewGameStarted());
 
         return world;
     }
@@ -80,8 +94,10 @@ public class WorldBuilder {
     }
 
 
-    private void createPlayers(List<PlayerTemplate> players, int team){
-        if (players == null) return;
+    private List<Integer> createPlayers(List<PlayerTemplate> players, int team){
+        List<Integer> created_players = new ArrayList<>();
+        if (players == null) return created_players;
+
         for (PlayerTemplate player: players){
             // PlayerConfig.Builder hands values from the PlayerTemplate to Component.Builder in lambda expressions.
             PlayerConfig.Builder builder = PlayerConfig.builder();
@@ -106,9 +122,13 @@ public class WorldBuilder {
             }
 
             builder.member(team);
+            builder.inputs();
+
             System.out.println("Creating a player entity: " + ", team: " + team + ", " + player.position);
-            builder.build().createPlayer(world);
+            int entity = builder.build().createPlayer(world);
+            created_players.add(entity);
         }
+        return created_players;
     }
 
 
@@ -177,7 +197,7 @@ public class WorldBuilder {
     }
 
 
-    private void createGame(GameTemplate game, int attack, int defence, int ball, int pitch){
+    private void createGame(GameTemplate game, int attack, int defence, int ball, int pitch, int player){
         GameConfig.Builder builder = GameConfig.builder();
 
         if (game.state != null){
@@ -187,7 +207,7 @@ public class WorldBuilder {
         }
 
         // SingletonEntities
-        builder.singletons(ball, attack, defence, pitch);
+        builder.singletons(ball, attack, defence, pitch, player);
 
         System.out.println("Creating game entity");
         builder.build().createGame(world);
@@ -195,15 +215,16 @@ public class WorldBuilder {
 
 
     private void addUpdateSystems(){
+        world.addSystem(new InputSystem(world));
+
         world.addSystem(new GameStateSystem(world, eventBus, commandBus));
         world.addSystem(new KickOffSetupSystem(world, commandBus));
         world.addSystem(new KickOffFormationSystem(world, eventBus));
-//        world.addSystem(new KickOffInput(world, commandBus));     // FIXME: add inputs to one entity
+        world.addSystem(new KickOffInput(world, eventBus, commandBus));
 
         world.addSystem(new KickBallSystem(world));
 
         world.addSystem(new GravitySystem(world));
-
 
 
         world.addSystem(new FlushEventBusSystem(world, eventBus));

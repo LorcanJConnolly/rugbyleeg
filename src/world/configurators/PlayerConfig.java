@@ -1,5 +1,6 @@
 package world.configurators;
 
+import components.inputs.Inputs;
 import components.kinematics.Motion;
 import components.kinematics.Transform;
 import components.rugby.position.RugbyPosition;
@@ -25,11 +26,12 @@ public class PlayerConfig {
         this.components = List.copyOf(b.components);
     }
 
-    public void createPlayer(World world){
+    public int createPlayer(World world){
         int id = world.createEntity();
         for (Component component: components){
             world.addComponent(id, component);
         }
+        return id;
     }
 
     // Entry points.
@@ -55,6 +57,13 @@ public class PlayerConfig {
             this.components.add(b.build());
             return this;
         }
+
+        // All player entities have a input component.
+        public Builder inputs(){
+            this.components.add(new Inputs());
+            return this;
+        }
+
 
         public Builder motion(Consumer<Motion.Builder> cfg) {
             Motion.Builder b = Motion.builder();

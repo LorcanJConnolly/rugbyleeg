@@ -43,11 +43,13 @@ public class GameConfig {
             return this;
         }
 
+
         // Determined after creation in WorldBuilder.
-        public Builder singletons(int ball, int attack, int defence, int pitch) {
-            this.components.add(SingletonEntities.builder(ball, attack, defence, pitch).build());
+        public Builder singletons(int ball, int attack, int defence, int pitch, int player) {
+            this.components.add(SingletonEntities.builder(ball, attack, defence, pitch, player).build());
             return this;
         }
+
 
         public GameConfig build(){
             return new GameConfig(this);

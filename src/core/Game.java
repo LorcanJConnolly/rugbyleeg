@@ -36,7 +36,7 @@ public class Game extends JPanel implements Runnable{
         this.setFocusable(true);        // core.systems.GamePanel can be "focused" to receive key input.
 
         int MAX_ENTITIES = 64;
-        WorldBuilder worldBuilder = new WorldBuilder(MAX_ENTITIES);
+        WorldBuilder worldBuilder = new WorldBuilder(keyH, MAX_ENTITIES);
         world = worldBuilder.load("data/games/basic_game.json");
     }
 

@@ -6,12 +6,14 @@ public class SingletonEntities implements Component {
     private final int ball;
     private final int attackingTeam;
     private final int defendingTeam;
+    private final int player;
 
 
     private SingletonEntities(Builder b){
         this.attackingTeam = b.attackingTeam;
         this.defendingTeam = b.defendingTeam;
         this.ball = b.ball;
+        this.player = b.player;
     }
 
 
@@ -28,8 +30,14 @@ public class SingletonEntities implements Component {
     }
 
     // Entry point.
-    public static Builder builder(int ball, int attack, int defence, int pitch){
-        return new Builder(ball, attack, defence, pitch);
+    public static Builder builder(
+            int ball,
+            int attack,
+            int defence,
+            int pitch,
+            int player
+    ){
+        return new Builder(ball, attack, defence, pitch, player);
     }
 
     public static class Builder{
@@ -37,13 +45,21 @@ public class SingletonEntities implements Component {
         private int attackingTeam;
         private int defendingTeam;
         private int pitch;
+        private int player;
 
 
-        private Builder(int ball, int attackingTeam, int defendingTeam, int pitch) {
+        private Builder(
+                int ball,
+                int attack,
+                int defence,
+                int pitch,
+                int player
+        ) {
             this.ball = ball;
-            this.attackingTeam = attackingTeam;
-            this.defendingTeam = defendingTeam;
+            this.attackingTeam = attack;
+            this.defendingTeam = defence;
             this.pitch = pitch;
+            this.player = player;
         }
 
 
@@ -64,8 +80,15 @@ public class SingletonEntities implements Component {
             return this;
         }
 
+
         public Builder pitch(int pitch){
             this.pitch = pitch;
+            return this;
+        }
+
+
+        public Builder player(int player){
+            this.player = player;
             return this;
         }
 
