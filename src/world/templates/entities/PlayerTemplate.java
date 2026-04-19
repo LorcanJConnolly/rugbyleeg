@@ -1,7 +1,5 @@
 package world.templates.entities;
 
-import components.rugby.team.Member;
-import rugby.positions.Position;
 import world.templates.components.MotionTemplate;
 import world.templates.components.TransformTemplate;
 
@@ -11,5 +9,4 @@ import world.templates.components.TransformTemplate;
 public class PlayerTemplate {
     public MotionTemplate motion;
     public TransformTemplate transform;
-    public Position position;
 }

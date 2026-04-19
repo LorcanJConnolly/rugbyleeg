@@ -1,7 +1,7 @@
 {
   "game": "data/games/default.json",
-  "pitch": "data/pitch/default.json",
-  "ball": "data/ball/default.json",
-  "homeTeam": "data/team/default.json",
-  "awayTeam": "data/team/default.json"
+  "pitch": "data/pitches/default.json",
+  "ball": "data/balls/default.json",
+  "homeTeam": "data/teams/default.json",
+  "awayTeam": "data/teams/default.json"
 }

@@ -37,7 +37,7 @@ public class Game extends JPanel implements Runnable{
 
         int MAX_ENTITIES = 64;
         WorldBuilder worldBuilder = new WorldBuilder(keyH, MAX_ENTITIES);
-        world = worldBuilder.load("data/games/basic_game.json");
+        world = worldBuilder.load("data/worlds/default.json");
     }
 
 

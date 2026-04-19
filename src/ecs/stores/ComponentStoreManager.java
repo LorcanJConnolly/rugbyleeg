@@ -21,6 +21,9 @@ public class ComponentStoreManager {
 
     @SuppressWarnings("unchecked")
     public <T extends Component> ComponentStore<T> getStore(Class<T> componentType) {
+        if (!stores.containsKey(componentType)) {
+            throw new RuntimeException("No store exists for '" + componentType + "'.");
+        }
         return (ComponentStore<T>) stores.get(componentType);
     }
 

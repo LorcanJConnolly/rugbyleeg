@@ -96,10 +96,12 @@ public class WorldBuilder {
         world.registerStore(new InputsStore(this.maxEntities));
         world.registerStore(new MemberStore(this.maxEntities));
         world.registerStore(new ZAxisStore(this.maxEntities));
+        world.registerStore(new PositionRegistryStore(this.maxEntities));
     }
 
 
     private Integer createPlayer(String path, Position position, int team){
+        System.out.println("Creating a player entity '" + position + "' for the team '" + team + "'.");
         if (path == null) return null;
         PlayerTemplate player = JsonLoader.load(path, PlayerTemplate.class);
         int entity = world.createEntity();
@@ -121,13 +123,13 @@ public class WorldBuilder {
             });
         }
         if (position != null){
-            builder.position(player.position);
+            builder.position(position);
         }
 
         builder.member(team);
         builder.inputs();
 
-        System.out.println("Creating a player entity '" + player.position + "' for the team '" + team + "'.");
+        System.out.println("Created a player entity '" + position + "' for the team '" + team + "'.");
         builder.build().createPlayer(world, entity);
         return entity;
     }
