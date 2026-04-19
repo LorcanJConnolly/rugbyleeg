@@ -3,6 +3,7 @@ package systems.update.kickoff.setup;
 import components.direction.Directions;
 import components.game.GameState;
 import components.game.SingletonEntities;
+import components.kinematics.ZAxis;
 import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.CommandResult;
@@ -10,6 +11,7 @@ import ecs.commandbus.commands.LineUpForKickOff;
 import ecs.commandbus.commands.SetUpKickOff;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
+import ecs.query.Query;
 import state.game.GameStates;
 import util.directions.Direction;
 
@@ -22,6 +24,7 @@ public class KickOffSetupSystem implements UpdateSystem {
     private final CommandBus commandBus;
     private final GameState gameState;
     private final Directions attackDirections, defenceDirections;
+    private final Query ZAxsiQuery;
 
     public KickOffSetupSystem(World world, CommandBus commandBus) {
         this.commandBus = commandBus;
@@ -30,17 +33,25 @@ public class KickOffSetupSystem implements UpdateSystem {
         this.gameState = world.getEntityComponent(game, GameState.class);
         this.attackDirections = world.getEntityComponent(singletonEntities.getAttack(), Directions.class);
         this.defenceDirections = world.getEntityComponent(singletonEntities.getDefence(), Directions.class);
+
+        this.ZAxsiQuery = world.query(ZAxis.class);
     }
 
 
-    /**
-     * Swaps the team entity's direction component to the opposite values.
-     */
+
     @Override
     public void update(double dt) {}
 
 
-    private void configureTeamDirections(double dt){
+    /** Manager method, hands off to handler methods. */
+    private void setUp(double dt){
+        configureTeamDirections();
+        setZAxis();
+        commandBus.issue(new LineUpForKickOff(dt, System.nanoTime()));
+    }
+
+    /** Swaps the team entity's direction component to the opposite values. */
+    private void configureTeamDirections(){
         // Swap directions to opposites.
         attackDirections.forward = attackDirections.forward == Direction.UP ? Direction.DOWN : Direction.UP;
         attackDirections.backwards = attackDirections.backwards == Direction.DOWN ? Direction.UP : Direction.DOWN;
@@ -52,7 +63,15 @@ public class KickOffSetupSystem implements UpdateSystem {
         defenceDirections.left = defenceDirections.left == Direction.LEFT ? Direction.RIGHT : Direction.LEFT;
         defenceDirections.right = defenceDirections.right == Direction.RIGHT ? Direction.LEFT : Direction.RIGHT;
         System.out.println("attack: " + attackDirections.forward + ", defence: " + defenceDirections.forward);
-        commandBus.issue(new LineUpForKickOff(dt, System.nanoTime()));
+    }
+
+
+    /** Clean up method to set every entity's ZAxis data back to 0. */
+    private void setZAxis(){
+        ZAxsiQuery.forEach((int entity, ZAxis zAxis) -> {
+            zAxis.setPosition(0d);
+            zAxis.setVelocity(0d);
+        });
     }
 
 
@@ -61,7 +80,7 @@ public class KickOffSetupSystem implements UpdateSystem {
         bus.register(
             SetUpKickOff.class,
             command -> {
-                configureTeamDirections(command.getDeltaTime());
+                setUp(command.getDeltaTime());
                 return CommandResult.success();
             }
         );
