@@ -2,6 +2,7 @@ package components.game;
 
 import ecs.Component;
 import state.game.GameStates;
+import state.game.GameSubstates;
 
 import java.util.EnumSet;
 
@@ -10,9 +11,11 @@ import java.util.EnumSet;
  */
 public class GameState implements Component {
     private final EnumSet<GameStates> flags;
+    private final EnumSet<GameSubstates> subFlags;
 
     private GameState(Builder b){
         this.flags = b.flags;
+        this.subFlags = b.subFlags;
     }
 
     public boolean hasFlag(GameStates state_flag){
@@ -27,6 +30,18 @@ public class GameState implements Component {
         this.flags.add(state_flag);
     }
 
+    public boolean hasFlag(GameSubstates state_flag){
+        return this.subFlags.contains(state_flag);
+    }
+
+    public void removeFlag(GameSubstates state_flag){
+        this.subFlags.remove(state_flag);
+    }
+
+    public void addFlag(GameSubstates state_flag){
+        this.subFlags.add(state_flag);
+    }
+
     // Entry point.
     public static Builder builder(){
         return new Builder();
@@ -36,11 +51,17 @@ public class GameState implements Component {
     public static class Builder{
         // Default values.
         private EnumSet<GameStates> flags = EnumSet.of(GameStates.NEW_GAME);
+        private EnumSet<GameSubstates> subFlags = EnumSet.noneOf(GameSubstates.class);
 
         private Builder() {}
 
         public Builder flags(EnumSet<GameStates> flags){
             this.flags.addAll(flags);
+            return this;
+        }
+
+        public Builder subFlags(EnumSet<GameSubstates> flags){
+            this.subFlags.addAll(flags);
             return this;
         }
 
