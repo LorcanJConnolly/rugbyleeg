@@ -47,7 +47,7 @@ public class KickOffFormationSystem implements UpdateSystem {
         bus.register(
             LineUpForKickOff.class,
             command -> {
-                update(command.getDeltaTime());
+                process(command.getDeltaTime());
                 return CommandResult.success();
             }
         );
@@ -59,10 +59,12 @@ public class KickOffFormationSystem implements UpdateSystem {
 
 
     @Override
-    public void update(double dt) {
-        // register command listening
+    public void update(double dt) {}
+
+
+    public void process(double dt){
         query.forEach((int entity, Transform transform, RugbyPosition position, Member member) -> {
-            process(transform, position, member);
+            createFormations(transform, position, member);
         });
         ballTransform.position = PitchUtils.relativeToPlayingField(
                 pitchDimensions, attackDirections.forward,
@@ -73,7 +75,7 @@ public class KickOffFormationSystem implements UpdateSystem {
     }
 
 
-    public void process(Transform transform, RugbyPosition position, Member member) {
+    public void createFormations(Transform transform, RugbyPosition position, Member member) {
         if (member.getTeam() == attack) {
             switch (position.getPosition()) {
                 // Increments of 8, starting at 0.04 to 0.96
@@ -186,8 +188,9 @@ public class KickOffFormationSystem implements UpdateSystem {
                 case HOOKER:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.26, 0.5
+                            0.5, 0.16
                     );
+                    break;
 
                 case SECOND_ROW_12:
                     transform.position = PitchUtils.relativeToPlayingField(
@@ -198,13 +201,13 @@ public class KickOffFormationSystem implements UpdateSystem {
                 case FIVE_EIGHTH:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.18, 0.07
+                            0.3, 0.07
                     );
                     break;
                 case HALFBACK:
                     transform.position = PitchUtils.relativeToPlayingField(
                             pitchDimensions, attackDirections.forward,
-                            0.72, 0.07
+                            0.7, 0.07
                     );
                     break;
                 case WING_2:
@@ -240,5 +243,6 @@ public class KickOffFormationSystem implements UpdateSystem {
                     break;
             }
         }
+//        System.out.println("Set player's kick off position. Team : " + member.getTeam() + ", position: " + position.getPosition() + ", transform: " + transform.position);
     }
 }
