@@ -22,6 +22,7 @@ import systems.update.physics.gravity.GravitySystem;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
 import world.configurators.*;
+import world.templates.WorldTemplate;
 import world.templates.entities.*;
 
 import java.util.ArrayList;

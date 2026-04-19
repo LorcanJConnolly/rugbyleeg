@@ -1,4 +1,6 @@
-package world.templates.entities;
+package world.templates;
+
+import world.templates.entities.*;
 
 import java.util.List;
 
