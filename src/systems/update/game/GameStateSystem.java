@@ -8,8 +8,10 @@ import ecs.eventbus.EventBus;
 import ecs.eventbus.events.KickOffLinedUp;
 import ecs.eventbus.events.KickOffTaken;
 import ecs.eventbus.handlers.KickOffLinedUpHandler;
+import ecs.eventbus.handlers.KickOffTakenHandler;
 import ecs.pipelines.update.UpdateSystem;
 import state.game.GameStates;
+import state.game.GameSubstates;
 
 public class GameStateSystem implements UpdateSystem {
     private final GameState state;
@@ -27,7 +29,7 @@ public class GameStateSystem implements UpdateSystem {
         if (state.hasFlag(GameStates.NEW_GAME)){
             commandBus.issue(new SetUpKickOff(dt, System.nanoTime()));
             state.removeFlag(GameStates.NEW_GAME);
-            state.addFlag(GameStates.SETTING_KICK_OFF);
+            state.addSubflag(GameSubstates.SETTING_KICK_OFF);
         }
     }
 
@@ -43,13 +45,13 @@ public class GameStateSystem implements UpdateSystem {
 
 
     public void onKickOffLineUp(KickOffLinedUp event){
-        state.removeFlag(GameStates.SETTING_KICK_OFF);
-        state.addFlag(GameStates.AIMING_KICKOFF);
+        state.removeSubflag(GameSubstates.SETTING_KICK_OFF);
+        state.addSubflag(GameSubstates.AIMING_KICKOFF);
     }
 
 
     public void onKickOffTaken(KickOffTaken event){
-        state.removeFlag(GameStates.AIMING_KICKOFF);
+        state.removeSubflag(GameSubstates.AIMING_KICKOFF);
         state.addFlag(GameStates.CHASING_KICK);
     }
 
