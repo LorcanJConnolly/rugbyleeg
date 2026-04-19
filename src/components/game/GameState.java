@@ -30,15 +30,15 @@ public class GameState implements Component {
         this.flags.add(state_flag);
     }
 
-    public boolean hasFlag(GameSubstates state_flag){
+    public boolean hasSubflag(GameSubstates state_flag){
         return this.subFlags.contains(state_flag);
     }
 
-    public void removeFlag(GameSubstates state_flag){
+    public void removeSubflag(GameSubstates state_flag){
         this.subFlags.remove(state_flag);
     }
 
-    public void addFlag(GameSubstates state_flag){
+    public void addSubflag(GameSubstates state_flag){
         this.subFlags.add(state_flag);
     }
 
