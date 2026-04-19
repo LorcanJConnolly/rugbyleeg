@@ -8,19 +8,22 @@ import ecs.World;
 import ecs.commandbus.CommandBus;
 import ecs.commandbus.commands.KickBall;
 import ecs.eventbus.EventBus;
+import ecs.eventbus.events.KickOffTaken;
 import ecs.pipelines.update.UpdateSystem;
 import input.Button;
 import state.game.GameStates;
+import state.game.GameSubstates;
 import util.directions.Direction;
 
 /**
  * A system for translating the user's button inputs to a command to preform a kick for the kick-off.
  */
 public class KickOffInput implements UpdateSystem {
-    private final Inputs inputs;
+    private final CommandBus commandBus;
+    private final EventBus eventBus;
 
     private final GameState gameState;
-    private final CommandBus commandBus;
+    private final Inputs inputs;
     private final Directions attackDirections;
 
     double v, theta_x, theta_z;
@@ -28,7 +31,9 @@ public class KickOffInput implements UpdateSystem {
     double max_v, max_theta_x, max_theta_z;
     double increment_v, increment_theta_x, increment_theta_z;
 
-    public KickOffInput(World world, CommandBus commandBus){
+    public KickOffInput(World world, EventBus eventBus, CommandBus commandBus){
+        this.eventBus = eventBus;
+        this.commandBus = commandBus;
         SingletonEntities singletonEntities = world.getEntityComponent(
                 world.getSingletonEntity(GameState.class), SingletonEntities.class
         );
@@ -36,7 +41,6 @@ public class KickOffInput implements UpdateSystem {
         this.gameState = world.getSingleton(GameState.class);
         int player = world.getSingletonEntity(Inputs.class);
         this.inputs = world.getEntityComponent(player, Inputs.class);
-        this.commandBus = commandBus;
 
         this.v = 10d;
         this.min_v = 5d;
@@ -57,7 +61,8 @@ public class KickOffInput implements UpdateSystem {
 
     @Override
     public void update(double dt) {
-        if (!gameState.hasFlag(GameStates.SETTING_KICK_OFF)) return;
+        if (!(gameState.hasFlag(GameStates.KICK_OFF) && gameState.hasSubflag(GameSubstates.AIMING_KICKOFF))) return;
+        System.out.println("HERE!");
 
         if (inputs.pressed.get(Button.OPTION_1) || inputs.held.get(Button.OPTION_1)
         ) {
@@ -88,6 +93,7 @@ public class KickOffInput implements UpdateSystem {
 
         if (inputs.pressed.get(Button.ACCEPT) || inputs.held.get(Button.ACCEPT)) {
             double theta_x = attackDirections.forward == Direction.UP ? this.theta_x : 180 + this.theta_x;
+            eventBus.emit(new KickOffTaken(dt));
             commandBus.issue(new KickBall(dt, System.nanoTime(), v, theta_x, theta_x));
         }
     }

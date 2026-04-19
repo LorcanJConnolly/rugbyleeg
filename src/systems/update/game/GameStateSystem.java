@@ -29,6 +29,7 @@ public class GameStateSystem implements UpdateSystem {
         if (state.hasFlag(GameStates.NEW_GAME)){
             commandBus.issue(new SetUpKickOff(dt, System.nanoTime()));
             state.removeFlag(GameStates.NEW_GAME);
+            state.addFlag(GameStates.KICK_OFF);
             state.addSubflag(GameSubstates.SETTING_KICK_OFF);
         }
     }
@@ -52,6 +53,7 @@ public class GameStateSystem implements UpdateSystem {
 
     public void onKickOffTaken(KickOffTaken event){
         state.removeSubflag(GameSubstates.AIMING_KICKOFF);
+        state.removeFlag(GameStates.KICK_OFF);
         state.addFlag(GameStates.CHASING_KICK);
     }
 
