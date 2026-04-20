@@ -11,6 +11,7 @@ import ecs.pipelines.update.UpdateSystem;
 import input.KeyHandler;
 import rugby.positions.Position;
 import stores.*;
+import systems.render.debug.ZAxisDebug;
 import systems.render.kinematic.TransformRender;
 import systems.render.pitch.PitchRender;
 import systems.update.events.FlushEventBusSystem;
@@ -269,6 +270,7 @@ public class WorldBuilder {
 
     private void addRenderSystems(Boolean debug){
         if (debug){
+            world.addSystem(new ZAxisDebug(world));
         }
 
         world.addSystem(new TransformRender(world));

@@ -14,7 +14,7 @@ import util.vectors.Vector2;
  */
 public class GravitySystem implements UpdateSystem {
     private final Query query;
-    private final double gravity = 9.81;
+    private final double gravity = 98.1;
     // TODO: Remove entity input when bouncing is implemented in collision system.
     private final World world;
 
@@ -46,9 +46,12 @@ public class GravitySystem implements UpdateSystem {
 
         zaxis.velocity += -gravity * dt;
         zaxis.position += zaxis.velocity * dt;
+        System.out.println("Applying gravity: " + zaxis.velocity);
 
         // Entity has hit the ground after falling.
         if (zaxis.position < 0){
+            System.out.println("HIT GROUND!");
+
             zaxis.velocity = 0d;
             zaxis.position = 0d;
 
