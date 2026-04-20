@@ -42,9 +42,9 @@ public class KickOffInput implements UpdateSystem {
         int player = singletonEntities.getPlayer();
         this.inputs = world.getEntityComponent(player, Inputs.class);
 
-        this.v = 10d;
-        this.min_v = 5d;
-        this.max_v = 20d;
+        this.v = 100d;
+        this.min_v = 25d;
+        this.max_v = 250d;  // Max 250 to reach dead ball.
         this.increment_v = 1d;
 
         this.theta_z = 45d;
@@ -66,26 +66,26 @@ public class KickOffInput implements UpdateSystem {
         if (inputs.pressed.get(Button.OPTION_1) || inputs.held.get(Button.OPTION_1)
         ) {
             if (inputs.pressed.get(Button.MOVE_UP) || inputs.held.get(Button.MOVE_UP)) {
-                v += increment_v * dt;
+                v += increment_v;
 
             } else if (inputs.pressed.get(Button.MOVE_DOWN) || inputs.held.get(Button.MOVE_DOWN)) {
-                v += -increment_v * dt;
+                v += -increment_v;
             }
             v = Math.max(Math.min(v, max_v), min_v);
         } else if (inputs.pressed.get(Button.OPTION_2) || inputs.held.get(Button.OPTION_2)) {
             if (inputs.pressed.get(Button.MOVE_UP) || inputs.held.get(Button.MOVE_UP)) {
-                theta_z += increment_theta_z * dt;
+                theta_z += increment_theta_z;
 
             } else if (inputs.pressed.get(Button.MOVE_DOWN) || inputs.held.get(Button.MOVE_DOWN)) {
-                theta_z += -increment_theta_z * dt;
+                theta_z += -increment_theta_z;
             }
             theta_z = Math.max(Math.min(theta_z, max_theta_z), min_theta_z);
         } else if (inputs.pressed.get(Button.OPTION_3) || inputs.held.get(Button.OPTION_3)) {
             if (inputs.pressed.get(Button.MOVE_UP) || inputs.held.get(Button.MOVE_UP)){
-                theta_x += increment_theta_x * dt;
+                theta_x += increment_theta_x;
 
             } else if (inputs.pressed.get(Button.MOVE_DOWN) || inputs.held.get(Button.MOVE_DOWN)) {
-                theta_x += -increment_theta_x * dt;
+                theta_x += -increment_theta_x;
             }
             theta_x = Math.max(Math.min(theta_x, max_theta_x), min_theta_x);
         }
@@ -94,7 +94,7 @@ public class KickOffInput implements UpdateSystem {
 
             double theta_x = attackDirections.forward == Direction.UP ? this.theta_x : 180 + this.theta_x;
             eventBus.emit(new KickOffTaken(dt));
-            System.out.println("EMITTING COMMAND: " + v + ", " + theta_x + ", " + theta_z);
+            System.out.println("EMITTING COMMAND: " + v + ", " + theta_z + ", " + theta_x );
             commandBus.issue(new KickBall(dt, System.nanoTime(), v, theta_x, theta_z));
         }
     }

@@ -42,15 +42,11 @@ public class GravitySystem implements UpdateSystem {
 
     // TODO: Remove entity input when bouncing is implemented in collision system.
     private void applyGravity(int entity, double dt, ZAxis zaxis){
-        if (zaxis.position <= 0 && zaxis.velocity <= 0) return;
-
         zaxis.velocity += -gravity * dt;
         zaxis.position += zaxis.velocity * dt;
-        System.out.println("Applying gravity: " + zaxis.velocity);
 
         // Entity has hit the ground after falling.
         if (zaxis.position < 0){
-            System.out.println("HIT GROUND!");
 
             zaxis.velocity = 0d;
             zaxis.position = 0d;
