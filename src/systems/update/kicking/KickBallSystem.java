@@ -59,8 +59,8 @@ public class KickBallSystem implements UpdateSystem {
         double v_xy = command.velocity * Math.sin(Math.toRadians(command.theta_z));
 
         Vector2 velocity = new Vector2(
-                v_xy * Math.cos(Math.toRadians(command.theta_x)),
-                v_xy * Math.sin(Math.toRadians(command.theta_x))
+            v_xy * Math.cos(Math.toRadians(command.theta_x)),
+            v_xy * Math.sin(Math.toRadians(command.theta_x))
         );
 
         ball_motion.addRequest(
@@ -71,17 +71,18 @@ public class KickBallSystem implements UpdateSystem {
                 0d,
                 0d,
                 0d
-        ));
+            )
+        );
 
         ball_z.addRequest(
-                new MotionRequestZ(
-                        v_z,
-                        0d,
-                        0d,
-                        0d,
-                        0d,
-                        0d
-                )
+            new MotionRequestZ(
+                v_z,
+                0d,
+                0d,
+                0d,
+                0d,
+                0d
+            )
         );
     }
 }
