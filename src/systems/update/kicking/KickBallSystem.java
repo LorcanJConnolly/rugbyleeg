@@ -15,6 +15,7 @@ import util.vectors.Vector2;
  * A system for setting the ball's velocity data after it has been kicked.
  */
 public class KickBallSystem implements UpdateSystem {
+    this.ball_motion
 
     public KickBallSystem(World world) {
         int ball = world.getSingleton(SingletonEntities.class).getBall();
@@ -51,15 +52,16 @@ public class KickBallSystem implements UpdateSystem {
         System.out.println("KICKING! " + command.velocity + ", " + command.theta_x + ", " + command.theta_z);
 
         // Calculate v_z and v_xy from v
-        double v_z = velocity * Math.cos(Math.toRadians(command.theta_z));
-        double v_xy = velocity * Math.sin(Math.toRadians(command.theta_z));
+        double v_z = command.velocity * Math.cos(Math.toRadians(command.theta_z));
+        double v_xy = command.velocity * Math.sin(Math.toRadians(command.theta_z));
 
-//        ball_motion.velocity = new Vector2(
-//                v_xy * Math.cos(Math.toRadians(theta_x)),
-//                v_xy * Math.sin(Math.toRadians(theta_x))
-//        );
-//
-//        ball_z.setVelocity(v_z);
+        Vector2 velocity = new Vector2(
+                v_xy * Math.cos(Math.toRadians(theta_x)),
+                v_xy * Math.sin(Math.toRadians(theta_x))
+        );
+
+
+
         System.out.println("BALL NEW VELOCITY! " + ball_motion.velocity + ", " + ball_z);
     }
 }

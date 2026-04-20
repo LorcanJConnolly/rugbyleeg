@@ -9,4 +9,4 @@ public record MotionRequestXY (
     double angularImpulse,                  // Instant angular velocity "kick".
     double angularAcceleration,             // Angular force over time.
     double targetAngularVelocity            // The "wanted" angular velocity to be moving at.
-) implements MotionRequest {}
+) {}

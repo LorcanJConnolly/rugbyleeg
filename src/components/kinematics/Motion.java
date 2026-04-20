@@ -1,7 +1,7 @@
 package components.kinematics;
 
 import ecs.Component;
-import physics.kinematics.MotionRequest;
+import physics.kinematics.MotionRequestXY;
 import util.vectors.Vector2;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 public class Motion implements Component {
     public Vector2 velocity;
     public double rotation;
-    public List<MotionRequest> requests;
+    public List<MotionRequestXY> requests;
 
     private Motion(Builder b){
         this.velocity = b.velocity;
@@ -33,7 +33,7 @@ public class Motion implements Component {
         // Default values.
         private final Vector2               velocity = new Vector2(0, 0);
         private double                      rotation = 0.0;
-        private final List<MotionRequest> requests = new ArrayList<>();
+        private final List<MotionRequestXY> requests = new ArrayList<>();
 
         private Builder(){}
 
@@ -52,7 +52,7 @@ public class Motion implements Component {
             return this;
         }
 
-        public Builder requests(List<MotionRequest> motion_requests){
+        public Builder requests(List<MotionRequestXY> motion_requests){
             this.requests.addAll(motion_requests);
             return this;
         }
