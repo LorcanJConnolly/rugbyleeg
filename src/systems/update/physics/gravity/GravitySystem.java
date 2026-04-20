@@ -42,7 +42,7 @@ public class GravitySystem implements UpdateSystem {
 
     // TODO: Remove entity input when bouncing is implemented in collision system.
     private void applyGravity(int entity, double dt, ZAxis zaxis){
-        if (zaxis.getPosition() <= 0 && zaxis.getVelocity() <= 0) return;
+        if (zaxis.position <= 0 && zaxis.velocity <= 0) return;
 
         zaxis.velocity += -gravity * dt;
         zaxis.position += zaxis.velocity * dt;
