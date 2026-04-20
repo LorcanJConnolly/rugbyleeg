@@ -10,7 +10,7 @@ import java.util.List;
 public class Motion implements Component {
     public Vector2 velocity;
     public double rotation;
-    public List<MotionRequestXY> requests;
+    private final List<MotionRequestXY> requests;
 
     private Motion(Builder b){
         this.velocity = b.velocity;
@@ -18,8 +18,15 @@ public class Motion implements Component {
         this.requests = b.requests;
     }
 
+    public void addRequest(MotionRequestXY request){
+        this.requests.add(request);
+    }
 
-    public void clearRequest(){
+    public List<MotionRequestXY> getRequests(){
+        return this.requests;
+    }
+
+    public void clearRequests(){
         this.requests.clear();
     }
 

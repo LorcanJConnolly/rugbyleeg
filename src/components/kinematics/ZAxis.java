@@ -1,6 +1,7 @@
 package components.kinematics;
 
 import ecs.Component;
+import physics.kinematics.MotionRequestXY;
 import physics.kinematics.MotionRequestZ;
 
 import java.util.ArrayList;
@@ -11,12 +12,13 @@ import java.util.List;
  */
 public class ZAxis implements Component {
     private double velocity, position;
-    private List<MotionRequestZ> requests;
+    private final List<MotionRequestZ> requests;
 
 
     private ZAxis(Builder b){
         this.velocity = b.velocity;
         this.position = b.position;
+        this.requests = b.requests;
     }
 
     public double getVelocity() {
@@ -33,6 +35,18 @@ public class ZAxis implements Component {
 
     public void setPosition(double position){
         this.position = position;
+    }
+
+    public void addRequest(MotionRequestZ request){
+        this.requests.add(request);
+    }
+
+    public List<MotionRequestZ> getRequests(){
+        return this.requests;
+    }
+
+    public void clearRequests(){
+        this.requests.clear();
     }
 
     // Entry point.

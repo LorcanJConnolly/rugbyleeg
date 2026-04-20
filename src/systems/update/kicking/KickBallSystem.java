@@ -9,13 +9,16 @@ import ecs.commandbus.CommandResult;
 import ecs.commandbus.commands.KickBall;
 import ecs.eventbus.EventBus;
 import ecs.pipelines.update.UpdateSystem;
+import physics.kinematics.MotionRequestXY;
+import physics.kinematics.MotionRequestZ;
 import util.vectors.Vector2;
 
 /**
  * A system for setting the ball's velocity data after it has been kicked.
  */
 public class KickBallSystem implements UpdateSystem {
-    this.ball_motion
+    private final Motion ball_motion;
+    private final ZAxis ball_z;
 
     public KickBallSystem(World world) {
         int ball = world.getSingleton(SingletonEntities.class).getBall();
@@ -44,8 +47,8 @@ public class KickBallSystem implements UpdateSystem {
     public void registerSubscriptions(EventBus bus){}
 
     /**
-     * Sets ball's x, y, and z velocity components based off a kick command.
-     * @param command
+     * Creates a request for motion to the XY and Z axis based on the kick command.
+     * @param command: The commanded kick.
      */
     public void preformKick(KickBall command){
 
@@ -56,12 +59,29 @@ public class KickBallSystem implements UpdateSystem {
         double v_xy = command.velocity * Math.sin(Math.toRadians(command.theta_z));
 
         Vector2 velocity = new Vector2(
-                v_xy * Math.cos(Math.toRadians(theta_x)),
-                v_xy * Math.sin(Math.toRadians(theta_x))
+                v_xy * Math.cos(Math.toRadians(command.theta_x)),
+                v_xy * Math.sin(Math.toRadians(command.theta_x))
         );
 
+        ball_motion.addRequest(
+            new MotionRequestXY(
+                velocity,
+                new Vector2(0d, 0d),
+                new Vector2(0d, 0d),
+                0d,
+                0d,
+                0d
+        ));
 
-
-        System.out.println("BALL NEW VELOCITY! " + ball_motion.velocity + ", " + ball_z);
+        ball_z.addRequest(
+                new MotionRequestZ(
+                        v_z,
+                        0d,
+                        0d,
+                        0d,
+                        0d,
+                        0d
+                )
+        );
     }
 }
