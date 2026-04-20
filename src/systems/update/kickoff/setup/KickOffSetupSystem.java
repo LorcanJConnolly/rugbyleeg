@@ -69,8 +69,8 @@ public class KickOffSetupSystem implements UpdateSystem {
     /** Clean up method to set every entity's ZAxis data back to 0. */
     private void setZAxis(){
         ZAxsiQuery.forEach((int entity, ZAxis zAxis) -> {
-            zAxis.setPosition(0d);
-            zAxis.setVelocity(0d);
+            zAxis.position = 0d;
+            zAxis.velocity = 0d;
         });
     }
 
