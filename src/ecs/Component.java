@@ -1,4 +1,3 @@
 package ecs;
 
-public interface Component {
-}
+public interface Component {}
