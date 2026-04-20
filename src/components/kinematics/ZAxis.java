@@ -11,7 +11,7 @@ import java.util.List;
  * A component for a 2.5D game for faking altitude and related values.
  */
 public class ZAxis implements Component {
-    private double velocity, position;
+    public double velocity, position;
     private final List<MotionRequestZ> requests;
 
 
@@ -19,22 +19,6 @@ public class ZAxis implements Component {
         this.velocity = b.velocity;
         this.position = b.position;
         this.requests = b.requests;
-    }
-
-    public double getVelocity() {
-        return velocity;
-    }
-
-    public double getPosition() {
-        return position;
-    }
-
-    public void setVelocity(double velocity){
-        this.velocity = velocity;
-    }
-
-    public void setPosition(double position){
-        this.position = position;
     }
 
     public void addRequest(MotionRequestZ request){

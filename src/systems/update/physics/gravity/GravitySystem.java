@@ -44,13 +44,13 @@ public class GravitySystem implements UpdateSystem {
     private void applyGravity(int entity, double dt, ZAxis zaxis){
         if (zaxis.getPosition() <= 0 && zaxis.getVelocity() <= 0) return;
 
-        zaxis.setVelocity(zaxis.getVelocity() -gravity * dt);
-        zaxis.setPosition(zaxis.getVelocity() + zaxis.getVelocity() * dt);
+        zaxis.velocity += -gravity * dt;
+        zaxis.position += zaxis.velocity * dt;
 
         // Entity has hit the ground after falling.
-        if (zaxis.getPosition() < 0){
-            zaxis.setVelocity(0d);
-            zaxis.setPosition(0d);
+        if (zaxis.position < 0){
+            zaxis.velocity = 0d;
+            zaxis.position = 0d;
 
             // TODO: Remove this when bouncing is implemented in collision system.
             Motion motion = world.getEntityComponent(entity, Motion.class);
