@@ -10,6 +10,10 @@ public class Vector2 {
     }
 
     // Static util methods
+    public static Vector2 scaleTogether(Vector2 v, double factor){
+        return new Vector2(v.x * factor, v.y * factor);
+    }
+
     public static Vector2 addTogether(Vector2 v1, Vector2 v2){
         return new Vector2(v1.x + v2.x, v1.y + v2.y);
     }

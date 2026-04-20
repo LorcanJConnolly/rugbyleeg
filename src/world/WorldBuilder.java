@@ -21,6 +21,8 @@ import systems.update.kickoff.formation.KickOffFormationSystem;
 import systems.update.kickoff.kick.KickOffInput;
 import systems.update.kickoff.setup.KickOffSetupSystem;
 import systems.update.physics.gravity.GravitySystem;
+import systems.update.physics.kinematics.MotionSystem;
+import systems.update.physics.kinematics.TransformSystem;
 import util.fileloaders.JsonLoader;
 import util.vectors.Vector2;
 import world.configurators.*;
@@ -253,7 +255,11 @@ public class WorldBuilder {
 
         world.addSystem(new KickBallSystem(world));
 
+        world.addSystem(new MotionSystem(world));
+        world.addSystem(new TransformSystem(world));
+        // Dampening forces
         world.addSystem(new GravitySystem(world));
+
 
 
         world.addSystem(new FlushEventBusSystem(world, eventBus));
