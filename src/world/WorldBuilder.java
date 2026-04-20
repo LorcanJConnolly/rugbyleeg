@@ -120,6 +120,7 @@ public class WorldBuilder {
             builder.motion(b -> {
                 if (player.motion.velocity != null) b.velocity(player.motion.velocity.toVector2(0.0, 0.0));
                 if (player.motion.rotation != null) b.rotation(player.motion.rotation);
+                if (player.motion.requests != null) b.requests(player.motion.requests);
             });
         }
         if (position != null){
