@@ -18,7 +18,7 @@ import util.directions.Direction;
 /**
  * A system for translating the user's button inputs to a command to preform a kick for the kick-off.
  */
-public class KickOffInput implements UpdateSystem {
+public class KickOffInputSystem implements UpdateSystem {
     private final CommandBus commandBus;
     private final EventBus eventBus;
 
@@ -31,7 +31,7 @@ public class KickOffInput implements UpdateSystem {
     double max_v, max_theta_x, max_theta_z;
     double increment_v, increment_theta_x, increment_theta_z;
 
-    public KickOffInput(World world, EventBus eventBus, CommandBus commandBus){
+    public KickOffInputSystem(World world, EventBus eventBus, CommandBus commandBus){
         this.eventBus = eventBus;
         this.commandBus = commandBus;
         SingletonEntities singletonEntities = world.getEntityComponent(

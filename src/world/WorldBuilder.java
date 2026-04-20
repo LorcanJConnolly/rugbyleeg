@@ -19,7 +19,7 @@ import systems.update.game.GameStateSystem;
 import systems.update.inputs.InputSystem;
 import systems.update.kicking.KickBallSystem;
 import systems.update.kickoff.formation.KickOffFormationSystem;
-import systems.update.kickoff.kick.KickOffInput;
+import systems.update.kickoff.kick.KickOffInputSystem;
 import systems.update.kickoff.setup.KickOffSetupSystem;
 import systems.update.physics.gravity.GravitySystem;
 import systems.update.physics.kinematics.MotionSystem;
@@ -252,7 +252,7 @@ public class WorldBuilder {
         world.addSystem(new GameStateSystem(world, eventBus, commandBus));
         world.addSystem(new KickOffSetupSystem(world, commandBus));
         world.addSystem(new KickOffFormationSystem(world, eventBus));
-        world.addSystem(new KickOffInput(world, eventBus, commandBus));
+        world.addSystem(new KickOffInputSystem(world, eventBus, commandBus));
 
         world.addSystem(new KickBallSystem(world));
 
