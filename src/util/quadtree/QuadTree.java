@@ -1,11 +1,17 @@
 package util.quadtree;
 
+import util.fileloaders.JsonLoader;
 import util.shapes.AABB;
 import util.vectors.Vector2;
+import world.templates.entities.PlayerTemplate;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class QuadTree {
     private final AABB boundary;            // The boundary of the quadtree.
@@ -40,9 +46,10 @@ public class QuadTree {
             if (!divided) subdivide();
             // NOTE: bias of order.
             if (this.northWest.insert(point)) return true;
-            if (this.northEast.insert(point)) return true;
-            if (this.southWest.insert(point)) return true;
-            return this.southEast.insert(point);
+            else if (this.northEast.insert(point)) return true;
+            else if (this.southWest.insert(point)) return true;
+            else if (this.southEast.insert(point)) return true;
+            else return false;
         }
     }
 
@@ -67,7 +74,7 @@ public class QuadTree {
         );
         this.southWest = new QuadTree(
                 new AABB(
-                        new Vector2(boundary.origin.x, boundary.origin.y + boundary.width/2),
+                        new Vector2(boundary.origin.x, boundary.origin.y + boundary.height/2),
                         boundary.width/2,
                         boundary.height/2
                 ),
@@ -75,7 +82,7 @@ public class QuadTree {
         );
         this.southEast = new QuadTree(
                 new AABB(
-                        new Vector2(boundary.origin.x + boundary.width/2, boundary.origin.y + boundary.width/2),
+                        new Vector2(boundary.origin.x + boundary.width/2, boundary.origin.y + boundary.height/2),
                         boundary.width/2,
                         boundary.height/2
                 ),
@@ -112,6 +119,65 @@ public class QuadTree {
 
     /** Debug method for drawing the quadtree */
     public void show(Graphics2D g2){
+        g2.setColor(Color.yellow);
+        g2.draw(
+            new Rectangle2D.Double(
+                boundary.origin.x,
+                boundary.origin.y,
+                boundary.width,
+                boundary.height
+            )
+        );
+        if (divided){
+            northWest.show(g2);
+            northEast.show(g2);
+            southWest.show(g2);
+            southEast.show(g2);
+        }
 
+        for (Vector2 point : points){
+            g2.draw(new Ellipse2D.Double(
+                    (point.x),
+                    (point.y),
+                    1,
+                    1
+            ));
+        }
+    }
+
+
+    // Basic test
+    public static void main(String[] args) {
+        double width = 600d;
+        double height = 600d;
+        AABB boundary = new AABB(new Vector2(0, 0), width, height);
+        QuadTree qt = new QuadTree(boundary, 2);
+
+        Random r = new Random();
+        for (int i=0; i < 20; i++ ){
+            double x = r.nextDouble() * width;
+            double y = r.nextDouble() * height;
+
+            qt.insert(new Vector2(x, y));
+        }
+        // Draw
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                // Draw background
+                g2.setColor(Color.BLACK);
+                g2.fillRect(0, 0, getWidth(), getHeight());
+                qt.show(g2);
+            }
+        };
+
+        JFrame frame = new JFrame();
+        frame.add(panel);
+        frame.setSize((int) width, (int) height);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setBackground(Color.BLACK);
     }
 }
