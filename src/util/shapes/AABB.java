@@ -14,4 +14,22 @@ public class AABB {
         this.width = width;
         this.height = height;
     }
+
+
+    public boolean contains(Vector2 point){
+        return (
+                (point.x >= origin.x && point.x <= origin.x + width) &&
+                (point.y >= origin.y && point.y <= origin.y + height)
+            );
+    }
+
+
+    public boolean intersects(AABB other){
+        return !(
+            (other.origin.x > this.origin.x + this.width) ||
+            (other.origin.x + other.width < this.origin.x) ||
+            (other.origin.y > this.origin.y +this.height) ||
+            (other.origin.y + other.height < this.origin.y)
+        );
+    }
 }
