@@ -43,13 +43,21 @@ public class QuadTree {
             points.add(point);
             return true;
         } else {
-            if (!divided) subdivide();
+            if (!divided) {
+                subdivide();
+                // Insert all quadtree's points into children.
+                for (Vector2 p : points){
+                    if (this.northWest.insert(p)) continue;
+                    if (this.northEast.insert(p)) continue;
+                    if (this.southWest.insert(p)) continue;
+                    this.southEast.insert(p);
+                }
+            };
             // NOTE: bias of order.
             if (this.northWest.insert(point)) return true;
-            else if (this.northEast.insert(point)) return true;
-            else if (this.southWest.insert(point)) return true;
-            else if (this.southEast.insert(point)) return true;
-            else return false;
+            if (this.northEast.insert(point)) return true;
+            if (this.southWest.insert(point)) return true;
+            return this.southEast.insert(point);
         }
     }
 
@@ -151,10 +159,10 @@ public class QuadTree {
         double width = 600d;
         double height = 600d;
         AABB boundary = new AABB(new Vector2(0, 0), width, height);
-        QuadTree qt = new QuadTree(boundary, 2);
+        QuadTree qt = new QuadTree(boundary, 1);
 
         Random r = new Random();
-        for (int i=0; i < 20; i++ ){
+        for (int i=0; i < 50; i++ ){
             double x = r.nextDouble() * width;
             double y = r.nextDouble() * height;
 
