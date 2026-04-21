@@ -3,6 +3,7 @@ package util.quadtree;
 import util.shapes.AABB;
 import util.vectors.Vector2;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +11,10 @@ public class QuadTree {
     private final AABB boundary;            // The boundary of the quadtree.
     private final int capacity;             // The capacity of the quadtree.
     private final List<Vector2> points;     // The points in the quadtree.
-
     // Pointers to the child subdivisions of the quadtree.
     private QuadTree northWest, northEast, southWest, southEast;
     private boolean divided;                // Has this quadtree been divided.
+
 
     public QuadTree(AABB boundary, int capacity){
         this.boundary = boundary;
@@ -25,6 +26,7 @@ public class QuadTree {
         this.southEast = null;
         divided = false;
     }
+
 
     /** inserts a point into this quadtree. Returns true if the insertion was successful. */
     public boolean insert(Vector2 point){
@@ -43,6 +45,7 @@ public class QuadTree {
             return this.southEast.insert(point);
         }
     }
+
 
     /** Takes a quadtree and divides it into 4  quadtree objects (NW, NE, SW, SE). */
     public void subdivide(){
@@ -104,5 +107,11 @@ public class QuadTree {
             found.addAll(this.southEast.query(query_boundary, found));
         }
         return found;
+    }
+
+
+    /** Debug method for drawing the quadtree */
+    public void show(Graphics2D g2){
+
     }
 }
