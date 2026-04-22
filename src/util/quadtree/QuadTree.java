@@ -164,7 +164,7 @@ public class QuadTree {
         QuadTree qt = new QuadTree(boundary, 1);
 
         Random r = new Random();
-        for (int i=0; i < 50000; i++ ){
+        for (int i=0; i < 1000; i++ ){
             double x = r.nextDouble() * width;
             double y = r.nextDouble() * height;
 
