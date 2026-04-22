@@ -102,25 +102,28 @@ public class QuadTree {
 
 
     /** Returns all the points in a given boundary */
-    public List<Vector2> query(AABB query_boundary) {
-        List<Vector2> found = new ArrayList<>();
-        query(query_boundary, found);
-        return found;
-    }
-
-    public void query(AABB query_boundary, List<Vector2> found){
-        if (!boundary.intersects(query_boundary)) return;
-        for (Vector2 point : points){
-            if (query_boundary.contains(point)){
-                found.add(point);
-            }
+    public List<Vector2> query(AABB query_boundary, List<Vector2> found){
+        if (found == null){
+            found = new ArrayList<>();
         }
+
+        if (!boundary.intersects(query_boundary)) return found;
+
         if (divided){
             this.northWest.query(query_boundary, found);
             this.northEast.query(query_boundary, found);
             this.southWest.query(query_boundary, found);
             this.southEast.query(query_boundary, found);
+            return found;
         }
+
+        for (Vector2 point : points){
+            if (query_boundary.contains(point)){
+                found.add(point);
+            }
+        }
+
+        return found;
     }
 
 
