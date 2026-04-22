@@ -3,7 +3,7 @@ package util.shapes;
 import util.vectors.Vector2;
 
 /**
- * A class representation of a Axis-Aligned Bounding Box (AABB).
+ * A class representation of an Axis-Aligned Bounding Box (AABB).
  */
 public class AABB {
     public Vector2 origin;
@@ -15,11 +15,11 @@ public class AABB {
         this.height = height;
     }
 
-
+    /** Slight bias to top left for quadtree */
     public boolean contains(Vector2 point){
         return (
-                (point.x >= origin.x && point.x <= origin.x + width) &&
-                (point.y >= origin.y && point.y <= origin.y + height)
+                (point.x >= origin.x && point.x < origin.x + width) &&
+                (point.y >= origin.y && point.y < origin.y + height)
             );
     }
 

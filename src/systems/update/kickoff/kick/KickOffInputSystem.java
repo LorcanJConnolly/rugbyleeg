@@ -42,7 +42,7 @@ public class KickOffInputSystem implements UpdateSystem {
         int player = singletonEntities.getPlayer();
         this.inputs = world.getEntityComponent(player, Inputs.class);
 
-        this.v = 100d;
+        this.v = 150d;
         this.min_v = 25d;
         this.max_v = 250d;  // Max 250 to reach dead ball.
         this.increment_v = 1d;
@@ -53,7 +53,7 @@ public class KickOffInputSystem implements UpdateSystem {
         this.increment_theta_z = 5d;
 
         // Basic values - Note, kicking vector is corrected for pitch direction after construction.
-        this.theta_x = 90d;
+        this.theta_x = 110d;
         this.min_theta_x = 20d;
         this.max_theta_x = 160d;
         this.increment_theta_x = 5d;

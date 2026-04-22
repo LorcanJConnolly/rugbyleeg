@@ -6,8 +6,10 @@ import ecs.World;
 import ecs.pipelines.render.RenderSystem;
 import ecs.query.Query;
 import util.quadtree.QuadTree;
+import util.vectors.Vector2;
 
 import java.awt.*;
+import java.util.List;
 
 public class QuadTreeDebug implements RenderSystem {
     private final Query query;

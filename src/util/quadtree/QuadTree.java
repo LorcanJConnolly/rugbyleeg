@@ -1,9 +1,7 @@
 package util.quadtree;
 
-import util.fileloaders.JsonLoader;
 import util.shapes.AABB;
 import util.vectors.Vector2;
-import world.templates.entities.PlayerTemplate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +10,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class QuadTree {
     private final AABB boundary;            // The boundary of the quadtree.
@@ -39,27 +38,21 @@ public class QuadTree {
         if (!boundary.contains(point)){
             return false;
         }
-        if (points.size() < capacity) {
-            points.add(point);
-            return true;
-        } else {
-            if (!divided) {
-                subdivide();
-                // Insert all quadtree's points into children.
-                for (Vector2 p : points){
-                    if (this.northWest.insert(p)) continue;
-                    if (this.northEast.insert(p)) continue;
-                    if (this.southWest.insert(p)) continue;
-                    this.southEast.insert(p);
-                }
-            };
-            // NOTE: bias of order.
-            if (this.northWest.insert(point)) return true;
-            if (this.northEast.insert(point)) return true;
-            if (this.southWest.insert(point)) return true;
-            return this.southEast.insert(point);
+        if (!divided){
+            if (points.size() < capacity) {
+                points.add(point);
+                return true;
+            }
+            subdivide();
         }
+
+        return
+            this.northWest.insert(point) ||
+            this.northEast.insert(point) ||
+            this.southWest.insert(point) ||
+            this.southEast.insert(point);
     }
+
 
 
     /** Takes a quadtree and divides it into 4  quadtree objects (NW, NE, SW, SE). */
@@ -96,54 +89,60 @@ public class QuadTree {
                 ),
                 capacity
         );
-
+        // Insert all quadtree's points into children.
+        for (Vector2 p : points){
+            if (this.northWest.insert(p)) continue;
+            if (this.northEast.insert(p)) continue;
+            if (this.southWest.insert(p)) continue;
+            this.southEast.insert(p);
+        }
+        this.points.clear();
         divided = true;
     }
 
 
     /** Returns all the points in a given boundary */
-    public List<Vector2> query(AABB query_boundary, List<Vector2> found){
-        if (found == null){
-            found = new ArrayList<>();
-        }
-        if (!boundary.intersects(query_boundary)) {
-            return found;
-        } else {
-            for (Vector2 point : points){
-                if (query_boundary.contains(point)){
-                    found.add(point);
-                }
+    public List<Vector2> query(AABB query_boundary) {
+        List<Vector2> found = new ArrayList<>();
+        query(query_boundary, found);
+        return found;
+    }
+
+    public void query(AABB query_boundary, List<Vector2> found){
+        if (!boundary.intersects(query_boundary)) return;
+        for (Vector2 point : points){
+            if (query_boundary.contains(point)){
+                found.add(point);
             }
         }
         if (divided){
-            found.addAll(this.northWest.query(query_boundary, found));
-            found.addAll(this.northEast.query(query_boundary, found));
-            found.addAll(this.southWest.query(query_boundary, found));
-            found.addAll(this.southEast.query(query_boundary, found));
+            this.northWest.query(query_boundary, found);
+            this.northEast.query(query_boundary, found);
+            this.southWest.query(query_boundary, found);
+            this.southEast.query(query_boundary, found);
         }
-        return found;
     }
 
 
     /** Debug method for drawing the quadtree */
-    public void show(Graphics2D g2){
-        g2.setColor(Color.yellow);
+    public void show(Graphics2D g2) {
+        g2.setColor(Color.green);
         g2.draw(
-            new Rectangle2D.Double(
-                boundary.origin.x,
-                boundary.origin.y,
-                boundary.width,
-                boundary.height
-            )
+                new Rectangle2D.Double(
+                        boundary.origin.x,
+                        boundary.origin.y,
+                        boundary.width,
+                        boundary.height
+                )
         );
-        if (divided){
+        if (divided) {
             northWest.show(g2);
             northEast.show(g2);
             southWest.show(g2);
             southEast.show(g2);
         }
 
-        for (Vector2 point : points){
+        for (Vector2 point : points) {
             g2.draw(new Ellipse2D.Double(
                     (point.x),
                     (point.y),
@@ -156,13 +155,13 @@ public class QuadTree {
 
     // Basic test
     public static void main(String[] args) {
-        double width = 600d;
-        double height = 600d;
-        AABB boundary = new AABB(new Vector2(0, 0), width, height);
+        double width = 1000d;
+        double height = 1000d;
+        AABB boundary = new AABB(new Vector2(0, 0),  width,  height);
         QuadTree qt = new QuadTree(boundary, 1);
 
         Random r = new Random();
-        for (int i=0; i < 50; i++ ){
+        for (int i=0; i < 50000; i++ ){
             double x = r.nextDouble() * width;
             double y = r.nextDouble() * height;
 
