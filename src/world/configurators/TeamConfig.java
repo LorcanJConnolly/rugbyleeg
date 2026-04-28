@@ -1,6 +1,7 @@
 package world.configurators;
 
 import components.direction.Directions;
+import components.rugby.formation.defence.Formation;
 import components.rugby.position.PositionRegistry;
 import ecs.Component;
 import ecs.World;
@@ -47,10 +48,16 @@ public class TeamConfig {
         }
 
 
+        public Builder formation(){
+            this.components.add(new Formation());
+            return this;
+        }
+
         public Builder positionRegistry(){
             this.components.add(new PositionRegistry());
             return this;
         }
+
 
         public TeamConfig build(){
             return new TeamConfig(this);

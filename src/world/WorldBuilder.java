@@ -152,6 +152,7 @@ public class WorldBuilder {
                 if (team.directions.right != null) b.right(team.directions.right);
             });
         }
+        builder.formation();
         builder.positionRegistry();
 
         System.out.println("Adding team entity to the world");
